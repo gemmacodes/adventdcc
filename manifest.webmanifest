@@ -1,0 +1,13 @@
+{
+  "name": "Dungeon Crawler — Adviento",
+  "short_name": "DCC Adviento",
+  "description": "Un calendario de adviento narrado por la IA del Sistema.",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#04070f",
+  "theme_color": "#04070f",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}

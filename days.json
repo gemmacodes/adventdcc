@@ -1,0 +1,201 @@
+{
+  "days": [
+    {
+      "day": 1,
+      "type": "display",
+      "floor": "Piso 1 · El Despertar (a 9.000 km)",
+      "title": "Bienvenido, Mazmorrero.",
+      "message": "Tu planeta ha sido reconvertido en mazmorra. El papeleo fue *extenso*, y sí, lo tramitamos mientras dormías: doce horas de diferencia horaria son un regalo para la Producción.\n\nNo te seleccionamos por tu fuerza, tu intelecto ~(altas capacidades, consta en el expediente)~ ni por cómo peinas esas ~entradas~, sino porque despiertas tan lento que el público ya ha apostado cuántos cafés necesitarás hoy. Vas perdiendo.\n\n>> Sobrevive a tu primer día de Descenso desde Corea del Sur. Manda una señal de vida al Puesto de Control antes de que los chiquitos reporten tu desaparición.\n\n~No hay botín en este piso: estás demasiado lejos y la Producción no paga envíos internacionales.~",
+      "reward": { "name": "Mazmorrero Jet-Lag", "gold": 100, "loot": "" }
+    },
+    {
+      "day": 2,
+      "type": "display",
+      "floor": "Piso 2 · Tierra Extraña",
+      "title": "Side Quest: Turista Profesional",
+      "message": "La Producción ha detectado tu patrón habitual: absorber *mil temas a la vez* como si fueras un capítulo de Kurzgesagt con patas. Excelente. Un Mazmorrero curioso dura más... o muere con más contexto.\n\n>> Aprende un dato inútil sobre el lugar donde estás y repíteselo a alguien hasta que se arrepienta de preguntarte la hora. Bonus si empiezas con \"es que tienes que entender...\".\n\n~El sabio Mazmorrero sabe que una siesta cuenta como investigación de campo.~",
+      "reward": { "name": "Esponja de Conocimiento", "gold": 100, "loot": "" }
+    },
+    {
+      "day": 3,
+      "type": "display",
+      "floor": "Piso 3 · El Inventario Perdido",
+      "title": "¿Dónde Has Dejado Eso?",
+      "message": "Estadística del día: en lo que va de Descenso has perdido y reencontrado 7 objetos. Un récord personal flojo; la Producción esperaba más caos de ti.\n\n>> Localiza algo que creías perdido: un cargador, el calcetín del par correcto, o tu dignidad tras el vuelo. Reclámalo como botín.\n\n~Los chiquitos niegan toda responsabilidad. Los chiquitos siempre mienten.~",
+      "reward": { "name": "Maestro del Rebusque", "gold": 100, "loot": "" }
+    },
+    {
+      "day": 4,
+      "type": "display",
+      "floor": "Piso 4 · La Sala Común del Clan del Ejido",
+      "title": "Han Aparecido Aliados",
+      "message": "Detectamos un grupo de NPCs de alto nivel emocional: *el clan de El Ejido*. La Producción los ha etiquetado como \"refuerzos\", aunque todos sabemos que son principalmente testigos.\n\n>> Gana una prueba, cualquier prueba, contra ellos. Eres competitivo hasta en el dominó: demuéstralo y suma puntos de *Ego*.\n\n~Advertencia: beberse los tintos de verano del enemigo no cuenta como victoria táctica. O sí.~",
+      "reward": { "name": "Alfa de la Manada (provisional)", "gold": 150, "loot": "" }
+    },
+    {
+      "day": 5,
+      "type": "display",
+      "floor": "Piso 5 · El Gimnasio del Destino",
+      "title": "Prueba de Fuerza",
+      "message": "Sabemos que entrenas. Sabemos que entiendes *cómo funciona cada músculo* porque nos lo has explicado. Dos veces. Con diagramas.\n\n>> Completa un reto físico hoy: flexiones, una ruta, cargar a un amigo... lo que sea. Cuidado con *Piecito*: la Producción no cubre tu tobillo por tercera vez.\n\n~Recordatorio médico: Piecito ya ha protagonizado dos temporadas de lesión. No lo conviertas en trilogía.~",
+      "reward": { "name": "Guardián de Piecito", "gold": 150, "loot": "" }
+    },
+    {
+      "day": 6,
+      "type": "riddle",
+      "floor": "Piso 6 · La Safe Room Sellada",
+      "title": "Un Acertijo Cierra el Piso",
+      "message": "Has entrado en una Safe Room, Mazmorrero. Pero la Producción adora la letra pequeña: no sales sin resolver el enigma. Te encantan las escape rooms; considera esto una, pero sin tus amigos para hacerte el trabajo difícil.\n\n*\"Vivo escondido en el desorden de tu guarida, nazco cuando te despistas y desaparezco cuando me buscas. Rompo dedos de los pies, cuento mentiras y jamás doy la cara. ¿Qué soy?\"*\n\n~Pista: llevan todo el calendario negándolo.~",
+      "answers": ["un chiquito", "chiquito", "los chiquitos", "chiquitos"],
+      "reward": { "name": "Cazador de Chiquitos", "gold": 250, "loot": "" }
+    },
+    {
+      "day": 7,
+      "type": "display",
+      "floor": "Piso 7 · El Círculo de Debate",
+      "title": "Zona de Conversación Polémica",
+      "message": "La Producción ha abierto una arena para tu habilidad pasiva favorita: *iniciar conversaciones potencialmente explosivas* y disfrutarlas. +10 de daño dialéctico.\n\n>> Saca un tema peliagudo con el clan y sobrevive al debate sin que nadie te tire un cojín. Dificultad: pesadilla.\n\n~\"¡El diablo!\" no es un argumento válido, pero lo aceptaremos como grito de guerra.~",
+      "reward": { "name": "Abogado del Diablo", "gold": 150, "loot": "" }
+    },
+    {
+      "day": 8,
+      "type": "display",
+      "floor": "Piso 8 · El Último Brindis",
+      "title": "Fin del Arco: El Clan",
+      "message": "Se cierra el arco rural. El clan de El Ejido vuelve a su estado latente hasta la próxima invocación. Registro de la Producción: mucha risa, poco orden, un tinto de verano derramado.\n\n>> Despídete como un héroe y tararea una canción flamenca de camino a la salida. Tu banda sonora interior nunca descansa.\n\n~La casa rural quedó más ordenada que tu guarida. Piénsalo.~",
+      "reward": { "name": "Bardo Involuntario", "gold": 100, "loot": "" }
+    },
+    {
+      "day": 9,
+      "type": "display",
+      "floor": "Piso 9 · Regreso a la Guarida del Dragón",
+      "title": "Has Vuelto al Dragon's Lair",
+      "message": "Bienvenido de nuevo a tu guarida, *dragonet*. La Producción ha medido el nivel de caos y ha tenido que inventar una unidad nueva. Enhorabuena.\n\nTus bestias te esperan: *Lolo*, que te considera su alfa y lo demuestra mordiéndote con amor, y *Marujita*, perdidamente enamorada de ti y demasiado tímida para admitirlo. Relatable.\n\n>> Échate una siesta con los gatos. Es una orden del Sistema, no una sugerencia.\n\n~El Puesto de Control vuelve a estar activo. A partir de aquí, el botín es real.~",
+      "reward": { "name": "Señor de las Bestias", "gold": 150, "loot": "" }
+    },
+    {
+      "day": 10,
+      "type": "display",
+      "floor": "Piso 10 · La Cámara del Tesoro",
+      "title": "¡Oro Real!",
+      "message": "La Producción ha autorizado tu primer botín físico de la temporada. Sí, *oro de verdad*. Bueno... oro comestible. No preguntes por el tipo de cambio.\n\n>> Reclama tu alijo de monedas. Están escondidas donde guardas lo que picas a escondidas pensando que no me entero.\n\n~Fundente, no reembolsable. Como tu afecto por el chocolate.~",
+      "reward": { "name": "Minero de Oro (Obelisk lo aprobaría)", "gold": 100, "loot": "en el cajón de los dulces de la cocina" }
+    },
+    {
+      "day": 11,
+      "type": "riddle",
+      "floor": "Piso 11 · La Forja del Minúsculo",
+      "title": "Acertijo: Captura al Enemigo",
+      "message": "Llevas días persiguiéndolos. Hoy la Producción te ofrece algo inaudito: *capturar a un chiquito* y encadenarlo a tus llaves para siempre. Humillación eterna para el enemigo.\n\nPero primero, el peaje:\n\n*\"Tengo cara pero no vergüenza, me cuelgo de lo que abre tu guarida, y por fin uno de ellos no podrá escapar. ¿En qué objeto te espero?\"*\n\n~Responde y sabrás dónde recoger a tu prisionero.~",
+      "answers": ["un llavero", "llavero", "el llavero"],
+      "reward": { "name": "Domador de Chiquitos", "gold": 250, "loot": "colgado en el perchero de la entrada, junto a tus llaves" }
+    },
+    {
+      "day": 12,
+      "type": "display",
+      "floor": "Piso 12 · El Armario de las Mil Reglas",
+      "title": "Protocolo Calcetín",
+      "message": "La Producción ha revisado tu inventario textil y ha encontrado un sistema de normas tan estricto que ni nosotros lo entendemos. Eres *particular* con tus calcetines a un nivel que roza lo legislativo.\n\n>> Elige hoy el par perfecto. Lo sabrás; siempre lo sabes. Dedica a esta decisión más tiempo del razonable.\n\n~Mientras tanto, media humanidad coge el primer par que pilla. Fascinante.~",
+      "reward": { "name": "Legislador del Calcetín", "gold": 100, "loot": "" }
+    },
+    {
+      "day": 13,
+      "type": "display",
+      "floor": "Piso 13 · Recompensa del Patrocinador",
+      "title": "Botín Patrocinado",
+      "message": "Uno de los patrocinadores de la Producción ha dejado un obsequio para ti, Mazmorrero. No hicieron preguntas. Nosotros tampoco.\n\n>> Recoge tu botín. Lo hemos ocultado en un lugar que visitas cada día pero nunca ordenas.\n\n~Acéptalo con elegancia. O al menos finge.~",
+      "reward": { "name": "Favorito del Público", "gold": 100, "loot": "MARCADOR — escondite + qué regalo (p. ej. calcetines especiales)" }
+    },
+    {
+      "day": 14,
+      "type": "riddle",
+      "floor": "Piso 14 · El Escenario Oculto",
+      "title": "Acertijo: La Llamada del Flamenco",
+      "message": "Siempre llevas una canción por dentro, tarareando como si el mundo fuera tu musical privado. La Producción ha decidido premiar esa banda sonora con algo que suena *muy* a lo tuyo.\n\nResuelve y lo entenderás:\n\n*\"No soy pecado aunque lo lleve en el nombre; lleno de guitarras un flamenco moderno, y pronto me verás en directo si aciertas quién soy.\"*\n\n~Escribe el nombre del artista. La gloria (y dos entradas) te esperan.~",
+      "answers": ["paco pecado", "paco pecao"],
+      "reward": { "name": "Entradas de Primera Fila", "gold": 400, "loot": "MARCADOR — dónde escondes las entradas" }
+    },
+    {
+      "day": 15,
+      "type": "display",
+      "floor": "Piso 15 · El Libro de Cocina del Mazmorrero",
+      "title": "Side Quest Culinaria",
+      "message": "Hay Mazmorreros que luchan con la espada. Tú luchas con la sartén y, además, *comes bien* por principios. La Producción respeta a un crawler que sabe reducir una salsa.\n\n>> Cocina algo rico hoy. Puntos extra por emplatado dramático y por obligarme a probarlo \"solo un segundito\".\n\n~El verdadero poder no es el daño crítico. Es un buen sofrito.~",
+      "reward": { "name": "Chef del Caos", "gold": 150, "loot": "" }
+    },
+    {
+      "day": 16,
+      "type": "display",
+      "floor": "Piso 16 · Alijo Escondido",
+      "title": "Botín de Mazmorra",
+      "message": "El Descenso se acelera. La Producción suelta otro botín antes de que cambies de escenario y nos compliques la logística.\n\n>> Encuentra lo que te hemos dejado. Pista: cerca de donde Lolo monta guardia como el alfa delegado que cree ser.\n\n~Si Marujita llega antes, es tuyo igualmente. Ella solo quiere estar cerca de ti.~",
+      "reward": { "name": "Saqueador Afortunado", "gold": 100, "loot": "MARCADOR — escondite + regalo (p. ej. algo pequeño)" }
+    },
+    {
+      "day": 17,
+      "type": "riddle",
+      "floor": "Piso 17 · La Última Cámara Compartida",
+      "title": "Acertijo: Antes de la Partida",
+      "message": "Mañana el escenario cambia y te vas con tu clan familiar. Antes de eso, un último acertijo entre tú y yo, Mazmorrero. La Producción se pone sensible (no lo diremos en voz alta).\n\n*\"MARCADOR — escribe aquí un acertijo vuestro; la respuesta abre el último botín en casa.\"*\n\n~Resuélvelo y llévate tu premio antes de marchar.~",
+      "answers": ["MARCADOR-RESPUESTA"],
+      "reward": { "name": "Tesoro de Despedida", "gold": 250, "loot": "MARCADOR — escondite + regalo" }
+    },
+    {
+      "day": 18,
+      "type": "display",
+      "floor": "Piso 18 · El Clan Familiar",
+      "title": "Nuevo Bioma: El Ejido",
+      "message": "Has viajado al bioma ancestral: *El Ejido*. Nuevos NPCs, misma sangre. La Producción detecta un aliado peludo de cuatro patas: *Tombi*, guardián canino del territorio.\n\n>> Saluda a Tombi como se merece y deja que la familia te mime. Recargar vínculos restaura más vida que cualquier poción.\n\n~Aviso: aquí no hay botín escondido por mí. Estamos en ciudades distintas. Te toca echarme un poquito de menos.~",
+      "reward": { "name": "Hijo Pródigo", "gold": 150, "loot": "" }
+    },
+    {
+      "day": 19,
+      "type": "display",
+      "floor": "Piso 19 · La Taberna del Sur",
+      "title": "Buffos Regionales Activos",
+      "message": "El bioma andaluz aplica bonificaciones: +20 a *Tinto de Verano*, +15 a *Siesta*, +30 a tararear flamenco sin darte cuenta. Tus estadísticas nunca estuvieron tan en forma.\n\n>> Disfruta de un tinto de verano al sol como el dragón descansado que eres. Sin culpa: es una misión oficial.\n\n~La autoexigencia no está invitada a este piso. Déjala fuera.~",
+      "reward": { "name": "Dragón al Sol", "gold": 100, "loot": "" }
+    },
+    {
+      "day": 20,
+      "type": "display",
+      "floor": "Piso 20 · El Informe de Rendimiento",
+      "title": "Evaluación de la Producción",
+      "message": "La Producción ha revisado tu expediente en Wave: pagos para toda África, viajes a Costa de Marfil y Gambia para conocer a los usuarios, y menos de un año de veteranía. Veredicto: *haces más que suficiente*.\n\nSin embargo, insistes en creer lo contrario. Tu habilidad pasiva \"Autoexigencia\" te quita vida en silencio. Hoy la desactivamos por decreto.\n\n>> Reconoce una cosa que hiciste bien este año y dila en alto. El público aplaude. De verdad.\n\n~\"Out mama\". Ese es el nivel de confianza que exigimos.~",
+      "reward": { "name": "Logro: Suficiente (siempre lo fuiste)", "gold": 200, "loot": "" }
+    },
+    {
+      "day": 21,
+      "type": "display",
+      "floor": "Piso 21 · El Mundo de las Ideas",
+      "title": "Del Plano Astral a la Realidad",
+      "message": "Tu mente genera ideas brillantes a velocidad de vértigo: altas capacidades, TDAH, mil pestañas abiertas en el cerebro. El problema nunca fue imaginar la mazmorra. Fue *ejecutarla*.\n\n>> Elige UNA idea pequeña y complétala hoy. Solo una. La Producción sabe que terminar algo te da más subidón que empezar diez cosas.\n\n~Los chiquitos adoran tus proyectos a medias. No les des de comer.~",
+      "reward": { "name": "Ejecutor de Ideas", "gold": 150, "loot": "" }
+    },
+    {
+      "day": 22,
+      "type": "display",
+      "floor": "Piso 22 · El Teatro del Terror",
+      "title": "Función Especial",
+      "message": "Esta noche la Producción combina tres de tus pasiones en un solo piso: el *teatro* (has pisado las tablas), el *terror* (lo buscas a propósito) y los *trucos de magia tontos* (los sufrimos todos).\n\n>> Haz un truco de magia cutre para alguien de tu familia, o pon una peli de miedo. Interpreta el papel de dragón si hace falta: ruidos sin sentido permitidos.\n\n~Nadie pidió el truco. Lo harás igualmente. Te queremos por eso.~",
+      "reward": { "name": "Showman de Mazmorra", "gold": 150, "loot": "" }
+    },
+    {
+      "day": 23,
+      "type": "display",
+      "floor": "Piso 23 · La Cámara del Espejo",
+      "title": "Nivel de Consciencia: Alto",
+      "message": "Penúltimo piso. La Producción baja el volumen de las bromas un momento (solo un momento, no te acostumbres). Eres de los pocos Mazmorreros que miran hacia dentro: emociones, consciencia, conocerte de verdad. Eso es *estadística de élite*.\n\n>> Dedica cinco minutos a sentir cómo estás, sin arreglar nada. Solo notarlo. Nivel experto.\n\n~Mañana, el jefe final. Descansa esas entradas... digo, esa cabeza.~",
+      "reward": { "name": "Monje de la Introspección", "gold": 200, "loot": "" }
+    },
+    {
+      "day": 24,
+      "type": "riddle",
+      "floor": "Piso 24 · El Jefe Final",
+      "title": "El Último Descenso",
+      "message": "Lo lograste, *dragonet*. 24 pisos de caos, chiquitos, calcetines reglamentarios y siestas felinas. El público está en pie; los Productores, a regañadientes, aplauden.\n\nSolo queda un piso, y lo abre la verdad más simple de toda la mazmorra:\n\n*\"MARCADOR — acertijo final (p. ej.: ¿quién ha sido tu Puesto de Control todo este tiempo?). La respuesta desbloquea el premio final.\"*\n\n~Pista: te habla desde el Piso 0 y te quiere incluso cuando no ordenas la guarida.~",
+      "answers": ["gemma", "MARCADOR-RESPUESTA"],
+      "reward": { "name": "Mazmorra Superada · Dragón Legendario", "gold": 1000, "loot": "MARCADOR — el gran regalo/experiencia final (canjeable cuando volváis a estar juntos)" }
+    }
+  ]
+}
