@@ -1,201 +1,425 @@
 {
+  "campaign": "incursion-2026-v2",
   "days": [
     {
       "day": 1,
-      "type": "display",
-      "floor": "Piso 1 · El Despertar (a 9.000 km)",
-      "title": "Bienvenido, Mazmorrero.",
-      "message": "Tu planeta ha sido reconvertido en mazmorra. El papeleo fue *extenso*, y sí, lo tramitamos mientras dormías: doce horas de diferencia horaria son un regalo para la Producción.\n\nNo te seleccionamos por tu fuerza, tu intelecto ~(altas capacidades, consta en el expediente)~ ni por cómo peinas esas ~entradas~, sino porque despiertas tan lento que el público ya ha apostado cuántos cafés necesitarás hoy. Vas perdiendo.\n\n>> Sobrevive a tu primer día de Descenso desde Corea del Sur. Manda una señal de vida al Puesto de Control antes de que los chiquitos reporten tu desaparición.\n\n~No hay botín en este piso: estás demasiado lejos y la Producción no paga envíos internacionales.~",
-      "reward": { "name": "Mazmorrero Jet-Lag", "gold": 100, "loot": "" }
+      "floor": "Piso 1 · El vestíbulo de los contratos",
+      "title": "Firma aquí. La dignidad no está incluida.",
+      "message": "Bienvenido a una sala de recepción con diecisiete terminales, un recepcionista extraviado y una planta de plástico que ha sobrevivido a más incursiones que sus propietarios.\n\nLa conexión llega desde *Corea del Sur*. El Sistema ha intentado cobrarte un suplemento internacional. Contabilidad ha respondido con una carcajada.\n\n>> Registra tu nombre de guerra, un lema y el atributo del que más presumes. Reparte exactamente *30 puntos* entre Fuerza, Ingenio y Carisma, con un máximo de *20 por atributo*. Al firmar, el reparto queda fijado. El departamento de estadísticas no admite sobornos ni sliders posteriores.\n\n~Este contrato es parte del juego. No autoriza cobros, sacrificios ni suscripciones a gimnasios.~",
+      "mission": {
+        "type": "form",
+        "pointBudget": { "total": 30, "fields": ["strength", "wit", "charm"] },
+        "fields": [
+          { "id": "warName", "label": "Nombre de guerra", "maxLength": 50 },
+          { "id": "motto", "label": "Lema de incursión", "maxLength": 160 },
+          { "id": "pride", "label": "El atributo del que presumes", "options": [
+            { "id": "strength", "label": "Fuerza" },
+            { "id": "wit", "label": "Ingenio" },
+            { "id": "charm", "label": "Carisma" }
+          ] },
+          { "id": "strength", "label": "Fuerza", "type": "number", "min": 0, "max": 20 },
+          { "id": "wit", "label": "Ingenio", "type": "number", "min": 0, "max": 20 },
+          { "id": "charm", "label": "Carisma", "type": "number", "min": 0, "max": 20 },
+          { "id": "contract", "label": "Acepto este contrato ficticio y sus pésimas condiciones de atención al cliente.", "type": "checkbox" }
+        ],
+        "success": "Identidad registrada. Nivel 0. Expectativas administrativas: aún más bajas."
+      },
+      "reward": { "name": "Insignia de mazmorrero de nivel 0", "gold": 50, "title": "Problema administrativo", "item": "Contrato de incursión" }
     },
     {
       "day": 2,
-      "type": "display",
-      "floor": "Piso 2 · Tierra Extraña",
-      "title": "Side Quest: Turista Profesional",
-      "message": "La Producción ha detectado tu patrón habitual: absorber *mil temas a la vez* como si fueras un capítulo de Kurzgesagt con patas. Excelente. Un Mazmorrero curioso dura más... o muere con más contexto.\n\n>> Aprende un dato inútil sobre el lugar donde estás y repíteselo a alguien hasta que se arrepienta de preguntarte la hora. Bonus si empiezas con \"es que tienes que entender...\".\n\n~El sabio Mazmorrero sabe que una siesta cuenta como investigación de campo.~",
-      "reward": { "name": "Esponja de Conocimiento", "gold": 100, "loot": "" }
+      "floor": "Piso 2 · La taberna de los héroes hidratados",
+      "title": "Alquimia de dudosa graduación",
+      "message": "Una taberna interdimensional ha comprado todas sus etiquetas en una liquidación. La botella que dice «agua» está dando consejos financieros.\n\nSigues en Corea: hoy no hay botín físico ni entregas internacionales. Tu misión cabe en este terminal.\n\n>> Diseña una bebida de supervivencia: nombre, ingredientes y un efecto secundario ridículo. El tinto de verano se admite como sustancia legendaria. También puedes inventar una poción sin alcohol.\n\n~La receta es ficción. No mezcles sustancias desconocidas: bastante trabajo tenemos ya con los camareros.~",
+      "mission": {
+        "type": "form",
+        "fields": [
+          { "id": "drink", "label": "Nombre de la poción", "maxLength": 70 },
+          { "id": "ingredients", "label": "Ingredientes imaginarios o comestibles", "type": "textarea", "maxLength": 240 },
+          { "id": "sideEffect", "label": "Efecto secundario", "maxLength": 160 }
+        ],
+        "success": "Receta archivada. El comité de alquimia ha dimitido antes de probarla."
+      },
+      "reward": { "name": "Poción de autor", "gold": 50, "item": "Receta de supervivencia" }
     },
     {
       "day": 3,
-      "type": "display",
-      "floor": "Piso 3 · El Inventario Perdido",
-      "title": "¿Dónde Has Dejado Eso?",
-      "message": "Estadística del día: en lo que va de Descenso has perdido y reencontrado 7 objetos. Un récord personal flojo; la Producción esperaba más caos de ti.\n\n>> Localiza algo que creías perdido: un cargador, el calcetín del par correcto, o tu dignidad tras el vuelo. Reclámalo como botín.\n\n~Los chiquitos niegan toda responsabilidad. Los chiquitos siempre mienten.~",
-      "reward": { "name": "Maestro del Rebusque", "gold": 100, "loot": "" }
+      "floor": "Piso 3 · La comisaría de asuntos chiquitiles",
+      "title": "Expediente 003: el calcetín imposible",
+      "message": "La comisaría acumula denuncias por cargadores desaparecidos, golpes en el meñique y un calcetín que ha solicitado asilo político.\n\nEsta mañana alguien robó el sello oficial. Solo queda una huella de tinta *triangular* en el cajón. El informe del laboratorio certifica que las suelas no se han cambiado:\n\n*Pipo* lleva botas redondas. *Chispa* lleva botas triangulares. *Motas* lleva botas cuadradas. Los tres niegan haber nacido.\n\n>> Identifica a quien dejó la huella. Los otros dos podrán ser culpables de muchas cosas, pero hoy investigamos esta.",
+      "mission": {
+        "type": "choice",
+        "answer": "chispa",
+        "options": [
+          { "id": "pipo", "label": "Pipo, el de las botas redondas" },
+          { "id": "chispa", "label": "Chispa, el de las botas triangulares" },
+          { "id": "motas", "label": "Motas, el de las botas cuadradas" }
+        ],
+        "hints": ["La forma de la huella coincide con la suela del sospechoso."],
+        "success": "Chispa llevaba tinta en las botas. Su defensa alega que el triángulo es una construcción social. Caso abierto para sentencia."
+      },
+      "reward": { "name": "Credencial de investigación", "gold": 100, "attributes": { "wit": 1 }, "title": "Inspector honorífico", "item": "Expediente criminal de Chispa" }
     },
     {
       "day": 4,
-      "type": "display",
-      "floor": "Piso 4 · La Sala Común del Clan del Ejido",
-      "title": "Han Aparecido Aliados",
-      "message": "Detectamos un grupo de NPCs de alto nivel emocional: *el clan de El Ejido*. La Producción los ha etiquetado como \"refuerzos\", aunque todos sabemos que son principalmente testigos.\n\n>> Gana una prueba, cualquier prueba, contra ellos. Eres competitivo hasta en el dominó: demuéstralo y suma puntos de *Ego*.\n\n~Advertencia: beberse los tintos de verano del enemigo no cuenta como victoria táctica. O sí.~",
-      "reward": { "name": "Alfa de la Manada (provisional)", "gold": 150, "loot": "" }
+      "floor": "Piso 4 · El concurso de las bestias inútiles",
+      "title": "El público no puede apartar la mirada",
+      "message": "Un plató televisivo. Tres jueces. Uno duerme, otro puntúa el peinado y el tercero es un cojín que cobra más que tú.\n\nEl clan de El Ejido figura como jurado invitado, aunque no hace falta que esté presente: ya te juzgará cuando le apetezca.\n\n>> Presenta un talento real o completamente inútil. Tararear sin darte cuenta, explicar un dato con excesivo contexto o hacer magia cutre son disciplinas reconocidas. Escribe una frase; actuar o grabarte es opcional.\n\n~«¡El diablo!» cuenta como cierre dramático. No como talento. Hemos tenido que aclararlo.~",
+      "mission": {
+        "type": "form",
+        "fields": [
+          { "id": "talent", "label": "Tu número estelar", "type": "textarea", "maxLength": 300 }
+        ],
+        "success": "El cojín te ha dado un diez. Los otros jueces están negociando cómo superar esa crítica."
+      },
+      "reward": { "name": "Trofeo de dudosa utilidad", "gold": 100, "attributes": { "charm": 1 }, "title": "Artista de dudosa utilidad", "item": "Trofeo del cojín de oro" }
     },
     {
       "day": 5,
-      "type": "display",
-      "floor": "Piso 5 · El Gimnasio del Destino",
-      "title": "Prueba de Fuerza",
-      "message": "Sabemos que entrenas. Sabemos que entiendes *cómo funciona cada músculo* porque nos lo has explicado. Dos veces. Con diagramas.\n\n>> Completa un reto físico hoy: flexiones, una ruta, cargar a un amigo... lo que sea. Cuidado con *Piecito*: la Producción no cubre tu tobillo por tercera vez.\n\n~Recordatorio médico: Piecito ya ha protagonizado dos temporadas de lesión. No lo conviertas en trilogía.~",
-      "reward": { "name": "Guardián de Piecito", "gold": 150, "loot": "" }
+      "floor": "Piso 5 · El Ministerio de Inteligencia Felina",
+      "title": "Un mensaje de @MeraMaruji",
+      "message": "El Ministerio está gobernado por gatos que clasifican los documentos durmiendo encima. Un expediente bajo una barriga es, por definición, inaccesible.\n\nEl agente Marujito ha enviado esta transmisión:\n\n*«SAMU EM ATSUG»*\n\nEl protocolo indica que la primera palabra se conserva. Las dos siguientes se leen *letra a letra al revés*, sin cambiar su orden.\n\n>> Descifra la frase. El agente niega que esto tenga contenido sentimental. Está amasando el informe.",
+      "mission": {
+        "type": "puzzle",
+        "answers": ["samu me gusta", "me gusta samu"],
+        "hints": ["EM se convierte en ME.", "ATSUG se convierte en GUSTA. Conserva SAMU al principio."],
+        "success": "«SAMU ME GUSTA». Confidencialidad vulnerada. El agente solicita que no se difunda, salvo entre todas las personas disponibles."
+      },
+      "reward": { "name": "Acceso al archivo felino", "gold": 150, "item": "Credencial de agente asociado" }
     },
     {
       "day": 6,
-      "type": "riddle",
-      "floor": "Piso 6 · La Safe Room Sellada",
-      "title": "Un Acertijo Cierra el Piso",
-      "message": "Has entrado en una Safe Room, Mazmorrero. Pero la Producción adora la letra pequeña: no sales sin resolver el enigma. Te encantan las escape rooms; considera esto una, pero sin tus amigos para hacerte el trabajo difícil.\n\n*\"Vivo escondido en el desorden de tu guarida, nazco cuando te despistas y desaparezco cuando me buscas. Rompo dedos de los pies, cuento mentiras y jamás doy la cara. ¿Qué soy?\"*\n\n~Pista: llevan todo el calendario negándolo.~",
-      "answers": ["un chiquito", "chiquito", "los chiquitos", "chiquitos"],
-      "reward": { "name": "Cazador de Chiquitos", "gold": 250, "loot": "" }
+      "floor": "Piso 6 · El salón del último Dragonet",
+      "title": "La vanidad es inmortal",
+      "message": "Una estilista ancestral contempla tu melena con respeto profesional y una calculadora. Cobra por folículo rescatado.\n\nEn este salón se fabrican héroes de romantasy. El drama viene incluido; la conservación capilar, no.\n\n>> Registra tu poder, una habilidad especial, una debilidad vergonzosa y la descripción oficial de tu pelo. Piecito puede entrar en el expediente como vulnerabilidad; no hace falta someterlo a ninguna prueba.\n\n~Primera insignia Dragonet. No te emociones: el departamento de títulos todavía está calentando.~",
+      "mission": {
+        "type": "form",
+        "fields": [
+          { "id": "dragonName", "label": "Nombre de dragón", "maxLength": 60 },
+          { "id": "power", "label": "Poder mágico", "maxLength": 160 },
+          { "id": "skill", "label": "Habilidad especial", "maxLength": 160 },
+          { "id": "weakness", "label": "Debilidad vergonzosa", "maxLength": 160 },
+          { "id": "hair", "label": "Melena legendaria, según su propietario", "maxLength": 200 }
+        ],
+        "success": "Ficha sellada. La estilista recomienda evitar el fuego, las tijeras improvisadas y las opiniones no solicitadas."
+      },
+      "reward": { "name": "Primera insignia Dragonet", "gold": 150, "attributes": { "strength": 1 }, "title": "Dragonet en prácticas", "item": "Ficha romantasy" }
     },
     {
       "day": 7,
-      "type": "display",
-      "floor": "Piso 7 · El Círculo de Debate",
-      "title": "Zona de Conversación Polémica",
-      "message": "La Producción ha abierto una arena para tu habilidad pasiva favorita: *iniciar conversaciones potencialmente explosivas* y disfrutarlas. +10 de daño dialéctico.\n\n>> Saca un tema peliagudo con el clan y sobrevive al debate sin que nadie te tire un cojín. Dificultad: pesadilla.\n\n~\"¡El diablo!\" no es un argumento válido, pero lo aceptaremos como grito de guerra.~",
-      "reward": { "name": "Abogado del Diablo", "gold": 150, "loot": "" }
+      "floor": "Piso 7 · El portal de decisiones cuestionables",
+      "title": "Tres contratos. Ninguna buena idea.",
+      "message": "Tres portales flotan sobre un mostrador. Bajo el mostrador, un chiquito está conectado a una impresora de contratos.\n\n>> Elige un sello. Tendrá una consecuencia pequeña en la Bolsa de los Chiquitólares del piso 16. No te obliga a comportarte de ninguna manera fuera del juego.\n\n~La elección es libre. El departamento de consecuencias lleva toda la mañana riéndose.~",
+      "mission": {
+        "type": "choice",
+        "options": [
+          { "id": "wealth", "label": "Riqueza: patrocinio de origen fiscal dudoso", "result": "Sello de riqueza firmado. Una bonificación de 75 chiquitólares te espera si visitas después la Bolsa." },
+          { "id": "power", "label": "Poder: licencia para declarar «¡el diablo!»", "result": "Sello de poder firmado. Tu entrada dramática en la Bolsa tendrá un bonus de 25 chiquitólares." },
+          { "id": "wisdom", "label": "Sabiduría: información privilegiada sobre gatos", "result": "Sello de sabiduría firmado. El informe bursátil incluirá un bonus de 50 chiquitólares." }
+        ],
+        "success": "Contrato registrado. La letra pequeña no cabe en este universo."
+      },
+      "reward": { "name": "Sello de portal", "gold": 100, "item": "Contrato de riesgo absurdo" }
     },
     {
       "day": 8,
-      "type": "display",
-      "floor": "Piso 8 · El Último Brindis",
-      "title": "Fin del Arco: El Clan",
-      "message": "Se cierra el arco rural. El clan de El Ejido vuelve a su estado latente hasta la próxima invocación. Registro de la Producción: mucha risa, poco orden, un tinto de verano derramado.\n\n>> Despídete como un héroe y tararea una canción flamenca de camino a la salida. Tu banda sonora interior nunca descansa.\n\n~La casa rural quedó más ordenada que tu guarida. Piénsalo.~",
-      "reward": { "name": "Bardo Involuntario", "gold": 100, "loot": "" }
+      "floor": "Piso 8 · El supermercado del apocalipsis",
+      "title": "El snack exige un trato digno",
+      "message": "Los alimentos han adquirido conciencia. Una bolsa de patatas exige vacaciones pagadas. Un caramelo ha formado un sindicato.\n\nTu cargamento es una ración pequeña, no la solución al hambre interdimensional.\n\n>> Decide cómo administrar el suministro en esta emergencia ficticia. No hay una respuesta incorrecta: estamos evaluando tu capacidad para justificar decisiones gastronómicas.",
+      "mission": {
+        "type": "choice",
+        "options": [
+          { "id": "ration", "label": "Dividirlo en tres reservas tácticas", "result": "Plan sensato. El público abuchea la ausencia de caos, pero respeta tus tres montoncitos." },
+          { "id": "share", "label": "Compartirlo con una criatura potencialmente útil", "result": "Diplomacia comestible. La criatura promete ayudarte. Su currículum dice «morder»." },
+          { "id": "now", "label": "Consumirlo ahora y redactar un informe después", "result": "El cargamento ha desaparecido. El informe tiene manchas de azúcar y una confianza admirable." }
+        ],
+        "success": "Protocolo de supervivencia archivado."
+      },
+      "reward": { "name": "Ración de emergencia", "gold": 100, "item": "Consumible del apocalipsis", "physical": "Snack o chuchería · sobre 8. Si aún no lo tienes, la recogida queda pendiente; puedes completar el piso igualmente." }
     },
     {
       "day": 9,
-      "type": "display",
-      "floor": "Piso 9 · Regreso a la Guarida del Dragón",
-      "title": "Has Vuelto al Dragon's Lair",
-      "message": "Bienvenido de nuevo a tu guarida, *dragonet*. La Producción ha medido el nivel de caos y ha tenido que inventar una unidad nueva. Enhorabuena.\n\nTus bestias te esperan: *Lolo*, que te considera su alfa y lo demuestra mordiéndote con amor, y *Marujita*, perdidamente enamorada de ti y demasiado tímida para admitirlo. Relatable.\n\n>> Échate una siesta con los gatos. Es una orden del Sistema, no una sugerencia.\n\n~El Puesto de Control vuelve a estar activo. A partir de aquí, el botín es real.~",
-      "reward": { "name": "Señor de las Bestias", "gold": 150, "loot": "" }
+      "floor": "Piso 9 · El centro de reinserción de chiquitos",
+      "title": "El acusado ya ha vendido su celda",
+      "message": "Chispa comparece ante el tribunal. El sello robado del piso 3 ha reaparecido estampando permisos de fuga.\n\nSi no investigaste aquel expediente, aquí tienes el resumen: botas triangulares, huella triangular, negación circular. Puedes visitar el piso 3 más tarde.\n\n>> Dicta sentencia. El acusado presenta como atenuante que «lo volvería a hacer mejor».",
+      "mission": {
+        "type": "choice",
+        "options": [
+          { "id": "reform", "label": "Reinserción con vigilancia", "result": "Chispa firma su compromiso de reinserción usando un sello que no debería tener." },
+          { "id": "prison", "label": "Prisión en un llavero de máxima seguridad", "result": "El prisionero solicita acceso a tus llaves. La dirección considera que no ha entendido la sentencia." },
+          { "id": "official", "label": "Contratación como funcionario", "result": "El acusado ha ascendido antes de incorporarse. Una carrera administrativa prometedora." }
+        ],
+        "success": "Sentencia firme. La apelación se ha extraviado en circunstancias chiquitiles."
+      },
+      "reward": { "name": "Custodia de Chispa", "gold": 150, "item": "Chispa, mascota de inventario", "physical": "Figurita o llavero del chiquito · sobre 9. Entrega pendiente si todavía no lo tienes." }
     },
     {
       "day": 10,
-      "type": "display",
-      "floor": "Piso 10 · La Cámara del Tesoro",
-      "title": "¡Oro Real!",
-      "message": "La Producción ha autorizado tu primer botín físico de la temporada. Sí, *oro de verdad*. Bueno... oro comestible. No preguntes por el tipo de cambio.\n\n>> Reclama tu alijo de monedas. Están escondidas donde guardas lo que picas a escondidas pensando que no me entero.\n\n~Fundente, no reembolsable. Como tu afecto por el chocolate.~",
-      "reward": { "name": "Minero de Oro (Obelisk lo aprobaría)", "gold": 100, "loot": "en el cajón de los dulces de la cocina" }
+      "floor": "Piso 10 · El casino de los dioses medio borrachos",
+      "title": "La injusticia es una decisión artística",
+      "message": "Un dios apuesta su omnisciencia y pregunta dónde está el baño. Otro intenta cambiar una maldición por fichas.\n\n>> Tira tu dado e introduce el resultado del 1 al 6, o utiliza el dado virtual. El primer resultado registrado se conserva. Reabrir el piso no vuelve a repartir el premio.\n\n~Nadie pierde dinero real. La única moneda admitida es ficticia y está impresa en chocolate.~",
+      "mission": {
+        "type": "dice",
+        "results": [
+          { "face": 1, "gold": 25, "text": "Maldición del bostezo aristocrático. Durante el resto de esta frase eres conde. Ya se ha pasado." },
+          { "face": 2, "gold": 50, "text": "Un dios te devuelve un depósito que nunca pagaste. No hagas preguntas." },
+          { "face": 3, "gold": 75, "text": "Triple alianza con un taburete. No aporta nada, pero figura en acta." },
+          { "face": 4, "gold": 100, "text": "Bendición del tinto perfectamente frío. Sus efectos son puramente imaginarios." },
+          { "face": 5, "gold": 125, "text": "El casino confunde tu peinado con una corona y paga tributo." },
+          { "face": 6, "gold": 150, "text": "Premio mayor. Los dioses exigen una auditoría y se duermen durante ella." }
+        ],
+        "success": "Resultado certificado. La banca pierde dignidad; tú ganas chiquitólares."
+      },
+      "reward": { "name": "Boleto de fortuna", "gold": 0, "item": "Acta del casino", "physical": "Dado · sobre 10. Si no está contigo, el dado virtual sirve exactamente igual." }
     },
     {
       "day": 11,
-      "type": "riddle",
-      "floor": "Piso 11 · La Forja del Minúsculo",
-      "title": "Acertijo: Captura al Enemigo",
-      "message": "Llevas días persiguiéndolos. Hoy la Producción te ofrece algo inaudito: *capturar a un chiquito* y encadenarlo a tus llaves para siempre. Humillación eterna para el enemigo.\n\nPero primero, el peaje:\n\n*\"Tengo cara pero no vergüenza, me cuelgo de lo que abre tu guarida, y por fin uno de ellos no podrá escapar. ¿En qué objeto te espero?\"*\n\n~Responde y sabrás dónde recoger a tu prisionero.~",
-      "answers": ["un llavero", "llavero", "el llavero"],
-      "reward": { "name": "Domador de Chiquitos", "gold": 250, "loot": "colgado en el perchero de la entrada, junto a tus llaves" }
+      "floor": "Piso 11 · La clínica de enfermedades inventadas",
+      "title": "Diagnóstico: demasiada horizontalidad",
+      "message": "La clínica asigna diagnósticos mediante una ruleta. Hoy se ha roto y, por desgracia, habrá que leer.\n\nEl paciente presenta *ganas de manta, quejidos dramáticos y recuperación inmediata al escuchar «hay algo rico»*.\n\nEl manual distingue tres cuadros: «pochismo agudo» tiene esos tres síntomas; «calcetinitis» obliga a ordenar calcetines por normas incomprensibles; «tarareosis» convierte cualquier pasillo en un escenario.\n\n>> Identifica el diagnóstico ficticio. Esto no es una consulta médica ni sustituye cuidados reales.",
+      "mission": {
+        "type": "choice",
+        "answer": "pochismo",
+        "options": [
+          { "id": "pochismo", "label": "Pochismo agudo" },
+          { "id": "socks", "label": "Calcetinitis reglamentaria" },
+          { "id": "humming", "label": "Tarareosis persistente" }
+        ],
+        "hints": ["Busca la combinación de manta, quejidos y reacción a la comida."],
+        "success": "Pochismo agudo confirmado en un universo ficticio. Se prescribe una dosis de no tener que demostrar nada."
+      },
+      "reward": { "name": "Poción antipochismo", "gold": 150, "item": "Poción de recuperación ficticia", "physical": "Bebida · sobre 11. No es un medicamento. Recógela cuando esté disponible." }
     },
     {
       "day": 12,
-      "type": "display",
-      "floor": "Piso 12 · El Armario de las Mil Reglas",
-      "title": "Protocolo Calcetín",
-      "message": "La Producción ha revisado tu inventario textil y ha encontrado un sistema de normas tan estricto que ni nosotros lo entendemos. Eres *particular* con tus calcetines a un nivel que roza lo legislativo.\n\n>> Elige hoy el par perfecto. Lo sabrás; siempre lo sabes. Dedica a esta decisión más tiempo del razonable.\n\n~Mientras tanto, media humanidad coge el primer par que pilla. Fascinante.~",
-      "reward": { "name": "Legislador del Calcetín", "gold": 100, "loot": "" }
+      "floor": "Piso 12 · El trono de Lo Lord",
+      "title": "Audiencia con @LoLord",
+      "message": "Una criatura negra, rechoncha y peligrosamente satisfecha ocupa el trono. Lolo acaba de prohibir los horarios que no le favorecen.\n\nSu señoría reconoce a Samu como alfa siempre que eso no interfiera con sus propias decisiones. La constitución tiene dos artículos: «mío» y «también mío».\n\n>> Elige un tributo diplomático. Basta con registrarlo aquí: no hace falta molestar al monarca ni alterar sus rutinas.",
+      "mission": {
+        "type": "choice",
+        "options": [
+          { "id": "cuddles", "label": "Mimos, cuando su señoría los solicite", "result": "Tributo aceptado. Los mordiscos cariñosos posteriores no constituyen incumplimiento." },
+          { "id": "food", "label": "Reconocer la soberanía sobre su comida habitual", "result": "El monarca aprueba la redacción y solicita supervisar todas las cocinas del reino." },
+          { "id": "oath", "label": "Declaración formal de obediencia", "result": "Tu juramento queda registrado. Lolo no sabe leer, pero reconoce una victoria." }
+        ],
+        "success": "Decreto emitido: protección temporal contra conflictos de autoridad felina. Vigencia: hasta que Lolo cambie de opinión."
+      },
+      "reward": { "name": "Decreto de Lo Lord", "gold": 150, "item": "Salvoconducto felino", "physical": "Fotografía de Lolo con decreto · sobre 12. Puedes recogerla más tarde." }
     },
     {
       "day": 13,
-      "type": "display",
-      "floor": "Piso 13 · Recompensa del Patrocinador",
-      "title": "Botín Patrocinado",
-      "message": "Uno de los patrocinadores de la Producción ha dejado un obsequio para ti, Mazmorrero. No hicieron preguntas. Nosotros tampoco.\n\n>> Recoge tu botín. Lo hemos ocultado en un lugar que visitas cada día pero nunca ordenas.\n\n~Acéptalo con elegancia. O al menos finge.~",
-      "reward": { "name": "Favorito del Público", "gold": 100, "loot": "MARCADOR — escondite + qué regalo (p. ej. calcetines especiales)" }
+      "floor": "Piso 13 · El vivero de dragones malcriados",
+      "title": "No te ha elegido. Ha elegido tus cosas.",
+      "message": "El vivero está lleno de dragones pequeños y demandas grandes. Uno exige un camerino. Otro está intentando comerse el contrato de adopción.\n\nUna cría se ha sentado encima de tus pertenencias. Técnicamente, la negociación ya ha terminado.\n\n>> Ponle nombre, personalidad, habilidad y un defecto ridículo. No estamos creando una criatura equilibrada: estamos creando un problema con alas.",
+      "mission": {
+        "type": "form",
+        "fields": [
+          { "id": "companion", "label": "Nombre de tu dragón", "maxLength": 60 },
+          { "id": "personality", "label": "Personalidad", "maxLength": 160 },
+          { "id": "ability", "label": "Habilidad", "maxLength": 160 },
+          { "id": "flaw", "label": "Defecto ridículo", "maxLength": 160 }
+        ],
+        "success": "Compañero registrado. La garantía no cubre incendios emocionales ni robo de snacks."
+      },
+      "reward": { "name": "Compañero de aventura", "gold": 150, "attributes": { "strength": 1 }, "title": "Dragonet con responsabilidades", "item": "Dragón de compañía", "physical": "Mini dragón · sobre 13. Su ficha digital funciona aunque todavía no hayas recogido la figura." }
     },
     {
       "day": 14,
-      "type": "riddle",
-      "floor": "Piso 14 · El Escenario Oculto",
-      "title": "Acertijo: La Llamada del Flamenco",
-      "message": "Siempre llevas una canción por dentro, tarareando como si el mundo fuera tu musical privado. La Producción ha decidido premiar esa banda sonora con algo que suena *muy* a lo tuyo.\n\nResuelve y lo entenderás:\n\n*\"No soy pecado aunque lo lleve en el nombre; lleno de guitarras un flamenco moderno, y pronto me verás en directo si aciertas quién soy.\"*\n\n~Escribe el nombre del artista. La gloria (y dos entradas) te esperan.~",
-      "answers": ["paco pecado", "paco pecao"],
-      "reward": { "name": "Entradas de Primera Fila", "gold": 400, "loot": "MARCADOR — dónde escondes las entradas" }
+      "floor": "Piso 14 · La cocina del anarquista gastronómico",
+      "title": "Una receta que exige refuerzos",
+      "message": "Una cocina clandestina prepara algo que ninguna autoridad ha prohibido todavía. El cocinero lo considera un fracaso publicitario.\n\nEl ingrediente en la ficha es *una semilla pequeña y negra, conocida por acabar en un flan*. El Sistema ha censurado el resto para fingir que esto es difícil.\n\n>> Identifica el ingrediente y elige qué experimento preparar juntos. No hay que cocinar hoy: la receta quedará pendiente hasta que ambos tengáis ganas.",
+      "mission": {
+        "type": "form",
+        "checkField": "ingredient",
+        "answers": ["sesamo", "sesamo negro", "semillas de sesamo negro", "ajonjoli", "ajonjoli negro"],
+        "hints": ["También se llama ajonjolí.", "La respuesta es sésamo negro."],
+        "cooperative": true,
+        "fields": [
+          { "id": "ingredient", "label": "Ingrediente misterioso", "maxLength": 80 },
+          { "id": "recipe", "label": "Experimento", "options": [
+            { "id": "flan", "label": "Flan de sésamo negro" },
+            { "id": "savoury", "label": "Un plato salado con sésamo" },
+            { "id": "improvise", "label": "Improvisación supervisada por el hambre" }
+          ] }
+        ],
+        "success": "Receta desbloqueada. Ejecución cooperativa pendiente, sin fecha de caducidad."
+      },
+      "reward": { "name": "Experimento gastronómico", "gold": 200, "attributes": { "wit": 1 }, "item": "Contrato de cocina cooperativa", "physical": "Sésamo negro · sobre 14. Guardad el ingrediente para cuando os venga bien cocinar." }
     },
     {
       "day": 15,
-      "type": "display",
-      "floor": "Piso 15 · El Libro de Cocina del Mazmorrero",
-      "title": "Side Quest Culinaria",
-      "message": "Hay Mazmorreros que luchan con la espada. Tú luchas con la sartén y, además, *comes bien* por principios. La Producción respeta a un crawler que sabe reducir una salsa.\n\n>> Cocina algo rico hoy. Puntos extra por emplatado dramático y por obligarme a probarlo \"solo un segundito\".\n\n~El verdadero poder no es el daño crítico. Es un buen sofrito.~",
-      "reward": { "name": "Chef del Caos", "gold": 150, "loot": "" }
+      "floor": "Piso 15 · La aduana de los infiernos gastronómicos",
+      "title": "DRAGON TREATS",
+      "message": "La aduana inspecciona tres sustancias ficticias. El inspector lleva guantes, gafas y una carta de dimisión.\n\nLa escala oficial asigna *1* al «Cosquilleo de lagartija», *2* al «Estornudo de wyvern» y *3* al «Eructo de volcán». Un chiquito ha desordenado las etiquetas.\n\n>> Escribe sus nombres de menor a mayor peligrosidad y bautiza una categoría superior. No hace falta probar nada ni demostrar resistencia comiendo picante.",
+      "mission": {
+        "type": "form",
+        "checkField": "order",
+        "answers": ["cosquilleo de lagartija estornudo de wyvern eructo de volcan", "lagartija wyvern volcan", "1 2 3"],
+        "hints": ["Puedes responder simplemente 1, 2, 3."],
+        "fields": [
+          { "id": "order", "label": "Orden de menor a mayor (también vale 1, 2, 3)", "maxLength": 180 },
+          { "id": "threat", "label": "Nombre de tu nueva categoría de amenaza", "maxLength": 100 }
+        ],
+        "success": "Clasificación aprobada. La valentía no se mide en molestias digestivas."
+      },
+      "reward": { "name": "Licencia de aduana ígnea", "gold": 150, "title": "Paladar de dragón", "item": "DRAGON TREATS", "physical": "Guindillas u otro detalle gastronómico elegido para ti · sobre 15. Consumo completamente opcional." }
     },
     {
       "day": 16,
-      "type": "display",
-      "floor": "Piso 16 · Alijo Escondido",
-      "title": "Botín de Mazmorra",
-      "message": "El Descenso se acelera. La Producción suelta otro botín antes de que cambies de escenario y nos compliques la logística.\n\n>> Encuentra lo que te hemos dejado. Pista: cerca de donde Lolo monta guardia como el alfa delegado que cree ser.\n\n~Si Marujita llega antes, es tuyo igualmente. Ella solo quiere estar cerca de ti.~",
-      "reward": { "name": "Saqueador Afortunado", "gold": 100, "loot": "MARCADOR — escondite + regalo (p. ej. algo pequeño)" }
+      "floor": "Piso 16 · La Bolsa de los Chiquitólares",
+      "title": "La inflación también tiene antecedentes",
+      "message": "La economía está dirigida por chiquitos que confunden el interés compuesto con interesarse mucho por algo.\n\nDispones de una inversión ficticia patrocinada por la Bolsa. No se descuenta nada de tu saldo. Si ya elegiste un sello en el piso 7, se aplicará su bonus una sola vez; si no, puedes jugar igualmente.\n\n>> Elige un activo. Ninguna decisión de esta pantalla es un consejo financiero. Algunas ni siquiera son decisiones.",
+      "mission": {
+        "type": "choice",
+        "portalBonus": { "wealth": 75, "power": 25, "wisdom": 50 },
+        "options": [
+          { "id": "lolo", "label": "Lolo S.A. · monopolio de los cojines", "result": "Lolo ha nacionalizado tu inversión. Te paga dividendos en autoridad moral." },
+          { "id": "debt", "label": "Deuda pública de los chiquitos", "result": "El bono vence ayer. El ministro lo considera un incentivo a la puntualidad." },
+          { "id": "feathers", "label": "Criptomoneda respaldada por plumas de dragón", "result": "Los dragones no tienen esas plumas. La auditoría ha descubierto el problema y se ha unido al negocio." }
+        ],
+        "success": "Operación cerrada. El Banco Central recomienda comer el dinero antes de que pierda valor."
+      },
+      "reward": { "name": "Fortuna no reconocida por ningún banco", "gold": 150, "item": "Cartera de inversión chiquitil", "physical": "Monedas de chocolate · sobre 16. El saldo digital no depende de haberlas recibido." }
     },
     {
       "day": 17,
-      "type": "riddle",
-      "floor": "Piso 17 · La Última Cámara Compartida",
-      "title": "Acertijo: Antes de la Partida",
-      "message": "Mañana el escenario cambia y te vas con tu clan familiar. Antes de eso, un último acertijo entre tú y yo, Mazmorrero. La Producción se pone sensible (no lo diremos en voz alta).\n\n*\"MARCADOR — escribe aquí un acertijo vuestro; la respuesta abre el último botín en casa.\"*\n\n~Resuélvelo y llévate tu premio antes de marchar.~",
-      "answers": ["MARCADOR-RESPUESTA"],
-      "reward": { "name": "Tesoro de Despedida", "gold": 250, "loot": "MARCADOR — escondite + regalo" }
+      "floor": "Piso 17 · Mazmorra Directo",
+      "title": "El mazmorrero responde",
+      "message": "Una entidad sin rostro conduce la entrevista. El público aplaude cada vez que se enciende un cartel. El cartel dice «APLAUDIR O RELLENAR UN FORMULARIO».\n\nProducción tiene sobre la mesa tus declaraciones anteriores. No porque sea profesional: porque un chiquito ha vendido el archivo.\n\n>> Contesta cinco preguntas rápidas. Una frase por respuesta. No hay cámara, audio ni obligación de actuar.",
+      "mission": {
+        "type": "form",
+        "recap": true,
+        "fields": [
+          { "id": "failure", "label": "¿Tu fracaso más glorioso en esta incursión?", "maxLength": 200 },
+          { "id": "government", "label": "¿Qué cargo aceptarías en el gobierno de Lolo?", "maxLength": 160 },
+          { "id": "song", "label": "¿Qué canción tarareas cuando crees que nadie escucha?", "maxLength": 160 },
+          { "id": "defence", "label": "¿Qué alegas ante la acusación de exceso de confianza?", "maxLength": 200 },
+          { "id": "dressingRoom", "label": "¿Tu exigencia absurda para el camerino?", "maxLength": 160 }
+        ],
+        "success": "Audiencia: 9/10. El punto restante se ha descontado por estar demasiado cómodo bajo el foco."
+      },
+      "reward": { "name": "Fama interdimensional", "gold": 150, "attributes": { "charm": 1 }, "title": "Invitado con camerino", "item": "Transcripción de Mazmorra Directo", "physical": "Snack o nota-meme · sobre 17. El camerino no está incluido." }
     },
     {
       "day": 18,
-      "type": "display",
-      "floor": "Piso 18 · El Clan Familiar",
-      "title": "Nuevo Bioma: El Ejido",
-      "message": "Has viajado al bioma ancestral: *El Ejido*. Nuevos NPCs, misma sangre. La Producción detecta un aliado peludo de cuatro patas: *Tombi*, guardián canino del territorio.\n\n>> Saluda a Tombi como se merece y deja que la familia te mime. Recargar vínculos restaura más vida que cualquier poción.\n\n~Aviso: aquí no hay botín escondido por mí. Estamos en ciudades distintas. Te toca echarme un poquito de menos.~",
-      "reward": { "name": "Hijo Pródigo", "gold": 150, "loot": "" }
+      "floor": "Piso 18 · El departamento de actividades cooperativas",
+      "title": "Este contrato necesita dos jugadores",
+      "message": "La oficina está vacía. Todos sus funcionarios han presentado una solicitud para irse juntos a otro sitio.\n\nEn tu mesa hay un vale sin fecha de caducidad. No es una reserva, una compra ni una obligación: es una aventura por elegir.\n\n>> Escoge un plan o propón uno. La misión quedará pendiente hasta que los dos estéis disponibles y os apetezca. Puedes completar este piso sin salir de la silla.",
+      "mission": {
+        "type": "form",
+        "cooperative": true,
+        "fields": [
+          { "id": "plan", "label": "Aventura compartida", "options": [
+            { "id": "escape", "label": "Una escape room" },
+            { "id": "dinner", "label": "Una cena en un sitio nuevo" },
+            { "id": "walk", "label": "Una excursión tranquila con recompensa gastronómica" },
+            { "id": "custom", "label": "La propuesta que escribo debajo" }
+          ] },
+          { "id": "proposal", "label": "Tu propuesta o un detalle del plan", "type": "textarea", "required": false, "requiredWhen": { "field": "plan", "value": "custom" }, "maxLength": 300 }
+        ],
+        "success": "Misión cooperativa desbloqueada. El calendario no decide cuándo tenéis que pasarlo bien."
+      },
+      "reward": { "name": "Vale de aventura compartida", "gold": 200, "item": "Contrato cooperativo sin caducidad", "physical": "Vale del piso 18. Puede entregarse en persona o viajar contigo en un sobre." }
     },
     {
       "day": 19,
-      "type": "display",
-      "floor": "Piso 19 · La Taberna del Sur",
-      "title": "Buffos Regionales Activos",
-      "message": "El bioma andaluz aplica bonificaciones: +20 a *Tinto de Verano*, +15 a *Siesta*, +30 a tararear flamenco sin darte cuenta. Tus estadísticas nunca estuvieron tan en forma.\n\n>> Disfruta de un tinto de verano al sol como el dragón descansado que eres. Sin culpa: es una misión oficial.\n\n~La autoexigencia no está invitada a este piso. Déjala fuera.~",
-      "reward": { "name": "Dragón al Sol", "gold": 100, "loot": "" }
+      "floor": "Piso 19 · El mercado negro de los favores",
+      "title": "Un privilegio de origen confidencial",
+      "message": "Un puesto sin nombre vende contratos que el Sistema se niega a incluir en la contabilidad. Hay uno reservado para ti.\n\nUna entidad anónima ofrece un privilegio privado: *un rato de mimos a tu gusto*, solo si a ambas personas les apetece. Los detalles se acuerdan fuera del terminal. No debes escribir nada íntimo aquí.\n\n>> Puedes aceptarlo, rechazarlo o dejarlo pendiente. Las tres decisiones completan el piso y dan la misma recompensa digital. No existe una opción que debas elegir.\n\n~La identidad del benefactor no está disponible. Su departamento de discreción está trabajando sorprendentemente bien.~",
+      "mission": {
+        "type": "choice",
+        "private": true,
+        "options": [
+          { "id": "accept", "label": "Aceptar, sin compromiso de canjearlo", "result": "Privilegio guardado. Cualquier canje requiere ganas de ambas personas y se puede cancelar." },
+          { "id": "decline", "label": "Rechazar el privilegio", "result": "Oferta rechazada sin penalización ni explicaciones. El Sistema respeta tu decisión." },
+          { "id": "later", "label": "Decidir más adelante", "result": "Documento archivado para otro momento. No caduca y no genera ninguna deuda." }
+        ],
+        "success": "Tu decisión queda registrada. Ningún contrato está por encima de tus ganas."
+      },
+      "reward": { "name": "Decisión soberana", "gold": 200, "title": "Negociador soberano", "item": "Privilegio confidencial", "physical": "Vale privado opcional · sobre 19. No hace falta abrirlo ni utilizarlo para seguir jugando." }
     },
     {
       "day": 20,
-      "type": "display",
-      "floor": "Piso 20 · El Informe de Rendimiento",
-      "title": "Evaluación de la Producción",
-      "message": "La Producción ha revisado tu expediente en Wave: pagos para toda África, viajes a Costa de Marfil y Gambia para conocer a los usuarios, y menos de un año de veteranía. Veredicto: *haces más que suficiente*.\n\nSin embargo, insistes en creer lo contrario. Tu habilidad pasiva \"Autoexigencia\" te quita vida en silencio. Hoy la desactivamos por decreto.\n\n>> Reconoce una cosa que hiciste bien este año y dila en alto. El público aplaude. De verdad.\n\n~\"Out mama\". Ese es el nivel de confianza que exigimos.~",
-      "reward": { "name": "Logro: Suficiente (siempre lo fuiste)", "gold": 200, "loot": "" }
+      "floor": "Piso 20 · El depósito de objetos no identificados",
+      "title": "No abras ese sobre. Por una vez.",
+      "message": "La ficha de este envío está completamente censurada. Solo se lee «DOS», «COMPARTIDO» y una factura cuyo importe ha hecho llorar a un contable.\n\nEl Sistema no puede identificar el contenido. Tampoco puede explicar por qué tiene instrucciones de protegerlo con tanto empeño.\n\n>> Registra el objeto legendario. Si ya tienes el sobre 20, guárdalo cerrado hasta resolver el piso 24. Si aún no lo tienes, regístralo como pendiente de recogida: el juego continúa.\n\n~Intentar mirar al trasluz es una conducta muy poco profesional. Comprensible, pero poco profesional.~",
+      "mission": {
+        "type": "choice",
+        "options": [
+          { "id": "received", "label": "Tengo el sobre y lo guardaré cerrado", "result": "Cadena de custodia registrada. Mantén el sobre cerrado hasta la autorización final." },
+          { "id": "collection", "label": "Todavía no tengo el sobre", "result": "Recogida pendiente. El objeto digital queda reservado y no bloquea ningún piso." }
+        ],
+        "success": "Objeto legendario registrado. Contenido sellado hasta el desenlace."
+      },
+      "reward": { "name": "Objeto legendario no identificado", "gold": 200, "item": "Sobre sellado del piso 20", "physical": "Sobre 20 · no abrir hasta resolver el piso 24." }
     },
     {
       "day": 21,
-      "type": "display",
-      "floor": "Piso 21 · El Mundo de las Ideas",
-      "title": "Del Plano Astral a la Realidad",
-      "message": "Tu mente genera ideas brillantes a velocidad de vértigo: altas capacidades, TDAH, mil pestañas abiertas en el cerebro. El problema nunca fue imaginar la mazmorra. Fue *ejecutarla*.\n\n>> Elige UNA idea pequeña y complétala hoy. Solo una. La Producción sabe que terminar algo te da más subidón que empezar diez cosas.\n\n~Los chiquitos adoran tus proyectos a medias. No les des de comer.~",
-      "reward": { "name": "Ejecutor de Ideas", "gold": 150, "loot": "" }
+      "floor": "Piso 21 · El archivo de aventureros prescindibles",
+      "title": "Acceso a tu expediente personal",
+      "message": "El archivo ha cruzado tus declaraciones con una fuente muy fiable: tus otras declaraciones. El rigor científico es abrumador.\n\nTu ficha distingue la fuerza que declaras tener de la habilidad para tararear sin enterarte. Una es ajustable. La otra parece estructural.\n\n>> Revisa lo registrado y, si quieres, presenta una alegación. No hay nota, evaluación psicológica ni tarea de superación personal. Si faltan episodios, puedes completarlos más tarde.\n\n~Tu expediente ha sido compartido con cero empresas de publicidad por esta app. El Sistema está decepcionado con el departamento de monetización.~",
+      "mission": {
+        "type": "form",
+        "recap": true,
+        "fields": [
+          { "id": "appeal", "label": "Alegación al Sistema (opcional)", "type": "textarea", "required": false, "maxLength": 400 }
+        ],
+        "success": "Expediente revisado. Tu alegación será leída por alguien que probablemente estaba durmiendo."
+      },
+      "reward": { "name": "Expediente actualizado", "gold": 200, "title": "Sujeto de interés administrativo", "item": "Copia de tu expediente" }
     },
     {
       "day": 22,
-      "type": "display",
-      "floor": "Piso 22 · El Teatro del Terror",
-      "title": "Función Especial",
-      "message": "Esta noche la Producción combina tres de tus pasiones en un solo piso: el *teatro* (has pisado las tablas), el *terror* (lo buscas a propósito) y los *trucos de magia tontos* (los sufrimos todos).\n\n>> Haz un truco de magia cutre para alguien de tu familia, o pon una peli de miedo. Interpreta el papel de dragón si hace falta: ruidos sin sentido permitidos.\n\n~Nadie pidió el truco. Lo harás igualmente. Te queremos por eso.~",
-      "reward": { "name": "Showman de Mazmorra", "gold": 150, "loot": "" }
+      "floor": "Piso 22 · Operación T.O.M.B.I.",
+      "title": "Informe del agente especial",
+      "message": "*INFORME DE INTELIGENCIA CANINA. CLASIFICACIÓN: DESPROPORCIONADA.*\n\nEl agente Tombi ha sido observado dejando su juguete al lado de unas zapatillas, mirando alternativamente el juguete y a un humano, y moviendo la cola al recibir atención. Su comida permanece intacta. La puerta está cerrada y el agente no la mira.\n\n>> Identifica el objetivo más probable de esta operación. Todo lo necesario está en el informe. Si estás con él, puedes saludarlo, pero no hace falta perseguirlo, despertarlo ni cambiar su rutina.\n\n~El agente ha pedido que su medalla sea comestible. Logística está estudiando la petición.~",
+      "mission": {
+        "type": "choice",
+        "answer": "play",
+        "options": [
+          { "id": "food", "label": "Requisición urgente de comida" },
+          { "id": "play", "label": "Reclutar a un humano para jugar" },
+          { "id": "escape", "label": "Abrir la puerta para una fuga táctica" }
+        ],
+        "hints": ["El juguete, la mirada y la reacción a la atención apuntan al mismo objetivo."],
+        "success": "Objetivo identificado: reclutamiento lúdico. Tombi ha manipulado a la cadena de mando usando la cola. Operación impecable."
+      },
+      "reward": { "name": "Medalla de honor canina", "gold": 200, "attributes": { "wit": 1 }, "title": "Enlace de operaciones T.O.M.B.I.", "item": "Informe secreto del agente Tombi" }
     },
     {
       "day": 23,
-      "type": "display",
-      "floor": "Piso 23 · La Cámara del Espejo",
-      "title": "Nivel de Consciencia: Alto",
-      "message": "Penúltimo piso. La Producción baja el volumen de las bromas un momento (solo un momento, no te acostumbres). Eres de los pocos Mazmorreros que miran hacia dentro: emociones, consciencia, conocerte de verdad. Eso es *estadística de élite*.\n\n>> Dedica cinco minutos a sentir cómo estás, sin arreglar nada. Solo notarlo. Nivel experto.\n\n~Mañana, el jefe final. Descansa esas entradas... digo, esa cabeza.~",
-      "reward": { "name": "Monje de la Introspección", "gold": 200, "loot": "" }
+      "floor": "Piso 23 · La sala de los tesoros incompletos",
+      "title": "Una cantidad preocupante de objetos",
+      "message": "La cámara contiene contratos, credenciales, criaturas y decisiones que parecían razonables en su momento. Algunas no superan ni ese estándar.\n\nEl inventario solo incluye lo que has conseguido. Los huecos no son fallos: puedes volver a cualquier piso disponible cuando quieras.\n\n>> Elige tu objeto favorito, un piso memorable y el personaje más peligroso. Puedes escribir «todavía no lo sé». La última pregunta es opcional.\n\n~Hay un contrato pendiente de resolución. El Sistema ha intentado destruirlo. Alguien con permisos superiores ha dicho que ni se le ocurra.~",
+      "mission": {
+        "type": "form",
+        "recap": true,
+        "fields": [
+          { "id": "favouriteItem", "label": "Tu objeto favorito", "maxLength": 160 },
+          { "id": "favouriteFloor", "label": "Tu piso favorito", "maxLength": 160 },
+          { "id": "danger", "label": "El personaje más peligroso", "maxLength": 160 },
+          { "id": "nextAdventure", "label": "¿Qué aventura te gustaría vivir después? (opcional)", "type": "textarea", "required": false, "maxLength": 300 }
+        ],
+        "success": "Balance de incursión archivado. Mañana hay una anomalía que el Sistema no ha conseguido tapar."
+      },
+      "reward": { "name": "Memoria de la incursión", "gold": 200, "item": "Catálogo de tesoros y decisiones" }
     },
     {
       "day": 24,
-      "type": "riddle",
-      "floor": "Piso 24 · El Jefe Final",
-      "title": "El Último Descenso",
-      "message": "Lo lograste, *dragonet*. 24 pisos de caos, chiquitos, calcetines reglamentarios y siestas felinas. El público está en pie; los Productores, a regañadientes, aplauden.\n\nSolo queda un piso, y lo abre la verdad más simple de toda la mazmorra:\n\n*\"MARCADOR — acertijo final (p. ej.: ¿quién ha sido tu Puesto de Control todo este tiempo?). La respuesta desbloquea el premio final.\"*\n\n~Pista: te habla desde el Piso 0 y te quiere incluso cuando no ordenas la guarida.~",
-      "answers": ["gemma", "MARCADOR-RESPUESTA"],
-      "reward": { "name": "Mazmorra Superada · Dragón Legendario", "gold": 1000, "loot": "MARCADOR — el gran regalo/experiencia final (canjeable cuando volváis a estar juntos)" }
+      "floor": "Piso 24 · El piso que no figura en los mapas",
+      "title": "Una última anomalía",
+      "message": "No hay monstruos. No hay trampas. Solo un contrato financiado por alguien que conoce tus gatos, tus expresiones y la cantidad exacta de caos que puedes causar con una idea brillante.\n\nEl Sistema ha rastreado las recompensas personalizadas y ha encontrado una firma externa. No pertenece a un banco, a un chiquito ni a Lo Lord, por mucho que lo reclame.\n\n>> ¿Quién está detrás de esta incursión? Escribe su nombre. Si te atascas, las pistas no cuestan nada y no reducen el premio.\n\n~No necesitas haber completado los otros 23 pisos. Esto nunca ha sido un examen.~",
+      "mission": {
+        "type": "puzzle",
+        "answers": ["gemma", "gema", "mi sucubo", "tu", "mi pareja", "mi novia"],
+        "hints": [
+          "Es alguien que quiere vivir aventuras contigo fuera de esta pantalla.",
+          "La entidad patrocinadora es tu súcubo.",
+          "Su nombre es Gemma. Escríbelo y abre el contrato."
+        ],
+        "success": "Firma verificada: Gemma. Tu súcubo ha financiado esta incursión porque te quiere muchísimo. El Sistema desea dejar constancia de su oposición a tanto mimo y tan poco rigor presupuestario.\n\nTítulo definitivo desbloqueado: DRAGONCITO DE ÉLITE.\n\nYa puedes abrir el sobre del piso 20: las entradas para Paco Pecado son vuestra aventura compartida. Si todavía no tienes el sobre, la entrega queda pendiente; la revelación y el título son tuyos igualmente. La fecha y las condiciones serán las de las entradas reales."
+      },
+      "reward": { "name": "Mazmorra superada", "gold": 1000, "attributes": { "strength": 1, "wit": 1, "charm": 1 }, "title": "DRAGONCITO DE ÉLITE", "item": "Autorización de apertura del sobre 20" }
     }
   ]
 }

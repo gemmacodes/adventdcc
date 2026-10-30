@@ -2,9 +2,7 @@
 //  DUNGEON CRAWLER — configuración. Edita estos valores.
 // ============================================================
 window.CONFIG = {
-  // Se muestra en la interfaz
-  crawlerName: "Samu",           // nombre de quien recibe el regalo (aparece en el título)
-  crawlerId: "4.827.116",        // texto decorativo, cualquier cadena
+  // El nombre, la clase y los textos de la interfaz se editan en strings.js.
 
   // ¿Cuándo corre el calendario? El día N se desbloquea el N de diciembre de este año.
   decemberYear: 2026,
