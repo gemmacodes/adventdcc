@@ -17,7 +17,7 @@ window.STRINGS = {
     done: "▸ LISTO"
   },
   calendar: {
-    subtitle: "▸ EDICIÓN ADVIENTO CHIQUITO · DESCENSO AL PISO 24",
+    subtitle: "▸ EDICIÓN ADVIENTO CHIQUITO ·24 PISOS",
     floors: "PISOS COMPLETADOS: {count} / 24",
     credits: "CHIQUITÓLARES: {count}",
     floor: "PISO {day}",
@@ -31,8 +31,7 @@ window.STRINGS = {
     empty: "La incursión comienza el 1 de diciembre. Tu expediente ya está disponible.",
     sealedNotice: "PISO {day} SELLADO — se abre el {day} de diciembre",
     hint: "toca un piso iluminado · los pisos bloqueados se abren el día de diciembre que les toca",
-    authorHint: "MODO AUTOR · progreso de prueba en esta pestaña · notificaciones DESACTIVADAS",
-    icons: {
+    authorHint: "MODO AUTOR · progreso de prueba en esta pestaña · notificaciones DESACTIVADAS",    icons: {
       sealed: "🔒",
       collapsed: "❌",
       completed: "🏆",
@@ -93,6 +92,33 @@ window.STRINGS = {
     reducedMotion: "Reducir animaciones",
     reducedMotionNote: "Sin parpadeos, glitch ni desplazamientos animados.",
     savedNote: "Los cambios se guardan automáticamente en este navegador. No se sincronizan entre dispositivos."
+  },
+  backup: {
+    heading: "Copia de seguridad",
+    intro: "Exporta respuestas, borradores y progreso a un archivo JSON. Los ajustes de interfaz no se incluyen.",
+    privacy: "El archivo contiene tus respuestas sin cifrar. Guárdalo en un lugar de confianza; no se envía a ningún servidor.",
+    policy: "Solo se añaden pisos sin datos. Los que ya tengan respuestas, borradores o progreso se conservan tal cual.",
+    previewWarning: "MODO AUTOR: esta copia es solo de pruebas y no se puede restaurar en el modo de Samu.",
+    download: "Descargar copia",
+    chooseFile: "Seleccionar copia para restaurar",
+    confirm: "Añadir los pisos de esta copia",
+    cancel: "Cancelar",
+    reading: "Leyendo y comprobando la copia…",
+    review: "Se añadirán {added} pisos. Se omitirán {kept} pisos de la copia que ya tienen datos en este navegador.",
+    ready: "Archivo preparado con {count} pisos. Comprueba que se haya descargado.",
+    noChanges: "La copia no añade pisos nuevos. Los registros existentes se han conservado.",
+    restored: "Se han añadido {added} pisos y conservado {kept} de la copia que ya tenían datos.",
+    invalidFile: "El archivo no contiene una copia de seguridad válida.",
+    wrongVersion: "Esta versión de copia de seguridad no es compatible.",
+    wrongCampaign: "La copia pertenece a otra campaña.",
+    wrongMode: "No se pueden mezclar copias del modo autor con el progreso real de Samu.",
+    invalidRecord: "Los datos del piso {day} no son válidos. No se ha restaurado ningún registro.",
+    tooLarge: "El archivo supera el límite de 1 MB.",
+    unreadable: "Hay registros que no se pueden leer. No se generará una copia incompleta ni se restaurarán datos sobre ellos.",
+    unavailable: "La campaña debe estar cargada antes de utilizar las copias.",
+    readError: "No se pudo leer el archivo seleccionado.",
+    storageError: "No se pudo guardar la restauración. Los datos existentes no se han modificado; puedes volver a intentarlo.",
+    exportError: "No se pudo preparar la descarga de la copia."
   },
   message: {
     notification: "NOTIFICACIÓN DEL SISTEMA",
