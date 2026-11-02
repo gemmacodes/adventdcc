@@ -10,7 +10,7 @@ window.CONFIG = {
   // URL pública de Vercel: https://TU-PROYECTO.vercel.app/api/progress.
   // Las credenciales se configuran solo en Vercel; nunca en este archivo.
   sync: {
-    endpoint: ""
+    endpoint: "https://adventdcc.vercel.app/api/progress"
   },
 
   // --- Notificaciones (push al móvil con ntfy.sh) -----------
