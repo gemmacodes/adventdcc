@@ -65,6 +65,47 @@ body[data-view="message"] .calhead,body[data-view="profile"] .calhead{display:no
 .view.active{display:block}
 @keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
 
+.character-carousel{display:flex;align-items:flex-start;gap:12px;overflow-x:auto;overscroll-behavior-x:contain;scroll-snap-type:x mandatory;scrollbar-width:none;margin-top:16px;position:relative}
+.character-carousel::-webkit-scrollbar{display:none}
+.character-carousel::after{content:"";flex:0 0 calc(14% - 12px)}
+.character-slot{min-width:0;flex:0 0 86%;scroll-snap-align:start;scroll-snap-stop:always}
+.character-controls{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:12px}
+.character-controls button{display:grid;place-items:center;flex:0 0 44px;height:44px;padding:0;border:1px solid var(--cyan-dim);border-radius:8px;background:var(--panel);color:var(--amber);font:inherit;font-size:23px;cursor:pointer}
+.character-controls button:disabled{opacity:.35;cursor:default}
+.character-controls p{flex:1;min-width:0;margin:0;color:var(--muted);font-size:10px;line-height:1.5;text-align:center;overflow-wrap:anywhere}
+#characterDossier > summary{color:var(--amber)}
+.character-entry{min-width:0}
+.character-entry > summary{list-style:none;cursor:pointer}
+.character-entry > summary::-webkit-details-marker{display:none}
+.character-entry > summary:focus-visible{outline:2px solid var(--blue);outline-offset:4px;border-radius:8px}
+.character-art{display:block;position:relative;container-type:inline-size;overflow:hidden;border-radius:8px;aspect-ratio:12/17;background:#140c11}
+.character-art img{display:block;width:100%;height:100%;object-fit:fill}
+.character-name,.character-plate{position:absolute;display:flex;align-items:center;justify-content:center;text-align:center;color:#fff0d4;line-height:1.15;overflow-wrap:anywhere}
+.character-art:has(img[src$="/lolo.webp"]){--card-name-left:36%;--card-name-right:14%}
+.character-art:has(img[src$="/marujito.webp"]){--card-name-left:35%;--card-name-right:24%}
+.character-art:has(img[src$="/chiquito.webp"]){--card-name-left:36%;--card-name-right:20%}
+.character-art:has(img[src$="/tombi.webp"]){--card-name-left:35%;--card-name-right:23%}
+.character-name{top:4%;left:var(--card-name-left,36%);right:var(--card-name-right,14%);height:6%;font-size:clamp(11px,6cqw,22px);font-weight:750}
+.character-plate{top:83.25%;left:12%;right:12%;height:8.5%;font-size:clamp(7px,4.3cqw,13px)}
+.character-name > span,.character-plate > span{display:block;width:100%;min-width:0}
+.character-dossier{display:block;padding:9px 0;font-size:11px;color:var(--amber);text-align:center;text-decoration:underline;text-underline-offset:3px}
+.character-content{font-size:12px;line-height:1.6;overflow-wrap:anywhere}
+.character-content h3{margin:8px 0;font-size:13px;color:var(--gold)}
+.character-content p{margin:0 0 12px}
+.character-content dl{margin:0}
+.character-content dt{color:var(--muted);font-size:10px;margin-top:12px}
+.character-content dd{margin:4px 0 12px;white-space:pre-wrap}
+.character-sealed{aspect-ratio:12/17;border:1px dashed #633145;border-radius:8px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:12px;padding:12px;text-align:center;background:radial-gradient(ellipse,#321728,#100b1b);font-size:10px;color:var(--muted)}
+.character-sealed strong{font-size:12px;font-weight:500}
+.character-silhouette{display:block;width:65%;height:45%;background:#070611;filter:drop-shadow(0 0 8px #8d365b);clip-path:polygon(15% 40%,8% 8%,35% 20%,65% 20%,92% 8%,85% 40%,90% 62%,74% 77%,85% 100%,15% 100%,26% 77%,10% 62%)}
+.mission-character{margin:20px 0;padding:16px;border:1px solid #6d283c;border-radius:12px;background:linear-gradient(160deg,#28101c,#10091b)}
+.mission-character .character-entry{max-width:260px;margin:auto}
+.character-status{color:var(--gold);font-size:11px;line-height:1.6;letter-spacing:.08em;margin:0 0 14px}
+.character-reveal{animation:character-register .65s ease-out}
+.character-art-error{position:absolute;inset:20% 10%;display:grid;place-items:center;font-size:11px;color:var(--red)}
+@keyframes character-register{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:none}}
+@media(prefers-reduced-motion:reduce){.character-reveal{animation:none}}
+
 /* calendar */
 .brand{font-weight:700;letter-spacing:.06em;font-size:20px;color:#f6e9ff;text-shadow:0 0 14px rgba(255,43,214,.55),0 0 26px rgba(33,230,255,.25)}
 .brand .accent{color:var(--cyan);text-transform:uppercase}

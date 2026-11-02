@@ -30,7 +30,7 @@
       "day": 2,
       "floor": "Piso 2 · La taberna de los héroes hidratados",
       "title": "Alquimia de dudosa graduación",
-      "message": "Una taberna interdimensional ha comprado todas sus etiquetas en una liquidación. La botella que dice «agua» está dando consejos financieros.\n\nSigues en Corea: hoy no hay botín físico ni entregas internacionales. Tu misión cabe en este terminal.\n\n>> Diseña una bebida de supervivencia: nombre, ingredientes y un efecto secundario ridículo. El tinto de verano se admite como sustancia legendaria. También puedes inventar una poción sin alcohol.\n\n~La receta es ficción. No mezcles sustancias desconocidas: bastante trabajo tenemos ya con los camareros.~",
+      "message": "La taberna de tránsito anuncia la conexión *Corea del Sur → Barcelona*. Hoy vuelves a Barcelona y el Sistema ya ha abierto una investigación sobre la cantidad de dignidad que cabe en el equipaje de mano.\n\nEntre el viaje y la llegada, la misión puede esperar a que estés instalado. No requiere abrir sobres ni encontrar ingredientes.\n\n>> Diseña una bebida ficticia de supervivencia al regreso: nombre, ingredientes y un efecto secundario ridículo. El tinto de verano se admite como sustancia legendaria. También puedes inventar una poción sin alcohol.\n\n~La receta es ficción. Descansar tiene prioridad sobre atender a esta taberna.~",
       "mission": {
         "type": "form",
         "fields": [
@@ -46,7 +46,7 @@
       "day": 3,
       "floor": "Piso 3 · La comisaría de asuntos chiquitiles",
       "title": "Expediente 003: el calcetín imposible",
-      "message": "La comisaría acumula denuncias por cargadores desaparecidos, golpes en el meñique y un calcetín que ha solicitado asilo político.\n\nEsta mañana alguien robó el sello oficial. Solo queda una huella de tinta *triangular* en el cajón. El informe del laboratorio certifica que las suelas no se han cambiado:\n\n*Pipo* lleva botas redondas. *Chispa* lleva botas triangulares. *Motas* lleva botas cuadradas. Los tres niegan haber nacido.\n\n>> Identifica a quien dejó la huella. Los otros dos podrán ser culpables de muchas cosas, pero hoy investigamos esta.",
+      "message": "La sucursal de Barcelona te recibe con denuncias por cargadores desaparecidos, golpes en el meñique y un calcetín que ha solicitado asilo político. El jet lag no figura como atenuante, aunque debería.\n\nEsta mañana alguien robó el sello oficial. Solo queda una huella de tinta *triangular* en el cajón. El laboratorio certifica que las suelas no se han cambiado:\n\n*Pipo* lleva botas redondas. *Chispa* lleva botas triangulares. *Motas* lleva botas cuadradas. Los tres niegan haber nacido.\n\n>> Identifica a quien dejó la huella. Los otros dos podrán ser culpables de muchas cosas, pero hoy investigamos esta.",
       "mission": {
         "type": "choice",
         "answer": "chispa",
@@ -64,7 +64,7 @@
       "day": 4,
       "floor": "Piso 4 · El concurso de las bestias inútiles",
       "title": "El público no puede apartar la mirada",
-      "message": "Un plató televisivo. Tres jueces. Uno duerme, otro puntúa el peinado y el tercero es un cojín que cobra más que tú.\n\nEl clan de El Ejido figura como jurado invitado, aunque no hace falta que esté presente: ya te juzgará cuando le apetezca.\n\n>> Presenta un talento real o completamente inútil. Tararear sin darte cuenta, explicar un dato con excesivo contexto o hacer magia cutre son disciplinas reconocidas. Escribe una frase; actuar o grabarte es opcional.\n\n~«¡El diablo!» cuenta como cierre dramático. No como talento. Hemos tenido que aclararlo.~",
+      "message": "Barcelona. Un plató televisivo. Tres jueces. Uno duerme, otro puntúa el peinado y el tercero es un cojín que cobra más que tú.\n\nMañana comienza la expedición a la casa rural con el clan de El Ejido. Producción solicita un adelanto del talento que vas a llevar. El equipaje ya tiene suficientes problemas sin añadirle expectativas.\n\n>> Presenta un talento real o completamente inútil. Tararear sin darte cuenta, explicar un dato con excesivo contexto o hacer magia cutre son disciplinas reconocidas. Escribe una frase; actuar, grabarte o demostrarlo ante el clan es opcional.\n\n~«¡El diablo!» cuenta como cierre dramático. No como talento. Hemos tenido que aclararlo.~",
       "mission": {
         "type": "form",
         "fields": [
@@ -78,20 +78,28 @@
       "day": 5,
       "floor": "Piso 5 · El Ministerio de Inteligencia Felina",
       "title": "Un mensaje de @MeraMaruji",
-      "message": "El Ministerio está gobernado por gatos que clasifican los documentos durmiendo encima. Un expediente bajo una barriga es, por definición, inaccesible.\n\nEl agente Marujito ha enviado esta transmisión:\n\n*«SAMU EM ATSUG»*\n\nEl protocolo indica que la primera palabra se conserva. Las dos siguientes se leen *letra a letra al revés*, sin cambiar su orden.\n\n>> Descifra la frase. El agente niega que esto tenga contenido sentimental. Está amasando el informe.",
+      "message": "El Sistema registra el inicio de la expedición a la *casa rural con el clan de El Ejido*. El alojamiento ha sido clasificado como mazmorra de convivencia: camas compartidas con decisiones cuestionables, según disponibilidad.\n\nMarujito no necesita estar allí para interferir. Desde el Ministerio de Inteligencia Felina envía una transmisión remota:\n\n*«SAMU EM ATSUG»*\n\nLa primera palabra se conserva. Las dos siguientes se leen *letra a letra al revés*, sin cambiar su orden.\n\n>> Descifra la frase para registrar la carta del agente Marujito. Puedes consultar al clan, pero no necesitas reunir a nadie. El agente niega que esto tenga contenido sentimental. Está amasando el informe.",
       "mission": {
         "type": "puzzle",
         "answers": ["samu me gusta", "me gusta samu"],
         "hints": ["EM se convierte en ME.", "ATSUG se convierte en GUSTA. Conserva SAMU al principio."],
         "success": "«SAMU ME GUSTA». Confidencialidad vulnerada. El agente solicita que no se difunda, salvo entre todas las personas disponibles."
       },
-      "reward": { "name": "Acceso al archivo felino", "gold": 150, "item": "Credencial de agente asociado" }
+      "reward": { "name": "Acceso al archivo felino", "gold": 150, "item": "Credencial de agente asociado" },
+      "character": {
+        "id": "marujito", "name": "Marujito",
+        "title": "Agente del Ministerio de Inteligencia Felina",
+        "image": "assets/cards/marujito.webp",
+        "description": "Especialista en transmisiones confidenciales y documentos que solo pueden clasificarse durmiendo encima.",
+        "relationship": "Mantiene a Samu bajo vigilancia afectiva, incluso durante su expedición rural con el clan de El Ejido.",
+        "note": "Ha negado todas las filtraciones. Después ha enviado otra."
+      }
     },
     {
       "day": 6,
       "floor": "Piso 6 · El salón del último Dragonet",
       "title": "La vanidad es inmortal",
-      "message": "Una estilista ancestral contempla tu melena con respeto profesional y una calculadora. Cobra por folículo rescatado.\n\nEn este salón se fabrican héroes de romantasy. El drama viene incluido; la conservación capilar, no.\n\n>> Registra tu poder, una habilidad especial, una debilidad vergonzosa y la descripción oficial de tu pelo. Piecito puede entrar en el expediente como vulnerabilidad; no hace falta someterlo a ninguna prueba.\n\n~Primera insignia Dragonet. No te emociones: el departamento de títulos todavía está calentando.~",
+      "message": "El salón del último Dragonet ha instalado una oficina imaginaria en la casa rural. Una estilista ancestral contempla tu melena con respeto profesional y una calculadora. Cobra por folículo rescatado.\n\nEl clan de El Ejido queda acreditado como consejo de expertos no solicitados. Puedes pedirles ideas o ignorarlos con autoridad de dragón.\n\n>> Registra tu nombre de dragón, poder, habilidad, debilidad vergonzosa y descripción oficial del pelo. Piecito puede figurar como vulnerabilidad; no hace falta someterlo a pruebas ni abandonar el sofá rural.\n\n~Primera insignia Dragonet. El drama viene incluido; la conservación capilar, no.~",
       "mission": {
         "type": "form",
         "fields": [
@@ -109,7 +117,7 @@
       "day": 7,
       "floor": "Piso 7 · El portal de decisiones cuestionables",
       "title": "Tres contratos. Ninguna buena idea.",
-      "message": "Tres portales flotan sobre un mostrador. Bajo el mostrador, un chiquito está conectado a una impresora de contratos.\n\n>> Elige un sello. Tendrá una consecuencia pequeña en la Bolsa de los Chiquitólares del piso 16. No te obliga a comportarte de ninguna manera fuera del juego.\n\n~La elección es libre. El departamento de consecuencias lleva toda la mañana riéndose.~",
+      "message": "La delegación rural del Sistema ha colocado tres portales junto a una impresora de contratos. Un chiquito asegura que elegir el portal equivocado afecta al reparto de habitaciones. Está mintiendo: solo quiere una comisión.\n\nEl clan de El Ejido puede emitir opiniones, pero la firma es tuya. No hay que votar, organizar una actividad ni atravesar nada que no sea esta pantalla.\n\n>> Elige un sello. Tendrá una consecuencia pequeña en la Bolsa de los Chiquitólares del piso 16, cuando ya estés de vuelta en Barcelona.\n\n~La elección es libre. El departamento de consecuencias lleva toda la mañana riéndose.~",
       "mission": {
         "type": "choice",
         "options": [
@@ -125,23 +133,23 @@
       "day": 8,
       "floor": "Piso 8 · El supermercado del apocalipsis",
       "title": "El snack exige un trato digno",
-      "message": "Los alimentos han adquirido conciencia. Una bolsa de patatas exige vacaciones pagadas. Un caramelo ha formado un sindicato.\n\nTu cargamento es una ración pequeña, no la solución al hambre interdimensional.\n\n>> Decide cómo administrar el suministro en esta emergencia ficticia. No hay una respuesta incorrecta: estamos evaluando tu capacidad para justificar decisiones gastronómicas.",
+      "message": "Último día de la expedición a la casa rural. El clan de El Ejido prepara la retirada mientras una bolsa de patatas exige vacaciones pagadas y un caramelo funda un sindicato.\n\nEl Sistema revisa las provisiones para el regreso a Barcelona. Tu cargamento es una ración pequeña, no la solución al hambre interdimensional. Si el sobre 8 se quedó en casa, puedes recogerlo al volver.\n\n>> Decide cómo administrar el suministro ficticio: racionarlo, compartirlo con un miembro del clan o consumirlo y redactar un informe. No tienes que comer nada ni reunir al grupo para completar el piso.",
       "mission": {
         "type": "choice",
         "options": [
           { "id": "ration", "label": "Dividirlo en tres reservas tácticas", "result": "Plan sensato. El público abuchea la ausencia de caos, pero respeta tus tres montoncitos." },
-          { "id": "share", "label": "Compartirlo con una criatura potencialmente útil", "result": "Diplomacia comestible. La criatura promete ayudarte. Su currículum dice «morder»." },
+          { "id": "share", "label": "Reservar una parte para un aliado del clan", "result": "Diplomacia comestible. El aliado queda contratado de palabra. El Sistema recomienda no solicitar referencias." },
           { "id": "now", "label": "Consumirlo ahora y redactar un informe después", "result": "El cargamento ha desaparecido. El informe tiene manchas de azúcar y una confianza admirable." }
         ],
         "success": "Protocolo de supervivencia archivado."
       },
-      "reward": { "name": "Ración de emergencia", "gold": 100, "item": "Consumible del apocalipsis", "physical": "Snack o chuchería · sobre 8. Si aún no lo tienes, la recogida queda pendiente; puedes completar el piso igualmente." }
+      "reward": { "name": "Ración de emergencia", "gold": 100, "item": "Consumible del apocalipsis", "physical": "Snack o chuchería · sobre 8, para llevar a la casa rural. Si se quedó en Barcelona, recógelo al volver; no bloquea la misión." }
     },
     {
       "day": 9,
       "floor": "Piso 9 · El centro de reinserción de chiquitos",
       "title": "El acusado ya ha vendido su celda",
-      "message": "Chispa comparece ante el tribunal. El sello robado del piso 3 ha reaparecido estampando permisos de fuga.\n\nSi no investigaste aquel expediente, aquí tienes el resumen: botas triangulares, huella triangular, negación circular. Puedes visitar el piso 3 más tarde.\n\n>> Dicta sentencia. El acusado presenta como atenuante que «lo volvería a hacer mejor».",
+      "message": "De vuelta en Barcelona, el Sistema te entrega el primer asunto pendiente: un chiquito ha intentado legalizar su propia fuga mientras estabas en la casa rural.\n\nChispa comparece ante el tribunal. El sello robado del piso 3 ha reaparecido estampando permisos de fuga. Si te perdiste el expediente: botas triangulares, huella triangular, negación circular. Puedes investigarlo más tarde.\n\n>> Dicta sentencia para registrar la carta de Chiquito, representante de esta especie de incidentes administrativos. El acusado presenta como atenuante que «lo volvería a hacer mejor».",
       "mission": {
         "type": "choice",
         "options": [
@@ -151,13 +159,21 @@
         ],
         "success": "Sentencia firme. La apelación se ha extraviado en circunstancias chiquitiles."
       },
-      "reward": { "name": "Custodia de Chispa", "gold": 150, "item": "Chispa, mascota de inventario", "physical": "Figurita o llavero del chiquito · sobre 9. Entrega pendiente si todavía no lo tienes." }
+      "reward": { "name": "Custodia de Chispa", "gold": 150, "item": "Chispa, mascota de inventario", "physical": "Figurita o llavero del chiquito · sobre 9, disponible en el tramo de Barcelona. Entrega pendiente si todavía no lo tienes." },
+      "character": {
+        "id": "chiquito", "name": "Chiquito",
+        "title": "Incidente administrativo con patas",
+        "image": "assets/cards/chiquito.webp",
+        "description": "Representante no autorizado de los chiquitos. Su expediente contiene sellos robados, permisos de fuga y una sorprendente carrera funcionarial.",
+        "relationship": "Samu ha adquirido jurisdicción sobre el caso de Chispa. Esta carta acredita el contacto con la especie, no la eficacia de la sentencia.",
+        "note": "Ha solicitado borrar sus antecedentes. Con un sello robado."
+      }
     },
     {
       "day": 10,
       "floor": "Piso 10 · El casino de los dioses medio borrachos",
       "title": "La injusticia es una decisión artística",
-      "message": "Un dios apuesta su omnisciencia y pregunta dónde está el baño. Otro intenta cambiar una maldición por fichas.\n\n>> Tira tu dado e introduce el resultado del 1 al 6, o utiliza el dado virtual. El primer resultado registrado se conserva. Reabrir el piso no vuelve a repartir el premio.\n\n~Nadie pierde dinero real. La única moneda admitida es ficticia y está impresa en chocolate.~",
+      "message": "La sucursal de Barcelona del casino interdimensional reabre tras la expedición rural. Un dios apuesta su omnisciencia y pregunta dónde está el baño. Otro intenta cambiar una maldición por fichas.\n\n>> Tira tu dado e introduce el resultado del 1 al 6, o utiliza el dado virtual. No hace falta desplazarse a ningún casino. El primer resultado registrado se conserva y reabrir el piso no vuelve a repartir el premio.\n\n~Nadie pierde dinero real. La única moneda admitida es ficticia y está impresa en chocolate.~",
       "mission": {
         "type": "dice",
         "results": [
@@ -176,7 +192,7 @@
       "day": 11,
       "floor": "Piso 11 · La clínica de enfermedades inventadas",
       "title": "Diagnóstico: demasiada horizontalidad",
-      "message": "La clínica asigna diagnósticos mediante una ruleta. Hoy se ha roto y, por desgracia, habrá que leer.\n\nEl paciente presenta *ganas de manta, quejidos dramáticos y recuperación inmediata al escuchar «hay algo rico»*.\n\nEl manual distingue tres cuadros: «pochismo agudo» tiene esos tres síntomas; «calcetinitis» obliga a ordenar calcetines por normas incomprensibles; «tarareosis» convierte cualquier pasillo en un escenario.\n\n>> Identifica el diagnóstico ficticio. Esto no es una consulta médica ni sustituye cuidados reales.",
+      "message": "La clínica de Barcelona atiende las secuelas ficticias del regreso: maletas sin deshacer y opiniones acumuladas desde la casa rural. Su ruleta de diagnósticos se ha roto y, por desgracia, habrá que leer.\n\nEl paciente presenta *ganas de manta, quejidos dramáticos y recuperación inmediata al escuchar «hay algo rico»*.\n\nEl manual distingue tres cuadros: «pochismo agudo» tiene esos tres síntomas; «calcetinitis» obliga a ordenar calcetines por normas incomprensibles; «tarareosis» convierte cualquier pasillo en un escenario.\n\n>> Identifica el diagnóstico ficticio. Esto no es una consulta médica ni sustituye cuidados reales.",
       "mission": {
         "type": "choice",
         "answer": "pochismo",
@@ -194,7 +210,7 @@
       "day": 12,
       "floor": "Piso 12 · El trono de Lo Lord",
       "title": "Audiencia con @LoLord",
-      "message": "Una criatura negra, rechoncha y peligrosamente satisfecha ocupa el trono. Lolo acaba de prohibir los horarios que no le favorecen.\n\nSu señoría reconoce a Samu como alfa siempre que eso no interfiera con sus propias decisiones. La constitución tiene dos artículos: «mío» y «también mío».\n\n>> Elige un tributo diplomático. Basta con registrarlo aquí: no hace falta molestar al monarca ni alterar sus rutinas.",
+      "message": "El terminal de Barcelona recibe una audiencia de Lo Lord. Una criatura negra, rechoncha y peligrosamente satisfecha ocupa el trono. Lolo acaba de prohibir los horarios que no le favorecen.\n\nSu señoría reconoce a Samu como alfa siempre que eso no interfiera con sus propias decisiones. La constitución tiene dos artículos: «mío» y «también mío».\n\n>> Elige un tributo diplomático para registrar la carta de Lolo. La audiencia se resuelve en esta pantalla, tanto si el monarca está cerca como si gobierna a distancia. No hace falta molestarlo ni alterar sus rutinas.",
       "mission": {
         "type": "choice",
         "options": [
@@ -204,13 +220,21 @@
         ],
         "success": "Decreto emitido: protección temporal contra conflictos de autoridad felina. Vigencia: hasta que Lolo cambie de opinión."
       },
-      "reward": { "name": "Decreto de Lo Lord", "gold": 150, "item": "Salvoconducto felino", "physical": "Fotografía de Lolo con decreto · sobre 12. Puedes recogerla más tarde." }
+      "reward": { "name": "Decreto de Lo Lord", "gold": 150, "item": "Salvoconducto felino", "physical": "Fotografía de Lolo con decreto · sobre 12, para recoger en Barcelona antes del viaje familiar o cuando te venga bien." },
+      "character": {
+        "id": "lolo", "name": "Lolo",
+        "title": "Su Excelencia, Lo Lord",
+        "image": "assets/cards/lolo.webp",
+        "description": "Soberano de los cojines, los horarios convenientes y todo aquello que acabe de decidir que le pertenece.",
+        "relationship": "Reconoce la autoridad de Samu siempre que coincida exactamente con la suya.",
+        "note": "Su protección dura hasta el siguiente cambio de opinión. No se admiten recursos."
+      }
     },
     {
       "day": 13,
       "floor": "Piso 13 · El vivero de dragones malcriados",
       "title": "No te ha elegido. Ha elegido tus cosas.",
-      "message": "El vivero está lleno de dragones pequeños y demandas grandes. Uno exige un camerino. Otro está intentando comerse el contrato de adopción.\n\nUna cría se ha sentado encima de tus pertenencias. Técnicamente, la negociación ya ha terminado.\n\n>> Ponle nombre, personalidad, habilidad y un defecto ridículo. No estamos creando una criatura equilibrada: estamos creando un problema con alas.",
+      "message": "La delegación de Barcelona tramita adopciones de dragones. El vivero está lleno de criaturas pequeñas y demandas grandes. Una exige un camerino; otra intenta comerse el contrato.\n\nUna cría se ha sentado encima de tus pertenencias. Técnicamente, la negociación ya ha terminado. Es lo bastante pequeña para viajar contigo cuando el día 20 cambies de zona.\n\n>> Ponle nombre, personalidad, habilidad y un defecto ridículo. No estamos creando una criatura equilibrada: estamos creando un problema con alas.",
       "mission": {
         "type": "form",
         "fields": [
@@ -227,7 +251,7 @@
       "day": 14,
       "floor": "Piso 14 · La cocina del anarquista gastronómico",
       "title": "Una receta que exige refuerzos",
-      "message": "Una cocina clandestina prepara algo que ninguna autoridad ha prohibido todavía. El cocinero lo considera un fracaso publicitario.\n\nEl ingrediente en la ficha es *una semilla pequeña y negra, conocida por acabar en un flan*. El Sistema ha censurado el resto para fingir que esto es difícil.\n\n>> Identifica el ingrediente y elige qué experimento preparar juntos. No hay que cocinar hoy: la receta quedará pendiente hasta que ambos tengáis ganas.",
+      "message": "La cocina clandestina de Barcelona prepara algo que ninguna autoridad ha prohibido todavía. El cocinero lo considera un fracaso publicitario.\n\nEl ingrediente en la ficha es *una semilla pequeña y negra, conocida por acabar en un flan*. El Sistema ha censurado el resto para fingir que esto es difícil.\n\n>> Identifica el ingrediente y elige qué experimento preparar juntos. Podéis hacerlo durante estos días en Barcelona o dejarlo para después del viaje familiar. No hay que cocinar hoy ni cumplir una fecha límite.",
       "mission": {
         "type": "form",
         "checkField": "ingredient",
@@ -250,7 +274,7 @@
       "day": 15,
       "floor": "Piso 15 · La aduana de los infiernos gastronómicos",
       "title": "DRAGON TREATS",
-      "message": "La aduana inspecciona tres sustancias ficticias. El inspector lleva guantes, gafas y una carta de dimisión.\n\nLa escala oficial asigna *1* al «Cosquilleo de lagartija», *2* al «Estornudo de wyvern» y *3* al «Eructo de volcán». Un chiquito ha desordenado las etiquetas.\n\n>> Escribe sus nombres de menor a mayor peligrosidad y bautiza una categoría superior. No hace falta probar nada ni demostrar resistencia comiendo picante.",
+      "message": "La aduana de Barcelona inspecciona provisiones antes del próximo cambio de zona. Tres sustancias ficticias han hecho que el inspector pida guantes, gafas y una carta de dimisión.\n\nLa escala oficial asigna *1* al «Cosquilleo de lagartija», *2* al «Estornudo de wyvern» y *3* al «Eructo de volcán». Un chiquito ha desordenado las etiquetas.\n\n>> Escribe sus nombres de menor a mayor peligrosidad y bautiza una categoría superior. No hace falta probar nada, cocinar ni transportar comida en el viaje familiar.",
       "mission": {
         "type": "form",
         "checkField": "order",
@@ -268,7 +292,7 @@
       "day": 16,
       "floor": "Piso 16 · La Bolsa de los Chiquitólares",
       "title": "La inflación también tiene antecedentes",
-      "message": "La economía está dirigida por chiquitos que confunden el interés compuesto con interesarse mucho por algo.\n\nDispones de una inversión ficticia patrocinada por la Bolsa. No se descuenta nada de tu saldo. Si ya elegiste un sello en el piso 7, se aplicará su bonus una sola vez; si no, puedes jugar igualmente.\n\n>> Elige un activo. Ninguna decisión de esta pantalla es un consejo financiero. Algunas ni siquiera son decisiones.",
+      "message": "Barcelona abre la Bolsa de los Chiquitólares. La economía está dirigida por chiquitos que confunden el interés compuesto con interesarse mucho por algo.\n\nEl contrato firmado durante la expedición rural por fin llega a Contabilidad. Si elegiste un sello en el piso 7, se aplicará su bonus una sola vez; si no, puedes jugar igualmente. La inversión es ficticia y no se descuenta nada de tu saldo.\n\n>> Elige un activo. Ninguna decisión de esta pantalla es un consejo financiero. Algunas ni siquiera son decisiones.",
       "mission": {
         "type": "choice",
         "portalBonus": { "wealth": 75, "power": 25, "wisdom": 50 },
@@ -285,7 +309,7 @@
       "day": 17,
       "floor": "Piso 17 · Mazmorra Directo",
       "title": "El mazmorrero responde",
-      "message": "Una entidad sin rostro conduce la entrevista. El público aplaude cada vez que se enciende un cartel. El cartel dice «APLAUDIR O RELLENAR UN FORMULARIO».\n\nProducción tiene sobre la mesa tus declaraciones anteriores. No porque sea profesional: porque un chiquito ha vendido el archivo.\n\n>> Contesta cinco preguntas rápidas. Una frase por respuesta. No hay cámara, audio ni obligación de actuar.",
+      "message": "Mazmorra Directo conecta con Barcelona para repasar el regreso de Corea, la casa rural y el dudoso prestigio adquirido desde entonces. El público aplaude cada vez que se enciende un cartel: «APLAUDIR O RELLENAR UN FORMULARIO».\n\nProducción tiene tus declaraciones anteriores. No porque sea profesional: porque un chiquito ha vendido el archivo. El clan de El Ejido puede verse aludido sin tener que estar presente.\n\n>> Contesta cinco preguntas rápidas. Una frase por respuesta. No hay cámara, audio ni obligación de actuar.",
       "mission": {
         "type": "form",
         "recap": true,
@@ -304,7 +328,7 @@
       "day": 18,
       "floor": "Piso 18 · El departamento de actividades cooperativas",
       "title": "Este contrato necesita dos jugadores",
-      "message": "La oficina está vacía. Todos sus funcionarios han presentado una solicitud para irse juntos a otro sitio.\n\nEn tu mesa hay un vale sin fecha de caducidad. No es una reserva, una compra ni una obligación: es una aventura por elegir.\n\n>> Escoge un plan o propón uno. La misión quedará pendiente hasta que los dos estéis disponibles y os apetezca. Puedes completar este piso sin salir de la silla.",
+      "message": "La oficina de actividades cooperativas de Barcelona está vacía. Sus funcionarios han solicitado irse juntos a otro sitio, sin ponerse de acuerdo sobre cuál.\n\nAntes de que el día 20 comience tu tramo familiar, el Sistema te entrega un vale sin caducidad. No es una reserva, una compra ni una obligación: es una aventura por elegir.\n\n>> Escoge un plan o propón uno. Podéis hacerlo si os viene bien ahora o después de Año Nuevo. La misión queda pendiente hasta que ambos tengáis ganas; no hay que encajarla a la fuerza antes de viajar.",
       "mission": {
         "type": "form",
         "cooperative": true,
@@ -319,13 +343,13 @@
         ],
         "success": "Misión cooperativa desbloqueada. El calendario no decide cuándo tenéis que pasarlo bien."
       },
-      "reward": { "name": "Vale de aventura compartida", "gold": 200, "item": "Contrato cooperativo sin caducidad", "physical": "Vale del piso 18. Puede entregarse en persona o viajar contigo en un sobre." }
+      "reward": { "name": "Vale de aventura compartida", "gold": 200, "item": "Contrato cooperativo sin caducidad", "physical": "Vale del piso 18, para entregar en Barcelona antes del día 20. Si queda pendiente, la versión digital conserva el plan hasta después de Año Nuevo." }
     },
     {
       "day": 19,
       "floor": "Piso 19 · El mercado negro de los favores",
       "title": "Un privilegio de origen confidencial",
-      "message": "Un puesto sin nombre vende contratos que el Sistema se niega a incluir en la contabilidad. Hay uno reservado para ti.\n\nUna entidad anónima ofrece un privilegio privado: *un rato de mimos a tu gusto*, solo si a ambas personas les apetece. Los detalles se acuerdan fuera del terminal. No debes escribir nada íntimo aquí.\n\n>> Puedes aceptarlo, rechazarlo o dejarlo pendiente. Las tres decisiones completan el piso y dan la misma recompensa digital. No existe una opción que debas elegir.\n\n~La identidad del benefactor no está disponible. Su departamento de discreción está trabajando sorprendentemente bien.~",
+      "message": "Último día del tramo de Barcelona. Un puesto sin nombre vende contratos que el Sistema se niega a incluir en la contabilidad. Hay uno reservado para ti y no caduca por salir mañana de viaje.\n\nUna entidad anónima ofrece un privilegio privado: *un rato de mimos a tu gusto*, solo si a ambas personas les apetece. Puede esperar a después de Año Nuevo. Los detalles se acuerdan fuera del terminal; no escribas nada íntimo aquí.\n\n>> Puedes aceptarlo, rechazarlo o dejarlo pendiente. Las tres decisiones completan el piso y dan la misma recompensa digital. No existe una opción que debas elegir ni una despedida que debas organizar.\n\n~La identidad del benefactor no está disponible. Su departamento de discreción está trabajando sorprendentemente bien.~",
       "mission": {
         "type": "choice",
         "private": true,
@@ -342,7 +366,7 @@
       "day": 20,
       "floor": "Piso 20 · El depósito de objetos no identificados",
       "title": "No abras ese sobre. Por una vez.",
-      "message": "La ficha de este envío está completamente censurada. Solo se lee «DOS», «COMPARTIDO» y una factura cuyo importe ha hecho llorar a un contable.\n\nEl Sistema no puede identificar el contenido. Tampoco puede explicar por qué tiene instrucciones de protegerlo con tanto empeño.\n\n>> Registra el objeto legendario. Si ya tienes el sobre 20, guárdalo cerrado hasta resolver el piso 24. Si aún no lo tienes, regístralo como pendiente de recogida: el juego continúa.\n\n~Intentar mirar al trasluz es una conducta muy poco profesional. Comprensible, pero poco profesional.~",
+      "message": "Hoy sales de Barcelona para pasar el tramo navideño con tu familia. La mazmorra viaja en el terminal: no necesitas volver a Barcelona ni estar con la entidad patrocinadora para terminarla.\n\nEl envío del piso 20 puede ir ya en tu equipaje, entregado antes de partir. Su ficha está censurada: solo se lee «DOS», «COMPARTIDO» y una factura que ha hecho llorar a un contable.\n\n>> Registra el objeto legendario. Si llevas el sobre 20, guárdalo cerrado hasta resolver el piso 24. Si no lo tienes, marca recogida pendiente: no hay que localizarlo hoy ni pedir un envío urgente.\n\n~Intentar mirar al trasluz es comprensible, pero poco profesional.~",
       "mission": {
         "type": "choice",
         "options": [
@@ -351,13 +375,13 @@
         ],
         "success": "Objeto legendario registrado. Contenido sellado hasta el desenlace."
       },
-      "reward": { "name": "Objeto legendario no identificado", "gold": 200, "item": "Sobre sellado del piso 20", "physical": "Sobre 20 · no abrir hasta resolver el piso 24." }
+      "reward": { "name": "Objeto legendario no identificado", "gold": 200, "item": "Sobre sellado del piso 20", "physical": "Sobre 20 · preparado para entregar en Barcelona antes de partir y llevar en el equipaje. No abrir hasta resolver el piso 24. Si no lo llevas, la recogida puede esperar." }
     },
     {
       "day": 21,
       "floor": "Piso 21 · El archivo de aventureros prescindibles",
       "title": "Acceso a tu expediente personal",
-      "message": "El archivo ha cruzado tus declaraciones con una fuente muy fiable: tus otras declaraciones. El rigor científico es abrumador.\n\nTu ficha distingue la fuerza que declaras tener de la habilidad para tararear sin enterarte. Una es ajustable. La otra parece estructural.\n\n>> Revisa lo registrado y, si quieres, presenta una alegación. No hay nota, evaluación psicológica ni tarea de superación personal. Si faltan episodios, puedes completarlos más tarde.\n\n~Tu expediente ha sido compartido con cero empresas de publicidad por esta app. El Sistema está decepcionado con el departamento de monetización.~",
+      "message": "El archivo abre una ventanilla remota para tu estancia con la familia. Ha cruzado tus declaraciones con una fuente muy fiable: tus otras declaraciones. El rigor científico es abrumador.\n\nTu ficha distingue la fuerza que declaras tener de la habilidad para tararear sin enterarte. Una es ajustable. La otra parece estructural.\n\n>> Revisa lo registrado y, si quieres, presenta una alegación. Basta el terminal: no hay que reunir a la familia, recuperar objetos que quedaron en Barcelona ni justificar pisos pendientes.\n\n~Tu expediente ha sido compartido con cero empresas de publicidad por esta app. El Sistema está decepcionado con Monetización.~",
       "mission": {
         "type": "form",
         "recap": true,
@@ -372,7 +396,7 @@
       "day": 22,
       "floor": "Piso 22 · Operación T.O.M.B.I.",
       "title": "Informe del agente especial",
-      "message": "*INFORME DE INTELIGENCIA CANINA. CLASIFICACIÓN: DESPROPORCIONADA.*\n\nEl agente Tombi ha sido observado dejando su juguete al lado de unas zapatillas, mirando alternativamente el juguete y a un humano, y moviendo la cola al recibir atención. Su comida permanece intacta. La puerta está cerrada y el agente no la mira.\n\n>> Identifica el objetivo más probable de esta operación. Todo lo necesario está en el informe. Si estás con él, puedes saludarlo, pero no hace falta perseguirlo, despertarlo ni cambiar su rutina.\n\n~El agente ha pedido que su medalla sea comestible. Logística está estudiando la petición.~",
+      "message": "*INFORME DE INTELIGENCIA CANINA. CLASIFICACIÓN: DESPROPORCIONADA.*\n\nLa delegación familiar informa de que Tombi está operativo en esta zona. El agente ha sido observado dejando su juguete junto a unas zapatillas, mirando alternativamente el juguete y a un humano, y moviendo la cola al recibir atención. Su comida permanece intacta. La puerta está cerrada y el agente no la mira.\n\n>> Identifica el objetivo más probable de la operación. Todo está en este informe ficticio: no necesitas observarlo ahora, perseguirlo, despertarlo ni cambiar sus rutinas.\n\n~Mañana se tramita su acreditación de inspector. Ha pedido que la medalla sea comestible.~",
       "mission": {
         "type": "choice",
         "answer": "play",
@@ -388,27 +412,35 @@
     },
     {
       "day": 23,
-      "floor": "Piso 23 · La sala de los tesoros incompletos",
-      "title": "Una cantidad preocupante de objetos",
-      "message": "La cámara contiene contratos, credenciales, criaturas y decisiones que parecían razonables en su momento. Algunas no superan ni ese estándar.\n\nEl inventario solo incluye lo que has conseguido. Los huecos no son fallos: puedes volver a cualquier piso disponible cuando quieras.\n\n>> Elige tu objeto favorito, un piso memorable y el personaje más peligroso. Puedes escribir «todavía no lo sé». La última pregunta es opcional.\n\n~Hay un contrato pendiente de resolución. El Sistema ha intentado destruirlo. Alguien con permisos superiores ha dicho que ni se le ocurra.~",
+      "floor": "Piso 23 · La inspección de equipajes de Tombi",
+      "title": "El inspector admite sobornos. En forma de snacks.",
+      "message": "La delegación familiar presenta a *Tombi, unidad de recuperación de objetos y dignidad*. Ha olido una bolsa, ignorado tus credenciales y solicitado el control de las provisiones. La operación del piso 22 le ha proporcionado un ascenso; puedes conocerlo aquí aunque te saltaras aquel informe.\n\nSu inspección es ficticia: no hace falta abrir maletas, reunir los regalos que quedaron en Barcelona ni darle comida. El inventario del terminal basta. Tombi puede seguir con su vida de inspector sin horario.\n\n>> Registra tu objeto favorito para llevar al enfrentamiento final, un piso memorable y el personaje más peligroso. También vale «todavía no lo sé». La aventura posterior es opcional. Al completar, su carta queda registrada.\n\n~El sobre 20 sigue sellado. Tombi no está autorizado a comérselo. Mañana llega la autorización final.~",
       "mission": {
         "type": "form",
         "recap": true,
         "fields": [
-          { "id": "favouriteItem", "label": "Tu objeto favorito", "maxLength": 160 },
+          { "id": "favouriteItem", "label": "¿Qué objeto llevarías al enfrentamiento final?", "maxLength": 160 },
           { "id": "favouriteFloor", "label": "Tu piso favorito", "maxLength": 160 },
           { "id": "danger", "label": "El personaje más peligroso", "maxLength": 160 },
           { "id": "nextAdventure", "label": "¿Qué aventura te gustaría vivir después? (opcional)", "type": "textarea", "required": false, "maxLength": 300 }
         ],
-        "success": "Balance de incursión archivado. Mañana hay una anomalía que el Sistema no ha conseguido tapar."
+        "success": "Inventario aprobado por Tombi. El inspector ha firmado con una pata y solicitado dietas. Mañana hay una anomalía que el Sistema no ha conseguido tapar."
       },
-      "reward": { "name": "Memoria de la incursión", "gold": 200, "item": "Catálogo de tesoros y decisiones" }
+      "reward": { "name": "Memoria de la incursión", "gold": 200, "item": "Catálogo de tesoros y decisiones" },
+      "character": {
+        "id": "tombi", "name": "Tombi",
+        "title": "Unidad de recuperación de objetos y dignidad",
+        "image": "assets/cards/tombi.webp",
+        "description": "Inspector de equipajes de la delegación familiar. Detecta provisiones, recluta humanos y considera que todos los juguetes son asuntos de Estado.",
+        "relationship": "Se incorpora al tramo familiar de Samu, después de su salida de Barcelona el día 20. Supervisa el inventario antes del enfrentamiento final.",
+        "note": "Admite sobornos en forma de snacks. Esta ficha no autoriza a darle comida ni a alterar su rutina."
+      }
     },
     {
       "day": 24,
       "floor": "Piso 24 · El piso que no figura en los mapas",
       "title": "Una última anomalía",
-      "message": "No hay monstruos. No hay trampas. Solo un contrato financiado por alguien que conoce tus gatos, tus expresiones y la cantidad exacta de caos que puedes causar con una idea brillante.\n\nEl Sistema ha rastreado las recompensas personalizadas y ha encontrado una firma externa. No pertenece a un banco, a un chiquito ni a Lo Lord, por mucho que lo reclame.\n\n>> ¿Quién está detrás de esta incursión? Escribe su nombre. Si te atascas, las pistas no cuestan nada y no reducen el premio.\n\n~No necesitas haber completado los otros 23 pisos. Esto nunca ha sido un examen.~",
+      "message": "La mazmorra alcanza su última sala durante tu estancia con la familia. No hay monstruos ni una cita presencial que debas cumplir: el contrato puede abrirse desde este terminal, estés donde estés.\n\nAlguien que conoce tus gatos, tus expresiones y tu capacidad para generar caos ha financiado el recorrido desde Corea, pasando por Barcelona y la casa rural. La firma no pertenece a un banco, a un chiquito ni a Lo Lord, por mucho que lo reclame.\n\n>> ¿Quién está detrás de esta incursión? Escribe su nombre. Las pistas no cuestan nada y no reducen el premio. Tras resolverlo podrás abrir el sobre 20, si viajó contigo.\n\n~No necesitas completar los otros 23 pisos ni interrumpir los planes familiares. Esto nunca ha sido un examen.~",
       "mission": {
         "type": "puzzle",
         "answers": ["gemma", "gema", "mi sucubo", "tu", "mi pareja", "mi novia"],
@@ -417,7 +449,7 @@
           "La entidad patrocinadora es tu súcubo.",
           "Su nombre es Gemma. Escríbelo y abre el contrato."
         ],
-        "success": "Firma verificada: Gemma. Tu súcubo ha financiado esta incursión porque te quiere muchísimo. El Sistema desea dejar constancia de su oposición a tanto mimo y tan poco rigor presupuestario.\n\nTítulo definitivo desbloqueado: DRAGONCITO DE ÉLITE.\n\nYa puedes abrir el sobre del piso 20: las entradas para Paco Pecado son vuestra aventura compartida. Si todavía no tienes el sobre, la entrega queda pendiente; la revelación y el título son tuyos igualmente. La fecha y las condiciones serán las de las entradas reales."
+        "success": "Firma verificada: Gemma. Tu súcubo ha financiado esta incursión porque te quiere muchísimo, también mientras pasas estos días con tu familia. El Sistema desea dejar constancia de su oposición a tanto mimo y tan poco rigor presupuestario.\n\nTítulo definitivo desbloqueado: DRAGONCITO DE ÉLITE.\n\nYa puedes abrir el sobre del piso 20: las entradas para Paco Pecado son vuestra aventura compartida. Si no llevaste el sobre, la entrega queda pendiente hasta que podáis recogerlo; la revelación y el título son tuyos igualmente. No hay que volver a Barcelona hoy. La fecha y las condiciones serán las de las entradas reales."
       },
       "reward": { "name": "Mazmorra superada", "gold": 1000, "attributes": { "strength": 1, "wit": 1, "charm": 1 }, "title": "DRAGONCITO DE ÉLITE", "item": "Autorización de apertura del sobre 20" }
     }

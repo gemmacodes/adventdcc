@@ -25,10 +25,11 @@ const App = (() => {
   const LS = window.localStorage;
   let DAYS = [];
   let campaignId = "";
-  let campaignState, progressSync = null;
+  let campaignState, characterCards, progressSync = null;
   const records = new Map(), blockedDays = new Set();
   const attributeKeys = ["strength","wit","charm"];
   let activeLootTab = null;
+  let characterGallery = [], characterIndex = 0, characterScrollTimer = null;
   let current = null;
   let typing = false, skipType = false;
   let bodyGeneration = 0;
@@ -648,6 +649,7 @@ const App = (() => {
       input.checked = profile[input.dataset.profile];
     });
     renderCampaignProfile();
+    renderCharacters();
   }
 
   function openProfile(){
@@ -717,6 +719,159 @@ const App = (() => {
     if (content !== undefined) el.textContent = content;
     if (className) el.className = className;
     return el;
+  }
+
+  function characterArt(character){
+    const art = node("span", undefined, "character-art");
+    const image = node("img");
+    image.src = character.image;
+    image.alt = text("cards.illustration", { name:character.name });
+    image.width = 480;
+    image.height = 680;
+    image.loading = "lazy";
+    image.addEventListener("error", () => {
+      console.error("No se pudo cargar la carta:", character.id);
+      art.append(node("span", text("cards.artError"), "character-art-error"));
+    }, { once:true });
+    const plate = node("span", undefined, "character-plate");
+    plate.append(node("span", character.title));
+    const name = node("span", undefined, "character-name");
+    name.append(node("span", character.name));
+    art.append(image, name, plate);
+    return art;
+  }
+
+  function characterContent(character){
+    const content = node("div", undefined, "character-content");
+    content.append(node("h3", character.title), node("p", character.description));
+    const facts = node("dl");
+    facts.append(node("dt", text("cards.relationship")), node("dd", character.relationship),
+      node("dt", text("cards.observation")), node("dd", character.note));
+    content.append(facts);
+    return content;
+  }
+
+  function characterEntry(character){
+    const entry = node("details", undefined, "character-entry");
+    const summary = node("summary");
+    summary.setAttribute("aria-label", text("cards.dossierLabel", { name:character.name }));
+    summary.append(characterArt(character), node("span", text("cards.dossier"), "character-dossier"));
+    entry.append(summary, characterContent(character));
+    return entry;
+  }
+
+  function selectCharacter(index){
+    const changed = characterIndex !== index;
+    characterIndex = index;
+    const entry = characterGallery[index];
+    document.getElementById("characterPrevious").disabled = index === 0;
+    document.getElementById("characterNext").disabled = index >= characterGallery.length - 1;
+    const position = document.getElementById("characterPosition");
+    const positionKey = entry && (entry.unlocked || isAuthor()) ? "cards.position" : "cards.sealedPosition";
+    const label = entry ? text(positionKey, { current:index + 1, total:characterGallery.length }) : "";
+    if (position.textContent !== label) position.textContent = label;
+    document.querySelectorAll("#campaignCharacters .character-slot").forEach((slide, i) => {
+      if (i === index) slide.setAttribute("aria-current", "true");
+      else slide.removeAttribute("aria-current");
+    });
+    const dossier = document.getElementById("characterDossier");
+    const content = document.getElementById("characterDossierContent");
+    const available = !!entry && (entry.unlocked || isAuthor());
+    dossier.hidden = !available;
+    if (changed || !available) dossier.open = false;
+    document.getElementById("characterDossierLabel").textContent = available
+      ? text("cards.dossierLabel", { name:entry.character.name }) : text("cards.dossier");
+    content.replaceChildren();
+    if (available){
+      content.append(characterContent(entry.character));
+    }
+  }
+
+  function alignCharacter(smooth = false){
+    const host = document.getElementById("campaignCharacters");
+    const slides = host.querySelectorAll(".character-slot");
+    if (!host.clientWidth || !slides[characterIndex]) return;
+    host.scrollTo({
+      left:slides[characterIndex].offsetLeft - slides[0].offsetLeft,
+      behavior:smooth && !profile.reducedMotion ? "smooth" : "auto"
+    });
+  }
+
+  function moveCharacter(index){
+    if (!characterGallery.length) return;
+    selectCharacter(Math.max(0, Math.min(characterGallery.length - 1, index)));
+    alignCharacter(true);
+  }
+
+  const characterCarousel = document.getElementById("campaignCharacters");
+  characterCarousel.addEventListener("scroll", () => {
+    clearTimeout(characterScrollTimer);
+    characterScrollTimer = setTimeout(() => {
+      if (!characterCarousel.clientWidth) return;
+      const slides = [...characterCarousel.querySelectorAll(".character-slot")];
+      if (!slides.length) return;
+      const nearest = slides.reduce((best, slide, index) =>
+        Math.abs(slide.offsetLeft - slides[0].offsetLeft - characterCarousel.scrollLeft)
+          < Math.abs(slides[best].offsetLeft - slides[0].offsetLeft - characterCarousel.scrollLeft) ? index : best, 0);
+      if (nearest !== characterIndex) selectCharacter(nearest);
+    }, 120);
+  }, { passive:true });
+  characterCarousel.addEventListener("keydown", event => {
+    if (event.target !== characterCarousel || event.altKey || event.ctrlKey || event.metaKey) return;
+    const target = { ArrowLeft:characterIndex - 1, ArrowRight:characterIndex + 1, Home:0, End:characterGallery.length - 1 };
+    if (!Object.hasOwn(target, event.key)) return;
+    event.preventDefault();
+    moveCharacter(target[event.key]);
+  });
+  document.getElementById("characterPrevious").onclick = () => moveCharacter(characterIndex - 1);
+  document.getElementById("characterNext").onclick = () => moveCharacter(characterIndex + 1);
+  window.addEventListener("resize", () => alignCharacter());
+
+  function renderCharacters(){
+    const entries = characterCards ? characterCards.characterEntries(DAYS, unlockedThrough(), isCleared) : [];
+    clearTimeout(characterScrollTimer);
+    characterGallery = entries;
+    document.getElementById("charactersCard").hidden = !entries.length;
+    document.getElementById("characterAuthorNote").hidden = !isAuthor();
+    const host = document.getElementById("campaignCharacters");
+    host.setAttribute("aria-roledescription", text("cards.carousel"));
+    host.replaceChildren();
+    for (const [index, { day, character, unlocked }] of entries.entries()){
+      const wrapper = node("div", undefined, "character-slot");
+      wrapper.dataset.characterDay = day.day;
+      wrapper.dataset.unlocked = String(unlocked);
+      wrapper.setAttribute("role", "group");
+      wrapper.setAttribute("aria-label", text("cards.slide", { current:index + 1, total:entries.length }));
+      if (unlocked || isAuthor()){
+        const art = node("div", undefined, "character-entry");
+        art.append(characterArt(character));
+        wrapper.append(art);
+      } else {
+        const sealed = node("div", undefined, "character-sealed");
+        const silhouette = node("span", undefined, "character-silhouette");
+        silhouette.setAttribute("aria-hidden", "true");
+        sealed.append(silhouette, node("strong", text("cards.unknown")), node("span", text("cards.locked")));
+        wrapper.append(sealed);
+      }
+      host.append(wrapper);
+    }
+    selectCharacter(Math.max(0, Math.min(characterIndex, entries.length - 1)));
+    requestAnimationFrame(() => alignCharacter());
+  }
+
+  function renderMissionCharacter(day, celebrate = false){
+    const section = document.getElementById("missionCharacter");
+    const host = document.getElementById("missionCharacterCard");
+    host.replaceChildren();
+    section.hidden = !day.character;
+    section.classList.toggle("character-reveal", celebrate && !!day.character);
+    if (!day.character) return;
+    const done = isCleared(day);
+    document.getElementById("characterStatus").textContent = celebrate
+      ? text("cards.unlocked", { name:day.character.name })
+      : text(done ? "cards.registered" : "cards.introduction");
+    document.getElementById("characterInstruction").hidden = done;
+    host.append(characterEntry(day.character));
   }
 
   function answerRows(day, answers, fieldIds){
@@ -947,7 +1102,8 @@ const App = (() => {
     });
   }
 
-  function renderMission(day){
+  function renderMission(day, celebrate = false){
+    renderMissionCharacter(day, celebrate);
     const mission = day.mission, state = stateFor(day.day), done = state.completed;
     const form = document.getElementById("missionForm"), host = document.getElementById("missionFields");
     const settingPoints = needsPointAllocation(day);
@@ -1173,7 +1329,7 @@ const App = (() => {
       return;
     }
     skipType = true;
-    renderMission(day);
+    renderMission(day, true);
     renderReward(day, true);
     renderCalendar();
     sndSuccess();
@@ -1269,9 +1425,10 @@ const App = (() => {
 
   async function init(){
     applyStrings();
-    document.getElementById("backupSettings").hidden = !isAuthor();
     try {
-      campaignState = await import("./campaign-state.mjs");
+      [campaignState, characterCards] = await Promise.all([
+        import("./campaign-state.mjs"), import("./character-cards.mjs")
+      ]);
       const res = await fetch("days.json", { cache: "no-store" });
       if (!res.ok) throw new Error(`days.json: ${res.status}`);
       const data = await res.json();
@@ -1279,6 +1436,7 @@ const App = (() => {
         throw new Error("La campaña debe tener un identificador y 24 pisos.");
       }
       const sorted = data.days.slice().sort((a,b)=>a.day-b.day);
+      characterCards.validateCharacters(sorted);
       for (let index = 0; index < sorted.length; index++){
         const day = sorted[index], mission = day.mission;
         if (day.day !== index + 1 || typeof day.title !== "string" || typeof day.message !== "string"
@@ -1332,6 +1490,7 @@ const App = (() => {
       return;
     }
     loadCampaign();
+    if (document.body.dataset.view === "profile") renderProfile();
     renderCalendar(true);
     startPrivateBackup();
     if (profileLoadError) toast(text("errors.profileLoad"));

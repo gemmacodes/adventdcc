@@ -4,6 +4,28 @@ La web sigue alojada en GitHub Pages. Vercel aloja únicamente el servicio
 `/api/progress`, que guarda respuestas y progreso en un repositorio **privado**.
 El navegador conserva también su guardado local.
 
+## Recorrido y cartas
+
+El recorrido de `days.json` sitúa a Samu en Corea el día 1 y de regreso a
+Barcelona el 2; en la casa rural con el clan de El Ejido del 5 al 8; en
+Barcelona del 9 al 19; y con la familia desde el 20 hasta después del final.
+El sobre 8 puede viajar a la casa rural o recogerse al volver. El sobre 20
+se entrega antes de salir de Barcelona y viaja cerrado hasta resolver el 24.
+Ninguna recogida pendiente bloquea el calendario.
+
+Las cartas se registran al completar los pisos 5 (Marujito), 9 (Chiquito),
+12 (Lolo) y 23 (Tombi). La colección se calcula a partir de las misiones
+completadas y disponibles por fecha: no añade puntos, premios repetidos ni
+nuevos datos al guardado. El modo autor permite previsualizarlas sin afectar
+al progreso real. Los textos de cada `character` se pueden editar en el editor
+visual local, junto a la historia y la prueba; los identificadores y las
+ilustraciones quedan protegidos.
+La colección permanece visible en el perfil, debajo del botín de incursión.
+Se recorre lateralmente, deslizando, con flechas o con las teclas
+de dirección, Inicio y Fin al enfocar el carrusel. No avanza automáticamente.
+El expediente de la carta seleccionada se despliega debajo; las cartas
+pendientes no muestran su identidad ni su expediente.
+
 ## Activar la copia privada
 
 1. Importa en Vercel el repositorio de **código** `gemmacodes/adventdcc`.
@@ -50,8 +72,8 @@ temporal ni en el repositorio público. Los commits de datos no despliegan la we
   tras una pausa de escritura. Completar una misión adelanta el envío.
 - Si falla la red, el progreso local se conserva y se reintenta con espera creciente.
   El estado visible distingue guardado local de copia privada confirmada.
-- El modo autor nunca lee ni escribe progreso remoto. Las herramientas de archivos
-  manuales quedan disponibles solo en ese modo.
+- El modo autor nunca lee ni escribe progreso remoto. El perfil no muestra
+  controles de descarga ni restauración manual de copias en ninguno de los modos.
 - En un navegador nuevo se recuperan los pisos que no tengan registros locales.
   Los existentes no se reemplazan automáticamente.
 - Las revisiones por piso y la escritura condicional de GitHub impiden que una
@@ -65,7 +87,7 @@ temporal ni en el repositorio público. Los commits de datos no despliegan la we
 Sin instalar dependencias ni ejecutar builds:
 
 ```sh
-node --test tests/progress.test.mjs
+node --test tests/progress.test.mjs tests/character-cards.test.mjs
 ```
 
 La regresión de navegador se abre en `tests/campaign.html` desde el servidor local.

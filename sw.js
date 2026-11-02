@@ -1,9 +1,11 @@
 // Minimal offline cache so the app installs & opens without a connection.
-const CACHE = "dcc-advent-v46";
+const CACHE = "dcc-advent-v58";
 const ASSETS = [
   "./","./index.html","./styles.css","./config.js","./strings.js","./app.js",
   "./days.json","./manifest.webmanifest","./icon.svg","./samu-portrait.jpg",
-  "./campaign-state.mjs","./cloud-sync.mjs"
+  "./campaign-state.mjs","./cloud-sync.mjs","./character-cards.mjs",
+  "./assets/cards/lolo.webp","./assets/cards/marujito.webp",
+  "./assets/cards/chiquito.webp","./assets/cards/tombi.webp"
 ];
 self.addEventListener("install", e => {
   e.waitUntil(caches.open(CACHE).then(c =>

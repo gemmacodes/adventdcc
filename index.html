@@ -117,6 +117,20 @@
           <div id="campaignInventory" class="campaign-list"></div>
         </div>
       </div>
+      <div class="profile-card" id="charactersCard" hidden>
+        <h2 data-text="cards.heading"></h2>
+        <p id="characterAuthorNote" class="profile-note" data-text="cards.author" hidden></p>
+        <div class="character-controls">
+          <button type="button" id="characterPrevious" data-label="cards.previous" aria-controls="campaignCharacters" data-text="cards.previousIcon"></button>
+          <p id="characterPosition" role="status" aria-live="polite"></p>
+          <button type="button" id="characterNext" data-label="cards.next" aria-controls="campaignCharacters" data-text="cards.nextIcon"></button>
+        </div>
+        <div id="campaignCharacters" class="character-carousel" role="region" data-label="cards.heading" tabindex="0"></div>
+        <details id="characterDossier" class="profile-details" hidden>
+          <summary id="characterDossierLabel" data-text="cards.dossier"></summary>
+          <div id="characterDossierContent"></div>
+        </details>
+      </div>
       <details class="profile-card profile-settings" id="interfaceSettings">
         <summary data-text="profile.settings"></summary>
         <label class="setting" for="settingSound">
@@ -138,7 +152,7 @@
         <p class="profile-note" data-text="profile.savedNote"></p>
       </details>
       <p class="profile-note sync-status" data-sync-status role="status" aria-live="polite"></p>
-      <details class="profile-card profile-settings" id="backupSettings">
+      <details class="profile-card profile-settings" id="backupSettings" hidden>
         <summary data-text="backup.heading"></summary>
         <p class="profile-note" data-text="backup.intro"></p>
         <p class="profile-note" data-text="backup.previewWarning" id="backupPreviewWarning" hidden></p>
@@ -183,6 +197,12 @@
         </form>
         <div class="mission-result" id="missionResult" role="status" hidden></div>
       </div>
+
+      <section id="missionCharacter" class="mission-character" data-label="cards.heading" hidden>
+        <p id="characterStatus" class="character-status" role="status"></p>
+        <div id="missionCharacterCard"></div>
+        <p id="characterInstruction" class="profile-note" data-text="cards.pending"></p>
+      </section>
 
       <div class="ach" id="rewardBox" hidden>
         <div class="ic" id="rewardIcon" data-text="message.achievementIcon"></div>

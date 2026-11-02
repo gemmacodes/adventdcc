@@ -199,7 +199,7 @@
     }
   }
   try {
-    await Promise.all(["campaign-state.mjs","cloud-sync.mjs"].map(async name => {
+    await Promise.all(["campaign-state.mjs","cloud-sync.mjs","character-cards.mjs"].map(async name => {
       const response = await fetch(`${base}${name}`, { cache:"reload" });
       if (!response.ok) throw new Error(`${name}: ${response.status}`);
       await response.text();
@@ -215,6 +215,55 @@
     assert(["attributesCard","companionCard","plansCard","lootCard"].every(id => doc.getElementById(id).hidden), "El perfil inicial no muestra secciones vacías ni características inventadas");
     assert(!doc.querySelector("#profile input[type=range],#campaignJournal,#campaignDossier,[data-profile=nap],[data-profile=cats]"), "La ficha no contiene sliders, historial redundante ni toggles de personaje");
     assert(!doc.getElementById("profileLatestTitle") && !doc.querySelector(".identity .title-chip"), "La cabecera no muestra títulos obtenidos");
+    assert(doc.querySelectorAll("#campaignCharacters .character-entry").length === 4
+      && !doc.getElementById("characterAuthorNote").hidden
+      && doc.querySelectorAll('#campaignCharacters [data-unlocked="true"]').length === 0,
+      "El autor previsualiza las cuatro cartas sin registrarlas en el progreso de Samu");
+    const characterCollection = doc.getElementById("charactersCard");
+    const carousel = doc.getElementById("campaignCharacters");
+    assert(!carousel.querySelector(".profile-note") && app.getComputedStyle(carousel).scrollbarWidth === "none",
+      "Las cartas no muestran etiquetas de vista previa ni barra de desplazamiento bajo las ilustraciones");
+    const previousCharacter = doc.getElementById("characterPrevious");
+    const nextCharacter = doc.getElementById("characterNext");
+    const characterDossier = doc.getElementById("characterDossier");
+    const characterPosition = () => doc.getElementById("characterPosition").textContent;
+    await new Promise(resolve => setTimeout(resolve, 50));
+    assert(characterCollection.tagName === "DIV" && !characterCollection.querySelector(":scope > summary")
+      && carousel.getBoundingClientRect().height > 0,
+      "La colección muestra las cartas al entrar en el perfil sin tener que desplegarla");
+    const firstCard = carousel.querySelector(".character-slot");
+    assert(firstCard.offsetWidth > carousel.clientWidth * .8 && firstCard.offsetWidth < carousel.clientWidth * .9
+      && carousel.scrollWidth > carousel.clientWidth,
+      "El carrusel muestra una carta grande y una parte de la siguiente dentro de su propio desplazamiento");
+    assert(previousCharacter.disabled && !nextCharacter.disabled && characterPosition() === "CARTA REGISTRADA 1/4",
+      "Las flechas y el indicador comienzan en la primera carta sin retroceso disponible");
+    nextCharacter.click();
+    assert(characterPosition() === "CARTA REGISTRADA 2/4" && carousel.scrollLeft > 0
+      && carousel.querySelector('[aria-current="true"]').dataset.characterDay === "9",
+      "La flecha siguiente desplaza y selecciona la segunda carta sin cambiar el progreso");
+    characterDossier.open = true;
+    assert(doc.getElementById("characterDossierLabel").textContent.includes("Chiquito")
+      && characterDossier.textContent.includes(data.days[8].character.note),
+      "El expediente de la carta seleccionada se abre debajo del carrusel");
+    carousel.focus({ preventScroll:true });
+    for (const [key, expected] of [["ArrowRight",3],["End",4],["Home",1],["ArrowLeft",1]]){
+      carousel.dispatchEvent(new app.KeyboardEvent("keydown", { key, bubbles:true, cancelable:true }));
+      assert(characterPosition() === `CARTA REGISTRADA ${expected}/4` && doc.activeElement === carousel,
+        `El carrusel responde a ${key} sin mover el foco ni rebasar sus límites`);
+    }
+    assert(!characterDossier.open, "Cambiar de carta pliega el expediente anterior");
+    const thirdCard = carousel.children[2];
+    carousel.scrollTo({ left:thirdCard.offsetLeft - firstCard.offsetLeft, behavior:"auto" });
+    await new Promise(resolve => setTimeout(resolve, 250));
+    assert(characterPosition() === "CARTA REGISTRADA 3/4" && doc.getElementById("characterDossierLabel").textContent.includes("Lolo"),
+      "El desplazamiento horizontal nativo actualiza el indicador y el expediente de la carta");
+    carousel.dispatchEvent(new app.KeyboardEvent("keydown", { key:"End", bubbles:true, cancelable:true }));
+    await new Promise(resolve => setTimeout(resolve, 200));
+    assert(nextCharacter.disabled && !previousCharacter.disabled && characterPosition() === "CARTA REGISTRADA 4/4"
+      && Math.abs(carousel.scrollLeft - (carousel.lastElementChild.offsetLeft - firstCard.offsetLeft)) < 2,
+      "La última carta se alinea completa y no existe avance circular ni movimiento automático");
+    carousel.dispatchEvent(new app.KeyboardEvent("keydown", { key:"Home", bubbles:true, cancelable:true }));
+    characterCollection.open = false;
     assert(!doc.getElementById("interfaceSettings").open, "Los ajustes están plegados por defecto");
     const settings = doc.getElementById("interfaceSettings");
     settings.open = true;
@@ -255,6 +304,8 @@
     const earnedAttributes = { strength:0, wit:0, charm:0 };
     for (const day of data.days){
       open(day.day);
+      assert(doc.getElementById("missionCharacter").hidden === !day.character,
+        `Piso ${day.day}: solo presenta una carta cuando corresponde`);
       assert(!!doc.querySelector(".mission-bonus") === !!day.reward.attributes,
         `Piso ${day.day}: solo las misiones con mejoras anuncian puntos de característica`);
       if (day.mission.answer || day.mission.type === "puzzle" || day.mission.checkField){
@@ -282,6 +333,12 @@
       }
       submit();
       assert(record(day.day).completed && !doc.getElementById("rewardBox").hidden, `Piso ${day.day}: resolución y recompensa`);
+      if (day.character){
+        assert(doc.getElementById("characterStatus").textContent.includes(day.character.name)
+          && doc.getElementById("characterInstruction").hidden
+          && doc.getElementById("missionCharacter").classList.contains("character-reveal"),
+          `Piso ${day.day}: completar revela la carta y anuncia el aliado registrado`);
+      }
       const saved = JSON.stringify(record(day.day));
       submit();
       assert(JSON.stringify(record(day.day)) === saved, `Piso ${day.day}: sin premio duplicado`);
@@ -292,6 +349,9 @@
           `Piso ${day.day}: la recompensa muestra +${points} ${label}`);
       }
       app.App.openProfile();
+      assert(doc.querySelectorAll('#campaignCharacters [data-unlocked="true"]').length
+        === data.days.filter(item => item.character && item.day <= day.day).length,
+        `Piso ${day.day}: colección calculada sin registros ni recompensas adicionales`);
       const stats = readStats();
       assert(stats.strength === earnedAttributes.strength && stats.wit === 10 + earnedAttributes.wit
         && stats.charm === 20 + earnedAttributes.charm, `Piso ${day.day}: suma exacta de base y mejoras, sin duplicados`);
@@ -356,7 +416,7 @@
     for (const width of [280,320,390]){
       frame.style.width = `${width}px`;
       await new Promise(resolve => setTimeout(resolve, 50));
-      for (const day of [1,3,5,10,14,18,24]){
+      for (const day of [1,3,5,9,10,12,14,18,23,24]){
         open(day);
         assert(doc.documentElement.scrollWidth <= app.innerWidth, `Piso ${day}: sin desbordamiento a ${width}px`);
       }
@@ -366,7 +426,57 @@
       assert(doc.documentElement.scrollWidth <= app.innerWidth, `Pestaña Títulos sin desbordamiento a ${width}px`);
       inventoryTab.click();
       assert(doc.documentElement.scrollWidth <= app.innerWidth, `Pestaña Inventario sin desbordamiento a ${width}px`);
-      if (width === 390) assert(doc.documentElement.scrollHeight < 1700, "La ficha completa mantiene una altura compacta con 24 misiones resueltas");
+      const collection = doc.getElementById("charactersCard");
+      assert(collection.tagName === "DIV" && !collection.querySelector(":scope > summary")
+        && doc.getElementById("campaignCharacters").getBoundingClientRect().height > 0,
+        `La colección permanece visible y no es desplegable a ${width}px`);
+      if (width === 390){
+        const heading = app.getComputedStyle(collection.querySelector("h2"));
+        const attributes = app.getComputedStyle(doc.querySelector("#attributesCard h2"));
+        const loot = app.getComputedStyle(doc.querySelector("#lootCard h2"));
+        assert(Number(heading.fontWeight) >= 600 && heading.fontWeight === attributes.fontWeight
+          && heading.fontWeight === loot.fontWeight && heading.fontSize === loot.fontSize,
+          "El título de la colección usa la misma negrita y tamaño que características y botín");
+      }
+      assert(!doc.getElementById("lootCard").hidden
+        && doc.getElementById("lootCard").getBoundingClientRect().bottom <= collection.getBoundingClientRect().top,
+        `El botín de incursión aparece encima de la colección de cartas a ${width}px`);
+      assert(doc.documentElement.scrollWidth <= app.innerWidth, `Galería de cartas sin desbordamiento a ${width}px`);
+      assert(doc.querySelector(".character-controls").getBoundingClientRect().bottom
+        <= doc.getElementById("campaignCharacters").getBoundingClientRect().top
+        && !doc.getElementById("characterCount"),
+        `Las flechas y el indicador están sobre las cartas sin un contador duplicado a ${width}px`);
+      const nameplateCenters = { marujito:.555, chiquito:.58, lolo:.61, tombi:.56 };
+      for (const art of doc.querySelectorAll("#campaignCharacters .character-art")){
+        const name = art.querySelector(".character-name > span");
+        const image = art.querySelector("img");
+        const id = image.getAttribute("src").split("/").at(-1).replace(".webp", "");
+        const range = doc.createRange();
+        range.selectNodeContents(name);
+        const bounds = range.getBoundingClientRect(), frame = art.getBoundingClientRect();
+        assert(Math.abs(bounds.x + bounds.width / 2 - (frame.x + frame.width * nameplateCenters[id])) < 1
+          && Math.abs(bounds.y + bounds.height / 2 - (frame.y + frame.height * .07)) < 1,
+          `El nombre de ${id} se centra en su propia placa a ${width}px`);
+      }
+      for (const caption of doc.querySelectorAll("#campaignCharacters .character-plate > span")){
+        assert(caption.getBoundingClientRect().height <= caption.parentElement.clientHeight + 1
+          && caption.scrollWidth <= caption.clientWidth + 1,
+          `El título de la carta se lee completo dentro de su placa a ${width}px`);
+        const art = caption.closest(".character-art"), frame = art.getBoundingClientRect();
+        const range = doc.createRange();
+        range.selectNodeContents(caption);
+        const bounds = range.getBoundingClientRect();
+        assert(Math.abs(bounds.y + bounds.height / 2 - (frame.y + frame.height * .875)) < 1,
+          `El título de ${art.querySelector(".character-name").textContent} se centra verticalmente en el hueco de la ilustración a ${width}px`);
+      }
+      doc.getElementById("characterDossier").open = true;
+      assert(doc.documentElement.scrollWidth <= app.innerWidth, `Expedientes de cartas sin desbordamiento a ${width}px`);
+      const strip = doc.getElementById("campaignCharacters");
+      strip.dispatchEvent(new app.KeyboardEvent("keydown", { key:"End", bubbles:true, cancelable:true }));
+      assert(doc.getElementById("characterPosition").textContent === "CARTA REGISTRADA 4/4"
+        && doc.documentElement.scrollWidth <= app.innerWidth,
+        `La última carta y sus controles caben a ${width}px`);
+      strip.dispatchEvent(new app.KeyboardEvent("keydown", { key:"Home", bubbles:true, cancelable:true }));
     }
     frame.style.width = "390px";
     await load();
@@ -375,8 +485,9 @@
     assert(readStats().strength === 3 && readStats().wit === 14 && readStats().charm === 23,
       "Las mejoras persisten al recargar sin reabrir ni repetir las misiones");
 
-    assert(!doc.getElementById("backupSettings").open && !doc.getElementById("backupPreviewWarning").hidden,
-      "Las copias están plegadas y el modo autor tiene un aviso claro");
+    assert(doc.getElementById("backupSettings").hidden
+      && app.getComputedStyle(doc.getElementById("backupSettings")).display === "none",
+      "El perfil tampoco muestra una sección de copias manuales en el modo autor");
     const fullBackup = await exportBackup();
     const fullGold = doc.getElementById("profileGold").textContent;
     assert(fullBackup.format === "adventdcc-backup" && fullBackup.version === 1
@@ -729,6 +840,58 @@
     fresh(false, "2026-11-30T12:00:00"); await load();
     app.App.openProfile();
     assert(doc.querySelectorAll(".door").length === 0 && doc.getElementById("profileFloors").textContent === "0 / 24", "Antes de diciembre hay perfil pero no misiones desbloqueadas");
+    assert(doc.querySelectorAll("#campaignCharacters .character-sealed").length === 4
+      && !doc.querySelector("#campaignCharacters img")
+      && !/Marujito|Lolo|Chiquito|Tombi/.test(doc.getElementById("campaignCharacters").textContent),
+      "Las cartas bloqueadas usan siluetas genéricas sin nombres, textos ni ilustraciones futuras");
+    doc.getElementById("characterNext").click();
+    assert(doc.getElementById("characterDossier").hidden
+      && !/Marujito|Lolo|Chiquito|Tombi/.test(doc.getElementById("characterDossier").textContent),
+      "Navegar entre siluetas no permite abrir expedientes ni descubrir identidades");
+
+    fresh(false); await load();
+    open(5);
+    assert(doc.getElementById("characterStatus").textContent === app.STRINGS.cards.introduction
+      && !doc.getElementById("characterInstruction").hidden && !record(5).completed,
+      "Entrar en el piso presenta a Marujito, pero no registra su carta");
+    set("answer", data.days[4].mission.answers[0]);
+    fixture.local.failWrite = true; submit();
+    app.App.openProfile();
+    assert(doc.querySelectorAll("#campaignCharacters .character-entry").length === 0,
+      "Un fallo de guardado no desbloquea cartas");
+    fixture.local.failWrite = false;
+    open(5); submit();
+    const completedCard = JSON.stringify(record(5));
+    submit();
+    app.App.openProfile();
+    assert(doc.querySelectorAll("#campaignCharacters .character-entry").length === 1
+      && doc.querySelectorAll("#campaignCharacters .character-sealed").length === 3
+      && doc.getElementById("characterPosition").textContent === "CARTA REGISTRADA 1/4"
+      && JSON.stringify(record(5)) === completedCard,
+      "Marujito se registra una sola vez; los otros tres personajes siguen sin identificarse");
+    assert(!doc.getElementById("characterDossier").hidden
+      && doc.getElementById("characterDossierLabel").textContent.includes("Marujito"),
+      "Una carta registrada ofrece su expediente en el carrusel");
+    doc.getElementById("characterDossier").open = true;
+    doc.getElementById("characterNext").click();
+    assert(doc.getElementById("characterDossier").hidden && !doc.getElementById("characterDossier").open
+      && doc.getElementById("characterDossierContent").childElementCount === 0
+      && doc.getElementById("characterPosition").textContent === "CARTA SELLADA 2/4",
+      "Pasar de una carta registrada a otra sellada cierra y vacía el expediente");
+    await load(); open(5);
+    assert(!doc.getElementById("missionCharacter").classList.contains("character-reveal")
+      && doc.getElementById("characterStatus").textContent === app.STRINGS.cards.registered,
+      "Reabrir una misión conserva la carta sin repetir su celebración");
+    fixture.date = "2026-12-04T12:00:00"; await load();
+    app.App.openProfile();
+    assert(!doc.querySelector("#campaignCharacters img")
+      && doc.querySelectorAll('#campaignCharacters [data-unlocked="true"]').length === 0,
+      "Un registro de un piso futuro no revela su personaje antes de fecha");
+    fixture.date = "2026-12-05T12:00:00"; await load();
+    app.App.openProfile();
+    assert(doc.querySelectorAll("#campaignCharacters .character-entry").length === 1
+      && doc.getElementById("campaignCharacters").textContent.includes("Marujito"),
+      "La colección se recupera del progreso existente al estar disponible el piso");
 
     fresh(false); privateBackup({fragment:true}); await load(); await waitSync("saved");
     assert(!app.location.hash.includes("backupKey")
@@ -761,8 +924,8 @@
     fresh(); privateBackup(); await load(); await waitSync("preview");
     open(2); set("drink","Solo prueba");
     await new Promise(resolve => setTimeout(resolve, 30));
-    assert(fixture.sync.requests.length === 0 && !doc.getElementById("backupSettings").hidden,
-      "El modo autor conserva sus herramientas y nunca envía progreso de prueba, aunque exista una clave real");
+    assert(fixture.sync.requests.length === 0 && doc.getElementById("backupSettings").hidden,
+      "El modo autor no muestra copias manuales ni envía progreso de prueba, aunque exista una clave real");
 
     fresh(false); privateBackup({records:[remoteDay2]}); await load(); await waitSync("saved");
     open(2);
@@ -771,6 +934,17 @@
       "Un navegador nuevo recupera automáticamente los pisos ausentes sin volver a conceder premios");
     assert(fixture.errors.length === 0 && fixture.notifications.length === 0,
       "La copia y recuperación automáticas no producen errores ni notificaciones de misión");
+
+    fresh(false); privateBackup({records:[{day:5,revision:1,state:JSON.parse(completedCard)}]});
+    await load(); await waitSync("saved");
+    app.App.openProfile();
+    assert(doc.querySelectorAll('#campaignCharacters [data-unlocked="true"]').length === 1
+      && doc.getElementById("campaignCharacters").textContent.includes("Marujito"),
+      "Restaurar una misión desde la copia privada recupera su carta sin guardar otra colección");
+    open(5);
+    assert(doc.getElementById("characterStatus").textContent === app.STRINGS.cards.registered
+      && !doc.getElementById("missionCharacter").classList.contains("character-reveal"),
+      "La carta recuperada se muestra registrada sin celebrar ni volver a conceder el premio");
 
     window.testResults.running = false;
     window.testResults.pass = true;
