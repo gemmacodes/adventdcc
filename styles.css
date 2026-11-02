@@ -290,6 +290,13 @@ body[data-view="message"] .calhead,body[data-view="profile"] .calhead{display:no
   min-height:44px;padding:12px 0;color:var(--blue);cursor:pointer;font-size:11px;line-height:1.7;overflow-wrap:anywhere}
 .profile-settings > summary{padding:10px 0;min-height:44px;font-size:12px;color:var(--text)}
 .profile-settings .profile-note{margin-top:16px}
+.backup-actions{display:flex;flex-wrap:wrap;gap:10px;margin-top:16px}
+.backup-actions .ghost{flex:1 1 180px;min-width:0;white-space:normal;line-height:1.6}
+#backupStatus:empty{display:none}
+#backupStatus[data-state="error"]{color:var(--red)}
+#backupStatus[data-state="success"]{color:var(--blue)}
+.sync-status{overflow-wrap:anywhere}
+.sync-status[data-state="error"],.sync-status[data-state="setupError"],.sync-status[data-state="conflict"],.sync-status[data-state="unauthorized"]{color:var(--red)}
 .profile-details .title-chips{margin:8px 0}
 .companion-details > summary strong{color:var(--blue);font-size:13px}
 .companion-personality{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;color:var(--muted);font-size:10px;margin-top:4px}

@@ -7,6 +7,12 @@ window.CONFIG = {
   // ¿Cuándo corre el calendario? El día N se desbloquea el N de diciembre de este año.
   decemberYear: 2026,
 
+  // URL pública de Vercel: https://TU-PROYECTO.vercel.app/api/progress.
+  // Las credenciales se configuran solo en Vercel; nunca en este archivo.
+  sync: {
+    endpoint: ""
+  },
+
   // --- Notificaciones (push al móvil con ntfy.sh) -----------
   notify: {
     enabled: true,

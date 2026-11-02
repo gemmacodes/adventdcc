@@ -32,26 +32,64 @@
     local.setItem("dcc_profile_reducedMotion", "true");
     if (author) local.setItem("dcc_author", "1");
     session.setItem("dcc_booted", "1");
-    window.fixture = { local, session, date, errors:[], notifications:[] };
+    window.fixture = { local, session, date, errors:[], notifications:[], downloads:[], blobURLs:new Map() };
   }
   let doc, app;
   async function load(){
     const setup = `<script>
-      Object.defineProperty(window, "localStorage", { value:parent.fixture.local });
-      Object.defineProperty(window, "sessionStorage", { value:parent.fixture.session });
+      const testFixture = parent.fixture;
+      Object.defineProperty(window, "localStorage", { value:testFixture.local });
+      Object.defineProperty(window, "sessionStorage", { value:testFixture.session });
       const OriginalDate = Date;
       window.Date = class extends OriginalDate {
-        constructor(...args){ super(...(args.length ? args : [parent.fixture.date])); }
-        static now(){ return new OriginalDate(parent.fixture.date).getTime(); }
+        constructor(...args){ super(...(args.length ? args : [testFixture.date])); }
+        static now(){ return new OriginalDate(testFixture.date).getTime(); }
       };
       CONFIG.notify.enabled = false;
+      if (testFixture.sync){
+        CONFIG.sync.endpoint = "https://fixture.vercel.app/api/progress";
+        if (testFixture.sync.fragment){
+          history.replaceState(null, "", location.href.split("#")[0] + "#backupKey=" + testFixture.sync.fragment);
+        }
+      }
       Object.defineProperty(navigator, "serviceWorker", { value:{ register:() => Promise.resolve() } });
-      console.error = (...args) => parent.fixture.errors.push(args.map(String).join(" "));
-      window.addEventListener("error", event => parent.fixture.errors.push(event.message));
-      window.addEventListener("unhandledrejection", event => parent.fixture.errors.push(String(event.reason)));
+      console.error = (...args) => testFixture.errors.push(args.map(String).join(" "));
+      window.addEventListener("error", event => testFixture.errors.push(event.message));
+      window.addEventListener("unhandledrejection", event => testFixture.errors.push(String(event.reason)));
       const originalFetch = window.fetch;
+      URL.createObjectURL = blob => {
+        const url = "blob:backup-test-" + testFixture.blobURLs.size;
+        testFixture.blobURLs.set(url, blob);
+        return url;
+      };
+      URL.revokeObjectURL = url => testFixture.blobURLs.delete(url);
+      const originalClick = HTMLAnchorElement.prototype.click;
+      HTMLAnchorElement.prototype.click = function(){
+        if (this.download){
+          testFixture.downloads.push({ filename:this.download, blob:testFixture.blobURLs.get(this.href) });
+        } else originalClick.call(this);
+      };
       window.fetch = (...args) => {
-        if (args[1]?.method === "POST") parent.fixture.notifications.push(args);
+        if (String(args[0]) === "https://fixture.vercel.app/api/progress"){
+          const remote = testFixture.sync;
+          const options = args[1];
+          remote.requests.push({ method:options.method, body:options.body, authorization:options.headers.Authorization });
+          if (remote.fail) return Promise.reject(new TypeError("Sin conexión simulada"));
+          if (options.method === "PUT"){
+            const changes = JSON.parse(options.body).changes;
+            remote.snapshot.revision++;
+            for (const change of changes){
+              const previous = remote.snapshot.records.findIndex(entry => entry.day === change.day);
+              const entry = { day:change.day, revision:change.baseRevision + 1, state:change.state };
+              if (previous < 0) remote.snapshot.records.push(entry);
+              else remote.snapshot.records[previous] = entry;
+            }
+          }
+          return Promise.resolve(new Response(JSON.stringify(remote.snapshot), {
+            status:200, headers:{ "Content-Type":"application/json" }
+          }));
+        }
+        if (args[1]?.method === "POST") testFixture.notifications.push(args);
         return originalFetch(...args);
       };
     <\/script>`;
@@ -95,7 +133,49 @@
   function submit(){ doc.getElementById("missionForm").requestSubmit(); }
   function record(day){
     const store = fixture.local.getItem("dcc_author") === "1" ? fixture.session : fixture.local;
-    return JSON.parse(store.getItem(store === fixture.session ? previewKey(day) : key(day)) || "{}");
+    const makeKey = store === fixture.session ? previewKey : key;
+    const saved = store.getItem(makeKey(day));
+    if (saved !== null) return JSON.parse(saved);
+    const restored = JSON.parse(store.getItem(makeKey("restored")) || '{"records":[]}');
+    return restored.records.find(entry => entry.day === day)?.state || {};
+  }
+  async function exportBackup(){
+    const count = fixture.downloads.length;
+    doc.getElementById("exportBackup").click();
+    assert(fixture.downloads.length === count + 1, "La copia se prepara como descarga local");
+    return JSON.parse(await fixture.downloads.at(-1).blob.text());
+  }
+  function chooseFile(file){
+    const transfer = new app.DataTransfer();
+    transfer.items.add(file);
+    const input = doc.getElementById("backupFile");
+    input.files = transfer.files;
+    input.dispatchEvent(new app.Event("change", { bubbles:true }));
+  }
+  async function chooseBackup(data, raw = false){
+    chooseFile(new app.File([raw ? data : JSON.stringify(data)], "copia.json", { type:"application/json" }));
+    for (let index = 0; index < 100 && doc.getElementById("backupStatus").dataset.state === "busy"; index++){
+      await new Promise(resolve => setTimeout(resolve, 10));
+    }
+    if (doc.getElementById("backupStatus").dataset.state === "busy") throw new Error("La lectura de la copia no terminó.");
+  }
+  function privateBackup({ key = true, fragment = false, records = [] } = {}){
+    const token = "b".repeat(64);
+    fixture.sync = {
+      requests:[], fragment:fragment ? token : null,
+      snapshot:{
+        format:"adventdcc-progress", version:1, campaign:data.campaign,
+        revision:Math.max(0, ...records.map(entry => entry.revision)), updatedAt:"2026-12-24T12:00:00Z", records
+      }
+    };
+    if (key && !fragment) fixture.local.setItem(`dcc_sync_access_${data.campaign}`, token);
+  }
+  async function waitSync(state){
+    for (let index = 0; index < 200; index++){
+      if (doc.querySelector("[data-sync-status]").dataset.state === state) return;
+      await new Promise(resolve => setTimeout(resolve, 20));
+    }
+    throw new Error(`La copia privada no alcanzó el estado ${state}: ${doc.querySelector("[data-sync-status]").textContent}`);
   }
   function readStats(){
     return Object.fromEntries(["strength","wit","charm"].map(id => {
@@ -119,6 +199,11 @@
     }
   }
   try {
+    await Promise.all(["campaign-state.mjs","cloud-sync.mjs"].map(async name => {
+      const response = await fetch(`${base}${name}`, { cache:"reload" });
+      if (!response.ok) throw new Error(`${name}: ${response.status}`);
+      await response.text();
+    }));
     fresh();
     await load();
     app.App.openProfile();
@@ -290,6 +375,222 @@
     assert(readStats().strength === 3 && readStats().wit === 14 && readStats().charm === 23,
       "Las mejoras persisten al recargar sin reabrir ni repetir las misiones");
 
+    assert(!doc.getElementById("backupSettings").open && !doc.getElementById("backupPreviewWarning").hidden,
+      "Las copias están plegadas y el modo autor tiene un aviso claro");
+    const fullBackup = await exportBackup();
+    const fullGold = doc.getElementById("profileGold").textContent;
+    assert(fullBackup.format === "adventdcc-backup" && fullBackup.version === 1
+      && fullBackup.mode === "preview" && fullBackup.campaign === data.campaign
+      && fullBackup.records.length === 24 && Number.isFinite(Date.parse(fullBackup.exportedAt)),
+      "La copia identifica su formato, campaña, fecha y modo y contiene los 24 pisos");
+    assert(fullBackup.records.every(({day,state}) => JSON.stringify(state) === JSON.stringify(record(day))),
+      "La exportación conserva respuestas, borradores, pistas, tirada, bonus y actividades exactamente");
+    assert(Object.keys(fullBackup).sort().join(",") === "campaign,exportedAt,format,mode,records,version"
+      && !JSON.stringify(fullBackup).includes("dcc_profile_"),
+      "La copia no exporta ajustes, claves de navegador ni configuración de notificaciones");
+    assert(fixture.downloads.at(-1).filename === "adventdcc-preview-2026-12-24.json"
+      && fixture.downloads.at(-1).blob.type === "application/json",
+      "La descarga usa JSON y un nombre fechado que identifica las pruebas");
+
+    fresh(); await load(); app.App.openProfile();
+    await chooseBackup(fullBackup);
+    assert(!doc.getElementById("restorePreview").hidden && !doc.getElementById("restoreBackup").disabled
+      && !fixture.session.getItem(previewKey("restored")),
+      "Seleccionar una copia muestra la revisión sin guardar todavía");
+    doc.getElementById("cancelRestore").click();
+    assert(doc.getElementById("restorePreview").hidden && !fixture.session.getItem(previewKey("restored")),
+      "Cancelar la revisión no modifica el progreso");
+    await chooseBackup(fullBackup);
+    doc.getElementById("restoreBackup").click();
+    assert(fullBackup.records.every(({day,state}) => JSON.stringify(state) === JSON.stringify(record(day)))
+      && doc.getElementById("profileFloors").textContent === "24 / 24",
+      "Restaurar una copia vacía recupera exactamente todos los registros");
+    assert(readStats().strength === 3 && readStats().wit === 14 && readStats().charm === 23
+      && doc.getElementById("profileGold").textContent === fullGold,
+      "Las características y monedas restauradas se calculan una sola vez");
+    assert(fixture.local.getItem(key("restored")) === null && fixture.notifications.length === 0,
+      "La restauración de pruebas no toca el progreso real ni envía avisos");
+    await load(); app.App.openProfile();
+    assert(record(14).executed && record(10).roll === fullBackup.records[9].state.roll
+      && JSON.stringify(record(1).answers) === JSON.stringify(fullBackup.records[0].state.answers),
+      "La restauración persiste al recargar, con actividad realizada, dado y respuestas intactos");
+    const reexported = await exportBackup();
+    assert(JSON.stringify(reexported.records) === JSON.stringify(fullBackup.records),
+      "La exportación posterior incluye los registros restaurados");
+    const restoredOnce = fixture.session.getItem(previewKey("restored"));
+    await chooseBackup(fullBackup);
+    assert(doc.getElementById("restoreBackup").disabled
+      && doc.getElementById("backupStatus").textContent === app.STRINGS.backup.noChanges
+      && fixture.session.getItem(previewKey("restored")) === restoredOnce,
+      "Repetir la copia no escribe nada ni duplica los premios");
+    doc.getElementById("cancelRestore").click();
+    open(18);
+    doc.querySelector("#missionResult button").click();
+    assert(record(18).executed && fixture.session.getItem(previewKey(18))
+      && !JSON.parse(restoredOnce).records.find(entry => entry.day === 18).state.executed,
+      "Una actividad importada se puede realizar sin modificar la instantánea original");
+    await load();
+    assert(record(18).executed, "Los cambios posteriores tienen prioridad sobre la copia restaurada al recargar");
+    app.App.openProfile();
+    for (const width of [280,320,390]){
+      frame.style.width = `${width}px`;
+      doc.getElementById("backupSettings").open = true;
+      await chooseBackup(fullBackup);
+      assert(doc.documentElement.scrollWidth <= app.innerWidth, `Copias y revisión sin desbordamiento a ${width}px`);
+    }
+    frame.style.width = "390px";
+    assert(fixture.errors.length === 0, "La exportación y restauración válidas no producen errores");
+
+    fresh(); await load();
+    const existing = { opened:true, completed:false, draft:{ warName:"Este borrador no se reemplaza" } };
+    const empty = { opened:false, completed:false, draft:{} };
+    fixture.session.setItem(previewKey(1), JSON.stringify(existing));
+    fixture.session.setItem(previewKey(3), JSON.stringify(empty));
+    await chooseBackup(fullBackup);
+    const openedOnly = { opened:true, completed:false, draft:{} };
+    fixture.session.setItem(previewKey(2), JSON.stringify(openedOnly));
+    doc.getElementById("restoreBackup").click();
+    const additions = JSON.parse(fixture.session.getItem(previewKey("restored"))).records;
+    assert(additions.length === 21 && !additions.some(entry => [1,2,3].includes(entry.day))
+      && JSON.stringify(record(1)) === JSON.stringify(existing)
+      && JSON.stringify(record(2)) === JSON.stringify(openedOnly)
+      && JSON.stringify(record(3)) === JSON.stringify(empty),
+      "Se conservan borradores, registros vacíos y pisos abiertos incluso si aparecieron después de la revisión");
+    assert(doc.getElementById("backupStatus").textContent.includes("21")
+      && doc.getElementById("backupStatus").textContent.includes("3"),
+      "El resultado informa de las cantidades reales añadidas y conservadas");
+    await load();
+    assert(JSON.stringify(record(1)) === JSON.stringify(existing) && record(24).completed,
+      "La mezcla de datos existentes e importados persiste sin sobrescribir respuestas");
+
+    fresh(); await load();
+    await chooseBackup(fullBackup);
+    fixture.session.failWrite = true;
+    doc.getElementById("restoreBackup").click();
+    assert(!fixture.session.getItem(previewKey("restored"))
+      && !record(1).completed && !record(24).completed
+      && doc.getElementById("backupStatus").dataset.state === "error"
+      && !doc.getElementById("restoreBackup").disabled,
+      "Un fallo de escritura no deja una restauración parcial y permite reintentar");
+    fixture.session.failWrite = false;
+    doc.getElementById("restoreBackup").click();
+    assert(record(1).completed && record(24).completed, "Reintentar guarda la restauración completa");
+
+    fresh(); await load();
+    const invalidCopies = [
+      ["JSON roto", "{dato roto", true],
+      ["Formato", { ...fullBackup, format:"otro" }],
+      ["Versión", { ...fullBackup, version:2 }],
+      ["Campaña", { ...fullBackup, campaign:"otra" }],
+      ["Modo", { ...fullBackup, mode:"campaign" }],
+      ["Fecha", { ...fullBackup, exportedAt:"no es una fecha" }],
+      ["Duplicado", { ...fullBackup, records:[fullBackup.records[0], fullBackup.records[0]] }],
+      ["Piso desconocido", { ...fullBackup, records:[{ ...fullBackup.records[0], day:25 }] }],
+      ["Estado ilegible", { ...fullBackup, records:[{ day:1, state:null }] }],
+      ["Respuesta incorrecta", { ...fullBackup, records:[{ day:3, state:{
+        ...fullBackup.records[2].state, answers:{choice:"pipo"}
+      }}] }],
+      ["Reparto inválido", { ...fullBackup, records:[{ day:1, state:{
+        ...fullBackup.records[0].state, answers:{ ...fullBackup.records[0].state.answers, strength:"21" }
+      }}] }],
+      ["Dado incoherente", { ...fullBackup, records:[{ day:10, state:{ ...fullBackup.records[9].state, bonus:999 } }] }],
+      ["Archivo demasiado grande", " ".repeat(1024 * 1024 + 1), true]
+    ];
+    for (const [label,copy,raw] of invalidCopies){
+      await chooseBackup(copy, raw);
+      assert(doc.getElementById("backupStatus").dataset.state === "error"
+        && doc.getElementById("restorePreview").hidden && !fixture.session.getItem(previewKey("restored")),
+        `${label}: se rechaza la copia sin escribir registros`);
+    }
+    const partialBackup = { ...fullBackup, records:[
+      { day:2, state:{ opened:true, completed:false, draft:{ drink:"Una receta a medias" } } },
+      { day:10, state:{ opened:true, completed:false, draft:{ face:"3" }, roll:3 } },
+      { day:5, state:{ opened:true, completed:false, draft:{ answer:"Todavía no" }, hints:1 } }
+    ] };
+    await chooseBackup(partialBackup);
+    doc.getElementById("restoreBackup").click();
+    await load(); open(2);
+    assert(doc.getElementById("mission-drink").value === "Una receta a medias" && !record(2).completed,
+      "Los borradores sin completar se recuperan como borradores");
+    open(10);
+    assert(doc.getElementById("mission-face").readOnly && doc.getElementById("mission-face").value === "3",
+      "Restaurar una tirada pendiente no permite volver a tirar");
+    open(5);
+    assert(record(5).hints === 1 && doc.getElementById("missionHints").textContent.includes(data.days[4].mission.hints[0]),
+      "Las pistas usadas se recuperan sin resolver la misión");
+    await chooseBackup(fullBackup);
+    doc.getElementById("restoreBackup").click();
+    assert(JSON.parse(fixture.session.getItem(previewKey("restored"))).records.length === 24
+      && !record(2).completed && record(2).draft.drink === "Una receta a medias"
+      && !record(10).completed && record(10).roll === 3 && record(5).hints === 1,
+      "Una segunda copia añade solo los pisos ausentes y conserva los registros ya restaurados");
+
+    fresh(); await load();
+    const originalFileText = app.File.prototype.text;
+    let finishOldRead;
+    app.File.prototype.text = () => new Promise(resolve => { finishOldRead = resolve; });
+    chooseFile(new app.File(["lectura pendiente"], "anterior.json", { type:"application/json" }));
+    app.File.prototype.text = originalFileText;
+    await chooseBackup(partialBackup);
+    finishOldRead(JSON.stringify(fullBackup));
+    await new Promise(resolve => setTimeout(resolve, 20));
+    doc.getElementById("restoreBackup").click();
+    assert(JSON.parse(fixture.session.getItem(previewKey("restored"))).records.length === 3,
+      "Una lectura antigua no sustituye la copia seleccionada después");
+    const beforeReadFailure = fixture.session.getItem(previewKey("restored"));
+    app.File.prototype.text = () => Promise.reject(new Error("Fallo de lectura simulado"));
+    await chooseBackup(fullBackup);
+    app.File.prototype.text = originalFileText;
+    assert(doc.getElementById("backupStatus").textContent === app.STRINGS.backup.readError
+      && doc.getElementById("restorePreview").hidden
+      && fixture.session.getItem(previewKey("restored")) === beforeReadFailure,
+      "Un fallo al leer el archivo se informa y no modifica los datos existentes");
+
+    fresh(); await load();
+    const legacyBackup = JSON.parse(JSON.stringify(fullBackup));
+    legacyBackup.records = [legacyBackup.records[0]];
+    for (const id of ["strength","wit","charm"]){
+      delete legacyBackup.records[0].state.answers[id];
+      delete legacyBackup.records[0].state.draft[id];
+    }
+    await chooseBackup(legacyBackup);
+    doc.getElementById("restoreBackup").click();
+    app.App.openProfile();
+    assert(record(1).completed && !doc.getElementById("profileStatSetup").hidden,
+      "Se pueden restaurar contratos antiguos y fijar después sus puntos");
+
+    fresh(false, "2026-12-02T12:00:00"); await load();
+    await chooseBackup(fullBackup);
+    assert(doc.getElementById("backupStatus").textContent === app.STRINGS.backup.wrongMode
+      && !fixture.local.getItem(key("restored")), "El modo real rechaza las copias del modo autor");
+    await chooseBackup({ ...fullBackup, mode:"campaign" });
+    doc.getElementById("restoreBackup").click();
+    app.App.openProfile();
+    doc.querySelector('[data-day="3"]').click();
+    assert(doc.getElementById("profileFloors").textContent === "2 / 24"
+      && doc.querySelectorAll(".door").length === 3 && doc.querySelector('[data-day="3"]').classList.contains("locked")
+      && !doc.getElementById("message").classList.contains("active")
+      && !doc.getElementById("profile").textContent.includes("Paco Pecado"),
+      "Restaurar no adelanta el calendario ni revela recompensas de pisos futuros");
+    const realBackup = await exportBackup();
+    assert(realBackup.mode === "campaign" && realBackup.records.length === 24
+      && fixture.session.getItem(previewKey("restored")) === null && fixture.notifications.length === 0,
+      "Las copias reales usan almacenamiento local y conservan también los registros futuros sin enviar avisos");
+    fixture.local.setItem(key(2), "{registro roto");
+    await load();
+    const downloadCount = fixture.downloads.length, beforeRestore = fixture.local.getItem(key("restored"));
+    doc.getElementById("exportBackup").click();
+    await chooseBackup(realBackup);
+    assert(fixture.downloads.length === downloadCount && doc.getElementById("backupStatus").dataset.state === "error"
+      && fixture.local.getItem(key(2)) === "{registro roto" && fixture.local.getItem(key("restored")) === beforeRestore,
+      "Los datos corruptos no se sobrescriben ni se omiten silenciosamente en una exportación");
+
+    fresh(); fixture.session.setItem(previewKey("restored"), "{copia rota"); await load();
+    open(2);
+    assert(doc.getElementById("missionForm").hidden
+      && fixture.session.getItem(previewKey("restored")) === "{copia rota",
+      "Una instantánea corrupta se informa y se preserva sin permitir sobrescribir pisos afectados");
+
     fresh(); await load();
     open(3); set("choice", "pipo"); submit();
     app.App.openProfile();
@@ -428,6 +729,49 @@
     fresh(false, "2026-11-30T12:00:00"); await load();
     app.App.openProfile();
     assert(doc.querySelectorAll(".door").length === 0 && doc.getElementById("profileFloors").textContent === "0 / 24", "Antes de diciembre hay perfil pero no misiones desbloqueadas");
+
+    fresh(false); privateBackup({fragment:true}); await load(); await waitSync("saved");
+    assert(!app.location.hash.includes("backupKey")
+      && fixture.local.getItem(`dcc_sync_access_${data.campaign}`) === "b".repeat(64)
+      && !JSON.stringify(app.CONFIG).includes("b".repeat(64)),
+      "El enlace personal activa la copia sin incluir la clave en la configuración pública ni conservarla en la URL");
+    app.App.openProfile();
+    assert(doc.getElementById("backupSettings").hidden,
+      "Samu no ve controles de descarga, importación ni gestión manual de copias");
+    open(2);
+    set("drink","Primera versión"); set("drink","Última versión");
+    await waitSync("saved");
+    assert(fixture.sync.snapshot.records.find(entry => entry.day === 2).state.draft.drink === "Última versión"
+      && fixture.sync.requests.filter(request => request.method === "PUT" && JSON.parse(request.body).changes.length).length === 1,
+      "Escribir guarda localmente y envía automáticamente la última respuesta, agrupando las pulsaciones");
+    fill(data.days[1]); submit();
+    await waitSync("saved");
+    const remoteDay2 = JSON.parse(JSON.stringify(fixture.sync.snapshot.records.find(entry => entry.day === 2)));
+    assert(remoteDay2.state.completed && record(2).completed
+      && fixture.sync.requests.every(request => request.authorization === `Bearer ${"b".repeat(64)}`),
+      "Completar una misión actualiza la copia privada con autenticación y conserva el progreso local");
+    const writesBeforeReload = fixture.sync.requests.filter(request => request.method === "PUT").length;
+    await load(); await waitSync("saved");
+    assert(fixture.sync.requests.filter(request => request.method === "PUT").length === writesBeforeReload,
+      "Recargar no reenvía ni duplica respuestas ya copiadas");
+
+    fresh(false); privateBackup({key:false}); await load(); await waitSync("missingKey");
+    assert(fixture.sync.requests.length === 0 && doc.getElementById("backupSettings").hidden,
+      "Sin enlace personal no se consulta ni modifica la copia privada");
+    fresh(); privateBackup(); await load(); await waitSync("preview");
+    open(2); set("drink","Solo prueba");
+    await new Promise(resolve => setTimeout(resolve, 30));
+    assert(fixture.sync.requests.length === 0 && !doc.getElementById("backupSettings").hidden,
+      "El modo autor conserva sus herramientas y nunca envía progreso de prueba, aunque exista una clave real");
+
+    fresh(false); privateBackup({records:[remoteDay2]}); await load(); await waitSync("saved");
+    open(2);
+    assert(record(2).completed && doc.getElementById("mission-drink").value === remoteDay2.state.answers.drink
+      && fixture.sync.requests.every(request => request.method === "GET"),
+      "Un navegador nuevo recupera automáticamente los pisos ausentes sin volver a conceder premios");
+    assert(fixture.errors.length === 0 && fixture.notifications.length === 0,
+      "La copia y recuperación automáticas no producen errores ni notificaciones de misión");
+
     window.testResults.running = false;
     window.testResults.pass = true;
     output.textContent += `\n\n${results.length} comprobaciones correctas.`;

@@ -93,6 +93,18 @@ window.STRINGS = {
     reducedMotionNote: "Sin parpadeos, glitch ni desplazamientos animados.",
     savedNote: "Los cambios se guardan automáticamente en este navegador. No se sincronizan entre dispositivos."
   },
+  sync: {
+    preview: "Modo autor: la copia privada está desactivada. El progreso de prueba no se envía.",
+    unconfigured: "Guardado en este navegador. La copia privada automática aún no está configurada.",
+    missingKey: "Guardado en este navegador. Abre tu enlace personal para activar la copia privada automática.",
+    pending: "Guardado en este navegador. Copia privada pendiente.",
+    saving: "Guardado en este navegador. Actualizando la copia privada…",
+    saved: "Progreso guardado en este navegador y copia privada actualizada.",
+    error: "No se pudo confirmar la copia privada. Tus respuestas siguen guardadas en este navegador; se volverá a intentar.",
+    setupError: "La copia privada necesita revisar su configuración. Tus respuestas siguen guardadas en este navegador.",
+    unauthorized: "La copia privada necesita revisar su acceso. Tus respuestas siguen guardadas en este navegador.",
+    conflict: "Hay cambios distintos en la copia privada. Se han conservado los datos de este navegador sin sobrescribir los del servidor."
+  },
   backup: {
     heading: "Copia de seguridad",
     intro: "Exporta respuestas, borradores y progreso a un archivo JSON. Los ajustes de interfaz no se incluyen.",

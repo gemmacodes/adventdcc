@@ -25,6 +25,7 @@ const App = (() => {
   const LS = window.localStorage;
   let DAYS = [];
   let campaignId = "";
+  let campaignState, progressSync = null;
   const records = new Map(), blockedDays = new Set();
   const attributeKeys = ["strength","wit","charm"];
   let activeLootTab = null;
@@ -109,6 +110,49 @@ const App = (() => {
     || (day.mission.private && stateFor(day.day).answers?.choice !== "decline");
   const storageKey = d => `dcc_${isAuthor() ? "preview" : "campaign"}_${campaignId}_${d}`;
   const campaignStorage = () => isAuthor() ? window.sessionStorage : LS;
+  const backupMode = () => isAuthor() ? "preview" : "campaign";
+  const MAX_BACKUP_BYTES = 1024 * 1024;
+  class BackupError extends Error {}
+
+  function validateRecord(day, record){
+    campaignState.validateRecord(day, record);
+  }
+
+  function validateBackupRecord(day, record){
+    campaignState.validateCampaignRecord(day, record);
+  }
+
+  function validateBackup(data){
+    if (!data || data.format !== "adventdcc-backup" || !Array.isArray(data.records)
+        || data.records.length > DAYS.length || typeof data.exportedAt !== "string" || !Number.isFinite(Date.parse(data.exportedAt))){
+      throw new BackupError(text("backup.invalidFile"));
+    }
+    if (data.version !== 1) throw new BackupError(text("backup.wrongVersion"));
+    if (data.campaign !== campaignId) throw new BackupError(text("backup.wrongCampaign"));
+    if (data.mode !== backupMode()) throw new BackupError(text("backup.wrongMode"));
+    const imported = new Map();
+    for (const entry of data.records){
+      const day = entry && dayById(entry.day);
+      if (!day || imported.has(entry.day)) throw new BackupError(text("backup.invalidFile"));
+      try { validateBackupRecord(day, entry.state); }
+      catch(error){ throw new BackupError(text("backup.invalidRecord", { day:day.day }), { cause:error }); }
+      imported.set(entry.day, entry.state);
+    }
+    return imported;
+  }
+
+  function createBackup(entries){
+    return {
+      format:"adventdcc-backup", version:1, campaign:campaignId, mode:backupMode(),
+      exportedAt:new Date().toISOString(),
+      records:[...entries].sort(([a],[b]) => a - b).map(([day, state]) => ({ day, state }))
+    };
+  }
+
+  function readRestoredRecords(){
+    const saved = campaignStorage().getItem(storageKey("restored"));
+    return saved === null ? new Map() : validateBackup(JSON.parse(saved));
+  }
 
   function attributeBonuses(){
     const bonuses = { strength:0, wit:0, charm:0 };
@@ -125,13 +169,7 @@ const App = (() => {
   }
 
   function validPointAllocation(mission, answers){
-    const budget = mission.pointBudget;
-    if (!budget || !answers) return false;
-    return budget.fields.every(id => {
-      const field = mission.fields.find(field => field.id === id);
-      return typeof answers[id] === "string" && /^\d+$/.test(answers[id])
-        && Number(answers[id]) >= field.min && Number(answers[id]) <= field.max;
-    }) && budget.fields.reduce((sum, id) => sum + Number(answers[id]), 0) === budget.total;
+    return campaignState.validPointAllocation(mission, answers);
   }
 
   function needsPointAllocation(day){
@@ -140,27 +178,22 @@ const App = (() => {
 
   function loadCampaign(){
     let failed = false;
+    let restored = new Map(), restoredFailed = false;
+    records.clear();
+    blockedDays.clear();
+    try { restored = readRestoredRecords(); }
+    catch(error){
+      console.error("No se pudo recuperar la copia restaurada.", error);
+      restoredFailed = true;
+      failed = true;
+    }
     for (const day of DAYS){
       try {
         const saved = campaignStorage().getItem(storageKey(day.day));
-        if (saved === null) continue;
-        const record = JSON.parse(saved);
-        const validAnswers = value => value && typeof value === "object" && !Array.isArray(value)
-          && Object.values(value).every(item => typeof item === "string" || typeof item === "boolean");
-        if (!record || typeof record.opened !== "boolean" || typeof record.completed !== "boolean"
-            || !validAnswers(record.draft) || (record.answers !== undefined && !validAnswers(record.answers))
-            || (record.completed && (!record.opened || !record.answers || typeof record.outcome !== "string"))
-            || (record.bonus !== undefined && (!Number.isInteger(record.bonus) || record.bonus < 0))
-            || (record.roll !== undefined && (!Number.isInteger(record.roll) || record.roll < 1 || record.roll > 6))
-            || (record.executed !== undefined && typeof record.executed !== "boolean")
-            || (record.hints !== undefined && (!Number.isInteger(record.hints) || record.hints < 0))){
-          throw new Error(`Registro no válido: piso ${day.day}`);
-        }
-        if (record.completed && day.mission.pointBudget
-            && day.mission.pointBudget.fields.some(id => Object.hasOwn(record.answers, id))
-            && !validPointAllocation(day.mission, record.answers)){
-          throw new Error(`Reparto de puntos no válido: piso ${day.day}`);
-        }
+        if (saved === null && restoredFailed) throw new Error("Copia restaurada ilegible.");
+        const record = saved === null ? restored.get(day.day) : JSON.parse(saved);
+        if (record === undefined) continue;
+        validateRecord(day, record);
         records.set(day.day, record);
       } catch(error){
         console.error("No se pudo recuperar el registro de la misión.", error);
@@ -169,6 +202,190 @@ const App = (() => {
       }
     }
     if (failed) toast(text("errors.campaignLoad"));
+    return !failed;
+  }
+
+  let pendingBackup = null, backupReadVersion = 0;
+
+  function setBackupStatus(message, state = "info"){
+    const status = document.getElementById("backupStatus");
+    status.dataset.state = state;
+    status.setAttribute("role", state === "error" ? "alert" : "status");
+    status.textContent = message;
+  }
+
+  function reportBackupError(error, fallback){
+    console.error("No se pudo completar la operación de copia de seguridad.", error);
+    setBackupStatus(error instanceof BackupError ? error.message : text(fallback), "error");
+  }
+
+  function requireBackupReady(){
+    if (!campaignId || DAYS.length !== 24) throw new BackupError(text("backup.unavailable"));
+    if (!loadCampaign()) throw new BackupError(text("backup.unreadable"));
+  }
+
+  function resetRestore(){
+    pendingBackup = null;
+    document.getElementById("restorePreview").hidden = true;
+    document.getElementById("restoreBackup").disabled = true;
+    document.getElementById("restoreSummary").textContent = "";
+  }
+
+  document.getElementById("exportBackup").onclick = () => {
+    let url;
+    try {
+      requireBackupReady();
+      const data = createBackup(records);
+      validateBackup(data);
+      const blob = new Blob([JSON.stringify(data, null, 2)], { type:"application/json" });
+      if (blob.size > MAX_BACKUP_BYTES) throw new BackupError(text("backup.tooLarge"));
+      url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `adventdcc-${backupMode()}-${data.exportedAt.slice(0, 10)}.json`;
+      document.body.append(link);
+      try { link.click(); }
+      finally { link.remove(); }
+      setBackupStatus(text("backup.ready", { count:data.records.length }), "success");
+    } catch(error){ reportBackupError(error, "backup.exportError"); }
+    finally { if (url) setTimeout(() => URL.revokeObjectURL(url), 1000); }
+  };
+
+  document.getElementById("chooseBackup").onclick = () => document.getElementById("backupFile").click();
+  document.getElementById("backupFile").addEventListener("change", async event => {
+    const file = event.target.files[0];
+    event.target.value = "";
+    if (!file) return;
+    const request = ++backupReadVersion;
+    resetRestore();
+    setBackupStatus(text("backup.reading"), "busy");
+    try {
+      requireBackupReady();
+      if (file.size > MAX_BACKUP_BYTES) throw new BackupError(text("backup.tooLarge"));
+      const source = await file.text();
+      if (request !== backupReadVersion) return;
+      let data;
+      try { data = JSON.parse(source); }
+      catch(error){ throw new BackupError(text("backup.invalidFile"), { cause:error }); }
+      const imported = validateBackup(data);
+      const added = [...imported.keys()].filter(day => !records.has(day)).length;
+      pendingBackup = data;
+      document.getElementById("restorePreview").hidden = false;
+      document.getElementById("restoreBackup").disabled = added === 0;
+      document.getElementById("restoreSummary").textContent = text("backup.review", { added, kept:imported.size - added });
+      setBackupStatus(added ? "" : text("backup.noChanges"));
+    } catch(error){
+      if (request === backupReadVersion) reportBackupError(error, "backup.readError");
+    }
+  });
+  document.getElementById("cancelRestore").onclick = () => {
+    backupReadVersion++;
+    resetRestore();
+    setBackupStatus("");
+  };
+  document.getElementById("restoreBackup").onclick = () => {
+    if (!pendingBackup) return;
+    let restoredMessage;
+    try {
+      requireBackupReady();
+      const imported = validateBackup(pendingBackup);
+      const additions = new Map([...imported].filter(([day]) => !records.has(day)));
+      const kept = imported.size - additions.size;
+      if (!additions.size){
+        resetRestore();
+        setBackupStatus(text("backup.noChanges"));
+        return;
+      }
+      const restored = readRestoredRecords();
+      for (const [day, state] of additions) restored.set(day, state);
+      const source = JSON.stringify(createBackup(restored));
+      if (new Blob([source]).size > MAX_BACKUP_BYTES) throw new BackupError(text("backup.tooLarge"));
+      restoredMessage = text("backup.restored", { added:additions.size, kept });
+      // Una sola escritura evita restauraciones parciales; los registros individuales tienen prioridad.
+      campaignStorage().setItem(storageKey("restored"), source);
+      for (const [day, state] of additions) records.set(day, state);
+    } catch(error){
+      reportBackupError(error, "backup.storageError");
+      return;
+    }
+    resetRestore();
+    setBackupStatus(restoredMessage, "success");
+    renderCalendar();
+    renderProfile();
+    progressSync?.schedule(0);
+  };
+
+  function setSyncStatus(state){
+    document.querySelectorAll("[data-sync-status]").forEach(el => {
+      el.textContent = text(`sync.${state}`);
+      el.dataset.state = state;
+      el.setAttribute("role", ["error","setupError","conflict","unauthorized"].includes(state) ? "alert" : "status");
+    });
+  }
+
+  async function startPrivateBackup(){
+    if (isAuthor()){ setSyncStatus("preview"); return; }
+    try {
+      const keyName = `dcc_sync_access_${campaignId}`;
+      const params = new URLSearchParams(location.hash.slice(1));
+      if (params.has("backupKey")){
+        const key = params.get("backupKey");
+        params.delete("backupKey");
+        const cleanURL = new URL(location.href);
+        cleanURL.hash = params.toString();
+        history.replaceState(null, "", cleanURL.href);
+        if (!/^[a-zA-Z0-9_-]{43,128}$/.test(key)) throw new Error("Clave de copia privada no válida.");
+        LS.setItem(keyName, key);
+      }
+      if (!cfg.sync?.endpoint){ setSyncStatus("unconfigured"); return; }
+      const accessKey = LS.getItem(keyName);
+      if (!accessKey){ setSyncStatus("missingKey"); return; }
+      const { createProgressSync } = await import("./cloud-sync.mjs");
+      progressSync = createProgressSync({
+        endpoint:cfg.sync.endpoint, accessKey, campaign:{ campaign:campaignId, days:DAYS }, storage:LS,
+        enabled:() => !isAuthor(),
+        onStatus:setSyncStatus,
+        readRecords(){
+          if (isAuthor()) throw new Error("La copia privada está desactivada en modo autor.");
+          if (!loadCampaign()) throw new Error("Hay registros locales ilegibles.");
+          for (const day of DAYS){
+            if (records.has(day.day)) validateBackupRecord(day, records.get(day.day));
+          }
+          return new Map(records);
+        },
+        restoreMissing(snapshot){
+          if (isAuthor()) throw new Error("La copia privada está desactivada en modo autor.");
+          if (!loadCampaign()) throw new Error("Hay registros locales ilegibles.");
+          const additions = snapshot.records.filter(entry => !records.has(entry.day));
+          if (!additions.length) return;
+          const restored = readRestoredRecords();
+          for (const entry of additions) restored.set(entry.day, entry.state);
+          LS.setItem(storageKey("restored"), JSON.stringify(createBackup(restored)));
+          for (const entry of additions) records.set(entry.day, entry.state);
+          renderCalendar();
+          if (document.body.dataset.view === "profile") renderProfile();
+          else if (document.body.dataset.view === "message" && current && additions.some(entry => entry.day === current.day)){
+            renderMission(current);
+            renderReward(current);
+          }
+        }
+      });
+      window.addEventListener("online", () => progressSync.schedule(0));
+      window.addEventListener("storage", event => {
+        if (event.key === "dcc_author" && isAuthor()){
+          progressSync.stop();
+          setSyncStatus("preview");
+        }
+      });
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") progressSync.schedule(0);
+        else progressSync.flush();
+      });
+      progressSync.start();
+    } catch(error){
+      console.error("No se pudo iniciar la copia privada.", error.name);
+      setSyncStatus("setupError");
+    }
   }
 
   function saveState(d, patch){
@@ -177,6 +394,7 @@ const App = (() => {
     try {
       campaignStorage().setItem(storageKey(d), JSON.stringify(next));
       records.set(d, next);
+      progressSync?.schedule(patch.completed ? 0 : 1500);
       return true;
     } catch(error){
       console.error("No se pudo guardar la misión.", error);
@@ -425,6 +643,7 @@ const App = (() => {
     const gold = cleared.reduce((sum, day) => sum + goldFor(day), 0);
     document.getElementById("profileFloors").textContent = text("profile.floorCount", { count:cleared.length });
     document.getElementById("profileGold").textContent = gold.toLocaleString("es-ES");
+    document.getElementById("backupPreviewWarning").hidden = !isAuthor();
     document.querySelectorAll("[data-profile]").forEach(input => {
       input.checked = profile[input.dataset.profile];
     });
@@ -883,8 +1102,7 @@ const App = (() => {
   }
 
   function norm(s){
-    return (s || "").normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-      .toLowerCase().replace(/[^a-z0-9\s]/g, " ").trim().replace(/\s+/g, " ");
+    return campaignState.normalizeAnswer(s);
   }
 
   function submitMission(event){
@@ -1051,7 +1269,9 @@ const App = (() => {
 
   async function init(){
     applyStrings();
+    document.getElementById("backupSettings").hidden = !isAuthor();
     try {
+      campaignState = await import("./campaign-state.mjs");
       const res = await fetch("days.json", { cache: "no-store" });
       if (!res.ok) throw new Error(`days.json: ${res.status}`);
       const data = await res.json();
@@ -1113,6 +1333,7 @@ const App = (() => {
     }
     loadCampaign();
     renderCalendar(true);
+    startPrivateBackup();
     if (profileLoadError) toast(text("errors.profileLoad"));
     if ("serviceWorker" in navigator){
       navigator.serviceWorker.register("sw.js").catch(error => {

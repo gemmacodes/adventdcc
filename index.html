@@ -137,6 +137,27 @@
         </label>
         <p class="profile-note" data-text="profile.savedNote"></p>
       </details>
+      <p class="profile-note sync-status" data-sync-status role="status" aria-live="polite"></p>
+      <details class="profile-card profile-settings" id="backupSettings">
+        <summary data-text="backup.heading"></summary>
+        <p class="profile-note" data-text="backup.intro"></p>
+        <p class="profile-note" data-text="backup.previewWarning" id="backupPreviewWarning" hidden></p>
+        <div class="backup-actions">
+          <button type="button" class="ghost" id="exportBackup" data-text="backup.download"></button>
+          <button type="button" class="ghost" id="chooseBackup" data-text="backup.chooseFile"></button>
+        </div>
+        <input type="file" id="backupFile" accept=".json,application/json" data-label="backup.chooseFile" hidden />
+        <div id="restorePreview" hidden>
+          <p class="profile-note" data-text="backup.policy"></p>
+          <p class="profile-note" id="restoreSummary"></p>
+          <div class="backup-actions">
+            <button type="button" class="ghost" id="restoreBackup" data-text="backup.confirm" disabled></button>
+            <button type="button" class="ghost" id="cancelRestore" data-text="backup.cancel"></button>
+          </div>
+        </div>
+        <p class="profile-note" id="backupStatus" role="status" aria-live="polite" aria-atomic="true"></p>
+        <p class="profile-note" data-text="backup.privacy"></p>
+      </details>
     </section>
 
     <!-- MESSAGE -->
@@ -157,6 +178,7 @@
           <p class="mission-feedback" id="missionError" role="alert" hidden></p>
           <button type="submit" class="mission-submit" id="missionSubmit" data-text="mission.submit"></button>
           <p class="profile-note" id="draftStatus"></p>
+          <p class="profile-note sync-status" data-sync-status role="status" aria-live="polite"></p>
           <p class="profile-note" data-text="mission.privacy"></p>
         </form>
         <div class="mission-result" id="missionResult" role="status" hidden></div>
