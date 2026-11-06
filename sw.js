@@ -1,5 +1,5 @@
 // Minimal offline cache so the app installs & opens without a connection.
-const CACHE = "dcc-advent-v58";
+const CACHE = "dcc-advent-v69";
 const ASSETS = [
   "./","./index.html","./styles.css","./config.js","./strings.js","./app.js",
   "./days.json","./manifest.webmanifest","./icon.svg","./samu-portrait.jpg",

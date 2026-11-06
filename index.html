@@ -30,6 +30,7 @@
           </svg>
         </button>
       </div>
+      <piix-pal pal="thread" length="60" at="0.82" silk="#8d365b" aria-hidden="true"></piix-pal>
       <div class="sub" data-text="calendar.subtitle"></div>
       <div class="meter"><i id="meterFill"></i></div>
       <div class="meterlabel">
@@ -178,7 +179,7 @@
     <section id="message" class="view">
       <button type="button" class="back profile-back" data-text="common.back" onclick="App.goHome()"></button>
       <div class="alert">
-        <div class="hd"><span class="warn" id="msgHd">⚠</span> <span id="msgHdText" data-text="message.notification"></span></div>
+        <div class="hd"><span class="warn" id="msgHd">⚠</span> <span id="msgHdText" data-text="message.notification"></span><piix-pal pal="shel" scale="2.4" edge="box" at="0.5" speed="0.6" aria-hidden="true"></piix-pal></div>
         <div class="floor" id="msgFloor"></div>
         <div class="title" id="msgTitle"></div>
         <div class="body" id="msgBody"></div>
@@ -223,6 +224,7 @@
 
 <div class="toast" id="toast" role="status"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/piixpal@0.4.0/piixpal.min.js" integrity="sha384-ceY8Rlte2Kcw7J1blYDZVFNx2WXKUflnqEpTlZeLMvWkj+MjXd8+rbMk3PCRYhl6" crossorigin="anonymous" defer></script>
 <script src="config.js"></script>
 <script src="strings.js"></script>
 <script src="app.js"></script>

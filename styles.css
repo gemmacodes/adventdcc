@@ -243,8 +243,9 @@ body[data-view="message"] .calhead,body[data-view="profile"] .calhead{display:no
 .back{display:inline-flex;align-items:center;gap:6px;color:var(--muted);font-size:11px;
   letter-spacing:.1em;cursor:pointer;margin-bottom:14px;text-transform:uppercase}
 .back:hover{color:var(--cyan)}
-.alert{border:1px solid var(--line);border-radius:14px;overflow:hidden;background:linear-gradient(180deg,#0c1a30,#091425)}
+.alert{margin-top:18px;border:1px solid var(--line);border-radius:14px;overflow:visible;background:linear-gradient(180deg,#0c1a30,#091425)}
 .alert .hd{
+  border-radius:13px 13px 0 0;
   background:linear-gradient(90deg,rgba(255,43,214,.18),rgba(33,230,255,.12));
   border-bottom:1px solid var(--line);padding:10px 16px;
   display:flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.18em;color:var(--amber);text-transform:uppercase

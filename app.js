@@ -623,7 +623,24 @@ const App = (() => {
   }
 
   // ---- open a day ------------------------------------------
+  const spiderHost = document.querySelector(".calhead");
+  const spider = spiderHost && spiderHost.querySelector("piix-pal");
+  const snailHost = document.querySelector("#message .hd");
+  const snail = snailHost && snailHost.querySelector("piix-pal");
+
   function showView(id){
+    if (spider){
+      if (id === "calendar") spiderHost.querySelector(".sub").before(spider);
+      else spider.remove();
+    }
+    if (snail){
+      snail.remove();
+      if (id === "message"){
+        setTimeout(() => {
+          if (document.body.dataset.view === "message") snailHost.append(snail);
+        }, 500);
+      }
+    }
     bodyGeneration++;
     typing = false;
     skipType = true;
