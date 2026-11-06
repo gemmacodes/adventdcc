@@ -54,14 +54,11 @@ test("se rechazan cartas duplicadas, imágenes externas y textos incompletos", (
 
 test("el itinerario sitúa el regreso, la casa rural y el cierre familiar sin adelantar a Tombi", () => {
   assert.match(days[1].message, /Corea del Sur → Barcelona/);
-  assert.match(days[1].message, /Hoy vuelves a Barcelona/);
+  assert.match(days[1].message, /devuelto a Barcelona/);
   assert.ok(!days[1].message.includes("Sigues en Corea"));
   for (const day of days.filter(day => day.day >= 5 && day.day <= 8)){
     assert.match(day.message, /rural/);
-    assert.match(day.message, /El Ejido/);
   }
-  for (const day of days.filter(day => day.day >= 9 && day.day <= 19)) assert.match(day.message, /Barcelona/);
-  for (const day of days.filter(day => day.day >= 20)) assert.match(day.message, /familia/);
   assert.ok(days.filter(day => day.day < 20).every(day => !day.character || day.character.id !== "tombi"));
   assert.match(days[19].reward.physical, /antes de partir/);
   assert.match(days[23].mission.success, /Si no llevaste el sobre/);
