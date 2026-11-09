@@ -148,7 +148,7 @@ test("Una revisión antigua no reemplaza respuestas nuevas ni deja escrituras pa
   await put([{day:2,baseRevision:1,state:draft("Más reciente")}]);
   const before = store.file;
   const result = await put([
-    {day:4,baseRevision:0,state:{opened:true,completed:false,draft:{talent:"No se guardará parcialmente"}}},
+    {day:4,baseRevision:0,state:{opened:true,completed:false,draft:{choice:"seven"}}},
     {day:2,baseRevision:1,state:draft("Antiguo")}
   ]);
   assert.equal(result.status,409);
@@ -191,7 +191,7 @@ test("Reintenta conflictos de GitHub sin perder pisos guardados por otra petici�
     store.file=JSON.stringify(snapshot);
     store.sha++;
   };
-  const result=await put([{day:4,baseRevision:0,state:{opened:true,completed:false,draft:{talent:"Talento"}}}]);
+  const result=await put([{day:4,baseRevision:0,state:{opened:true,completed:false,draft:{choice:"seven"}}}]);
   assert.equal(result.status,200);
   assert.deepEqual(result.body.records.map(entry=>entry.day),[2,3,4]);
 });

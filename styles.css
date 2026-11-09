@@ -315,6 +315,7 @@ body[data-view="message"] .calhead,body[data-view="profile"] .calhead{display:no
 .attribute-grid meter::-webkit-meter-bar{background:var(--line);border:0;border-radius:4px}
 .attribute-grid meter::-webkit-meter-optimum-value{background:var(--cyan);border-radius:4px}
 .attribute-grid meter::-moz-meter-bar{background:var(--cyan);border-radius:4px}
+.seal-letters{margin:6px 0 0;font:700 1.15rem/1.4 monospace;letter-spacing:.12em;color:#ffcc66;overflow-wrap:anywhere}
 .title-chips{display:flex;flex-wrap:wrap;gap:6px}
 .title-chip{display:inline-block;max-width:100%;margin:0;padding:5px 8px;border:1px solid rgba(255,204,102,.25);
   border-radius:6px;background:rgba(255,204,102,.05);color:var(--gold);font-size:9px;line-height:1.5;overflow-wrap:anywhere}

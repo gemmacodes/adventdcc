@@ -467,9 +467,9 @@ const App = (() => {
     return (message || "").split(/\n{2,}/).map(block => {
       const t = block.trim();
       if (t.startsWith(">>")) {
-        return { type:"obj", label:text("message.objective"), html: inline(t.replace(/^>>\s*/, "")) };
+        return { type:"obj", label:text("message.objective"), html: inline(t.replace(/^>>\s*/, "")).replace(/\n/g, "<br>") };
       }
-      return { type:"p", html: inline(t.replace(/\n/g, "<br>")) };
+      return { type:"p", html: inline(t).replace(/\n/g, "<br>") };
     });
   }
 
@@ -1020,6 +1020,17 @@ const App = (() => {
     if (!items.length) inventory.append(node("p", text("profile.emptyInventory"), "profile-note"));
     document.getElementById("lootCard").hidden = !items.length && !earnedTitles.length;
     if (items.length || earnedTitles.length) selectLootTab(activeLootTab || (earnedTitles.length ? "titles" : "inventory"));
+
+    const pieces = new Set(), letters = Array(12).fill("_");
+    for (const day of completed){
+      const success = day.mission.success || "";
+      for (const [, n] of success.matchAll(/PIEZA DEL SELLO (\d)\/4/g)) pieces.add(n);
+      for (const [, n, letter] of success.matchAll(/FRAGMENTO DE CONTRASEÑA (\d+)\/12: (\S)/g)) letters[n - 1] = letter;
+    }
+    const found = letters.filter(letter => letter !== "_").length;
+    document.getElementById("sealCard").hidden = !pieces.size && !found;
+    document.getElementById("sealPieces").textContent = text("profile.sealPieces", { count:pieces.size });
+    document.getElementById("sealLetters").textContent = text("profile.sealLetters", { letters:letters.join(" "), count:found });
 
     const plans = completed.filter(pendingExecution);
     document.getElementById("plansCard").hidden = !plans.length;

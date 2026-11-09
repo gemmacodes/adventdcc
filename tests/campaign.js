@@ -304,6 +304,7 @@
     const earnedAttributes = { strength:0, wit:0, charm:0 };
     for (const day of data.days){
       open(day.day);
+      assert(!doc.getElementById("msgBody").textContent.includes("<br>"), `Piso ${day.day}: los saltos de línea no se muestran como texto`);
       assert(doc.getElementById("missionCharacter").hidden === !day.character,
         `Piso ${day.day}: solo presenta una carta cuando corresponde`);
       assert(!!doc.querySelector(".mission-bonus") === !!day.reward.attributes,
@@ -323,13 +324,6 @@
         const roll = record(10).roll;
         doc.querySelector("#missionFields button").click();
         assert(record(10).roll === roll, "El dado virtual solo registra una tirada");
-      }
-      if (day.day === 18){
-        set("plan", "custom");
-        set("proposal", "");
-        submit();
-        assert(!record(18).completed, "Un plan propio requiere escribir la propuesta");
-        set("proposal", "Una aventura que nos apetezca");
       }
       submit();
       assert(record(day.day).completed && !doc.getElementById("rewardBox").hidden, `Piso ${day.day}: resolución y recompensa`);
@@ -378,7 +372,11 @@
     assert(doc.getElementById("campaignTitles").textContent.includes("DRAGONCITO DE ÉLITE"), "Título final obtenido al resolver el 24");
     assert(doc.getElementById("campaignCompanion").textContent.includes("Prueba companion <texto & seguro>"), "Compañero y respuestas se muestran como texto literal");
     assert(!doc.getElementById("campaignCompanion").querySelector("texto"), "Las respuestas no se interpretan como HTML");
-    assert(!record(14).executed && !record(18).executed, "Las actividades cooperativas no se realizan al desbloquearlas");
+    assert(!record(14).executed, "Las actividades cooperativas no se realizan al desbloquearlas");
+    assert(!doc.getElementById("sealCard").hidden
+      && doc.getElementById("sealLetters").textContent === "Contraseña: F E L I Z N A V I D A D (12/12)"
+      && doc.getElementById("sealPieces").textContent === "Piezas del sello: 4/4",
+      "El perfil reúne las piezas del sello y las 12 letras de la contraseña");
     assert(!doc.querySelector("#campaignInventory button,#campaignInventory a"), "El inventario no contiene navegación a pisos");
     assert(doc.querySelectorAll("#campaignInventory > div > .inventory-row").length === 3
       && !doc.querySelector("#campaignInventory > .collection-more").open, "Solo tres objetos recientes se muestran antes de desplegar el inventario completo");
@@ -535,13 +533,6 @@
       && fixture.session.getItem(previewKey("restored")) === restoredOnce,
       "Repetir la copia no escribe nada ni duplica los premios");
     doc.getElementById("cancelRestore").click();
-    open(18);
-    doc.querySelector("#missionResult button").click();
-    assert(record(18).executed && fixture.session.getItem(previewKey(18))
-      && !JSON.parse(restoredOnce).records.find(entry => entry.day === 18).state.executed,
-      "Una actividad importada se puede realizar sin modificar la instantánea original");
-    await load();
-    assert(record(18).executed, "Los cambios posteriores tienen prioridad sobre la copia restaurada al recargar");
     app.App.openProfile();
     for (const width of [280,320,390]){
       frame.style.width = `${width}px`;

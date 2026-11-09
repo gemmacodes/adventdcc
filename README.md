@@ -26,6 +26,27 @@ de dirección, Inicio y Fin al enfocar el carrusel. No avanza automáticamente.
 El expediente de la carta seleccionada se despliega debajo; las cartas
 pendientes no muestran su identidad ni su expediente.
 
+## Campaña lógica
+
+Los 24 pisos se agrupan en cuatro bloques de seis días. Muchos son juegos de
+lógica con solución única (tipos `choice` con `answer` y `puzzle`); el resto
+sigue siendo narrativo.
+
+- **Contraseña.** Los pisos 1, 3, 4, 5, 8, 9, 11, 12, 15, 16, 18 y 22 entregan al
+  completarse una letra de `felizNavidad` con el formato
+  `FRAGMENTO DE CONTRASEÑA n/12: X`.
+- **Sello.** Los pisos 3, 9, 16 y 23 entregan una pieza con el formato
+  `PIEZA DEL SELLO n/4 recuperada.` Ambas marcas están en el texto `success`
+  de cada misión: el perfil las lee de ahí, y cambiar ese formato rompe el panel.
+- **Piso 24.** Acepta `felizNavidad` (también «feliz navidad»). Quien no tenga
+  todas las letras puede resolverlo con el nombre del patrocinador, para no
+  bloquear a nadie.
+- **Objetos.** Los objetos de pisos anteriores (por ejemplo la transcripción del 17
+  o el salvoconducto del 12) solo se mencionan en pistas y notas. Son opcionales
+  y nunca bloquean. No hay lógica que los compruebe.
+- **Perfil.** La tarjeta «Sello robado y contraseña» muestra las piezas y las
+  letras reunidas.
+
 ## Activar la copia privada
 
 1. Importa en Vercel el repositorio de **código** `gemmacodes/adventdcc`.
@@ -89,6 +110,9 @@ Sin instalar dependencias ni ejecutar builds:
 ```sh
 node --test tests/progress.test.mjs tests/character-cards.test.mjs
 ```
+
+Si cambias respuestas o letras en `days.json`, actualiza también las pruebas que
+dependen de ellas.
 
 La regresión de navegador se abre en `tests/campaign.html` desde el servidor local.
 Usa almacenamiento, credenciales y peticiones simuladas; no envía datos a GitHub.
